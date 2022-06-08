@@ -47,7 +47,7 @@ const vert = `
 
 const frag = `
   #define fogNear 1.
-  #define fogFar 2.5
+  #define fogFar 2.75
   // #define fogColor vec3(0., 0., 0.)
 
   uniform highp float time;
@@ -76,7 +76,7 @@ const frag = `
   }
 
   void main() {
-    vec2 S = 25. * vec2(10., 50.);
+    vec2 S = 5. * vec2(10., 50.);
     vec2 c = floor(vUv * S);
 
     float offset = random(c.x) * S.x;

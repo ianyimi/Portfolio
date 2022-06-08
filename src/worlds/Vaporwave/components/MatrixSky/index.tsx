@@ -10,11 +10,14 @@ export default function MatrixSky(props: { color?: string, radius?: number, fog?
   // const { effects } = useRealm();
   // const fogColor = effects?.color.toLowerCase()
   const mat = useMatrixMat(fog);
-  const args = [2, 5, 10]
+  const args = [2, 5, 2]
   return (
     <group {...restProps}>
-      <mesh material={mat}>
-        <boxBufferGeometry args={[args[0], args[1], args[2]]} />
+      <mesh material={mat} position-x={0.75} rotation-y={Math.PI/2}>
+        <planeBufferGeometry args={[args[0], args[1]]} />
+      </mesh>
+      <mesh material={mat} position-x={-0.75} rotation-y={Math.PI/2}>
+        <planeBufferGeometry args={[args[0], args[1]]} />
       </mesh>
       <mesh>
         <boxBufferGeometry args={[args[0]+100, args[1]+100, args[2]+100]} />

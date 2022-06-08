@@ -1,8 +1,9 @@
 import { useLimiter } from "spacesvr";
 import { useFrame } from "@react-three/fiber";
-import {useEffect, useRef} from "react";
+import React, {useEffect, useRef} from "react";
 import Terrain from "./Terrain";
 import { useWorld } from "./WorldState";
+import { usePlane } from "@react-three/cannon";
 
 const colors = ["red", "orange", "yellow", "green", "blue", "purple"];
 
@@ -11,6 +12,12 @@ export default function Landscape() {
   const terrain2Ref = useRef();
 
   const { setThemeColor } = useWorld();
+
+  const [collider, api] = usePlane(() => ({
+    args: [2, 5],
+    rotation: [-Math.PI * 0.5, 0, 0],
+    type: "Static"
+  }))
 
   const limiter = useLimiter(30);
   useFrame(({ clock }) => {
@@ -23,7 +30,7 @@ export default function Landscape() {
 
   const onClick = () => {
     console.log("click")
-    setThemeColor(colors[Math.floor(Math.random()*7)])
+    // setThemeColor(colors[Math.floor(Math.random()*7)])
   }
   useEffect(() => {
     document.addEventListener("click", onClick);
@@ -36,6 +43,10 @@ export default function Landscape() {
     <group>
       <Terrain ref={terrain1Ref} z={0} />
       <Terrain ref={terrain2Ref} z={-2} />
+      <mesh ref={collider}>
+        <planeBufferGeometry attach="geometry" args={[2, 5, 24, 24]} />
+        <meshBasicMaterial visible={false} />
+      </mesh>
     </group>
   );
 };

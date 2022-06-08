@@ -8,14 +8,15 @@ import Landscape from "./components/Landscape";
 import Lights from "./components/Lights";
 import WorldState from "./components/WorldState";
 import MatrixSky from "./components/MatrixSky";
+import Works from "./components/Works";
 import PostProcessing from "./components/PostProcessing";
 import * as THREE from "three";
 
 export default function Vaporwave() {
   return (
     <Canvas>
-      <Physics>
-        <Debug scale={1} color="red">
+      <Physics gravity={[0, -0.1, 0]}>
+        {/*<Debug scale={1} color="red">*/}
           <WorldState>
             <ambientLight />
             <color attach="background" args={["#000000"]} />
@@ -23,10 +24,11 @@ export default function Vaporwave() {
             <Landscape />
             <fog attach="fog" args={["#000000", 1, 2.5]} />
             <Lights />
-            <MatrixSky />
+
+            <Works />
             {/*<PostProcessing />*/}
           </WorldState>
-        </Debug>
+        {/*</Debug>*/}
       </Physics>
     </Canvas>
   );
