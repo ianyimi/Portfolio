@@ -19,14 +19,13 @@ export default function Vaporwave() {
         {/*<Debug scale={1} color="red">*/}
           <WorldState>
             <ambientLight />
-            <color attach="background" args={["#000000"]} />
             <Camera />
             <Landscape />
-            <fog attach="fog" args={["#000000", 1, 2.5]} />
+            {/*<fog attach="fog" args={["#000000", 1, 2.5]} />*/}
             <Lights />
 
             <Works />
-            {/*<PostProcessing />*/}
+            <PostProcessing />
           </WorldState>
         {/*</Debug>*/}
       </Physics>

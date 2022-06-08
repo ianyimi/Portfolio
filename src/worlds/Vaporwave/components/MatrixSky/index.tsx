@@ -1,13 +1,11 @@
 import { useMatrixMat } from "./materials/matrix";
 import { GroupProps } from "@react-three/fiber";
-// import { useRealm } from "../../../../components/RealmState";
 import * as THREE from "three";
 import { useWorld } from "../WorldState";
 
 export default function MatrixSky(props: { color?: string, radius?: number, fog?: string } & GroupProps) {
   const { color = "green", radius = 300, fog = "black", ...restProps } = props;
-  const { themeColor } = useWorld();
-  // const { effects } = useRealm();
+  const { palette } = useWorld();
   // const fogColor = effects?.color.toLowerCase()
   const mat = useMatrixMat(fog);
   const args = [2, 5, 2]

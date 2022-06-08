@@ -1,9 +1,11 @@
-import { useLimiter } from "spacesvr";
+import { useLimiter, Fog } from "spacesvr";
 import { useFrame } from "@react-three/fiber";
 import React, {useEffect, useRef} from "react";
 import Terrain from "./Terrain";
 import { useWorld } from "./WorldState";
 import { usePlane } from "@react-three/cannon";
+import * as THREE from "three";
+import {DoubleSide} from "three";
 
 const colors = ["red", "orange", "yellow", "green", "blue", "purple"];
 
@@ -11,7 +13,8 @@ export default function Landscape() {
   const terrain1Ref = useRef();
   const terrain2Ref = useRef();
 
-  const { setThemeColor } = useWorld();
+  const { palette } = useWorld();
+  const colorIndex = 3;
 
   const [collider, api] = usePlane(() => ({
     args: [2, 5],
@@ -30,7 +33,6 @@ export default function Landscape() {
 
   const onClick = () => {
     console.log("click")
-    // setThemeColor(colors[Math.floor(Math.random()*7)])
   }
   useEffect(() => {
     document.addEventListener("click", onClick);
@@ -43,6 +45,14 @@ export default function Landscape() {
     <group>
       <Terrain ref={terrain1Ref} z={0} />
       <Terrain ref={terrain2Ref} z={-2} />
+      <Fog color={new THREE.Color(palette[colorIndex].x, palette[colorIndex].y, palette[colorIndex].z)} near={1} far={2.75} />
+      <mesh>
+        <boxBufferGeometry args={[10, 10, 10]} />
+        <meshStandardMaterial
+          color={new THREE.Color(palette[colorIndex].x, palette[colorIndex].y, palette[colorIndex].z)}
+          side={THREE.DoubleSide}
+        />
+      </mesh>
       <mesh ref={collider}>
         <planeBufferGeometry attach="geometry" args={[2, 5, 24, 24]} />
         <meshBasicMaterial visible={false} />

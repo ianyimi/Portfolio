@@ -7,6 +7,7 @@ import { Vector3 } from "three";
 import { useTexture } from "@react-three/drei";
 import * as THREE from "three";
 import { useWorld } from "../WorldState";
+import { palettes } from "../../utils/constants";
 
 const TEXTURES = [
   // "https://dqeczc7c9n9n1.cloudfront.net/images/oslogo.png",
@@ -23,7 +24,7 @@ type BallProps = {
 export default function Ball(props: BallProps) {
 
   const { position = [0, 0, 0] } = props
-  const { setThemeColor } = useWorld();
+  const { setPalette } = useWorld();
   const mesh = useRef(new THREE.Mesh());
   const tex = useTexture(TEXTURES[Math.floor(Math.random()*2)]);
 
@@ -40,7 +41,7 @@ export default function Ball(props: BallProps) {
   function bounce(e: CollideEvent): void {
     if (!api) return;
     api.applyImpulse([0, position[1]/2+0.1, 0], [0, -1, 0])
-    setThemeColor(colors[Math.floor(Math.random()*7)])
+    setPalette(palettes[Math.floor(Math.random()*palettes.length)])
   }
 
   const cPos = useRef(new Vector3());

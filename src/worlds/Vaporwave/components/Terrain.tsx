@@ -3,18 +3,23 @@ import React, {useRef, useState} from "react";
 import { animated, useSpring } from "react-spring/three";
 import { useWorld } from "./WorldState";
 import MatrixSky from "./MatrixSky";
+import * as THREE from "three";
+import {Vector3} from "three";
 
 const Terrain = React.forwardRef((props: { z: number }, ref) => {
   const { z } = props;
-  const { themeColor } = useWorld()
+  const { palette } = useWorld()
+  const lineColorIndex = 0;
+  const baseColorIndex = 4;
 
   const [heightTexture, metalnessTexture] = useTexture([
     "displacement-7.png",
     "metalness-2.png",
   ]);
 
-  const { color } = useSpring({
-    color: themeColor,
+  const { lineColor, baseColor } = useSpring({
+    lineColor: new THREE.Color(palette[lineColorIndex].x, palette[lineColorIndex].y, palette[lineColorIndex].z),
+    baseColor: new THREE.Color(palette[baseColorIndex].x, palette[baseColorIndex].y, palette[baseColorIndex].z),
     args: {
       mass: 1
     }
@@ -27,7 +32,7 @@ const Terrain = React.forwardRef((props: { z: number }, ref) => {
       <group rotation={[-Math.PI * 0.5, 0, 0]}>
         <mesh>
           <animated.meshStandardMaterial
-            color={color}
+            color={lineColor}
             displacementMap={heightTexture}
             displacementScale={0.4}
             metalnessMap={metalnessTexture}

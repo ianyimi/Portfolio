@@ -70,6 +70,7 @@ export default function Floor() {
         <meshStandardMaterial color="yellow" transparent opacity={0.6} />
       </Plane>
       <mesh ref={collider2} onClick={(event) => {
+        // @ts-ignore
         const normal = event.face.normal.clone();
         normal.transformDirection(event.object.matrixWorld);
         normal.normalize();

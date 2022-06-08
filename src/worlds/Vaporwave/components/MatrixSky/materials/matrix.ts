@@ -6,13 +6,14 @@ import * as THREE from "three";
 import { useWorld } from "../../WorldState";
 
 export const useMatrixMat = (fogColor = "black"): ShaderMaterial => {
-  const { themeColor } = useWorld();
+  const { palette } = useWorld();
+  const colorIndex = 1;
   const mat = useMemo(
     () =>
       new ShaderMaterial({
         uniforms: {
-          color: new Uniform(new THREE.Color(themeColor)),
-          fogColor: new Uniform(new THREE.Color(fogColor)),
+          color: new Uniform(palette[colorIndex]),
+          fogColor: new Uniform(palette[colorIndex+2]),
           time: new Uniform(0),
           resolution: new Uniform(new THREE.Vector2(window.innerWidth, window.innerHeight)),
           intensity: new Uniform(1.0)
@@ -21,7 +22,7 @@ export const useMatrixMat = (fogColor = "black"): ShaderMaterial => {
         fragmentShader: frag,
         side: DoubleSide,
       }),
-    [frag, vert, themeColor, fogColor]
+    [frag, vert, palette, fogColor]
   );
 
   const limiter = useLimiter(30);
