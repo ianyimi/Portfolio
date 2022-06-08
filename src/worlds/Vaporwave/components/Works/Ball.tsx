@@ -4,7 +4,6 @@ import { useFrame} from "@react-three/fiber";
 import { useLimiter } from "spacesvr";
 import { CollideEvent } from "@react-three/cannon/dist/setup";
 import { Vector3 } from "three";
-import { useTexture } from "@react-three/drei";
 import * as THREE from "three";
 import { useWorld } from "../WorldState";
 import { palettes } from "../../utils/constants";
@@ -24,16 +23,15 @@ export default function Ball(props: BallProps) {
   const [collider, api] = useSphere(() => ({
     args: 0.015,
     mass: 1,
-    position: [position[0], position[1]+0.05, position[2]],
+    position: [position[0], position[1], position[2]],
     linearFactor: [0, 1, 1],
     linearDamping: 0,
     onCollide: bounce
-    // angularFactor: [1.25, 1.25, 1.25],
   }))
 
   function bounce(e: CollideEvent): void {
     if (!api) return;
-    api.applyImpulse([0, position[1]/2+0.1, 0], [0, -1, 0])
+    api.applyImpulse([0, position[1], 0], [0, -1, 0])
     trigger && setPalette(palettes[Math.floor(Math.random()*palettes.length)])
   }
 
@@ -47,25 +45,23 @@ export default function Ball(props: BallProps) {
   const limiter = useLimiter(45);
   useFrame(({ clock }) => {
     if (!limiter.isReady(clock) || !collider.current || !mesh.current || !api || !cPos.current) return;
-    // console.log(cPos.current)
     if (cPos.current.z > 1.15) {
-      api.position.set(cPos.current.x, position[1]+0.05, -1.25)
-      // api.applyForce([0, 0, 7], [0, 0, 1]);
+      api.position.set(cPos.current.x, position[1], -1.25)
     }
     mesh.current.position.lerp(cPos.current, 0.9)
-    mesh.current.rotation.set(-clock.getElapsedTime()*2, 0, 0)
+    mesh.current.rotation.set(-clock.getElapsedTime()*3, 0, 0)
   })
 
   return (
     <group>
       <mesh ref={collider}>
         <sphereBufferGeometry args={[0.015, 32, 32]} />
-        <meshBasicMaterial map={texture} visible={true} />
+        <meshBasicMaterial map={texture} visible={false} />
       </mesh>
-      {/*<mesh ref={mesh}>*/}
-      {/*  <sphereBufferGeometry args={[0.015, 32, 32]} />*/}
-      {/*  <meshStandardMaterial map={texture} />*/}
-      {/*</mesh>*/}
+      <mesh ref={mesh}>
+        <sphereBufferGeometry args={[0.015, 32, 32]} />
+        <meshStandardMaterial map={texture} />
+      </mesh>
     </group>
   )
 }
