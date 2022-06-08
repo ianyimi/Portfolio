@@ -17,7 +17,7 @@ type BallProps = {
 export default function Ball(props: BallProps) {
 
   const { position = [0, 0, 0], texture, trigger } = props
-  const { setPalette } = useWorld();
+  const { palette, setPalette } = useWorld();
   const mesh = useRef(new THREE.Mesh());
 
   const [collider, api] = useSphere(() => ({
@@ -29,10 +29,20 @@ export default function Ball(props: BallProps) {
     onCollide: bounce
   }))
 
+  function newPalette(): Vector3[] {
+    const currIndex = palettes.indexOf(palette);
+    const randInt = Math.floor(Math.random()*palettes.length)
+    if (randInt === currIndex) {
+      return newPalette();
+    } else {
+      return palettes[randInt];
+    }
+  }
+
   function bounce(e: CollideEvent): void {
     if (!api) return;
     api.applyImpulse([0, position[1], 0], [0, -1, 0])
-    trigger && setPalette(palettes[Math.floor(Math.random()*palettes.length)])
+    trigger && setPalette(newPalette)
   }
 
   const cPos = useRef(new Vector3());

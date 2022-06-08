@@ -13,8 +13,8 @@ export default function Works() {
   const tex2 = useTexture(TEXTURES[Math.floor(Math.random()*TEXTURES.length)]);
   return (
     <group>
-      <Ball position={[0.05, 0.05, -1.15]} texture={tex1} trigger />
-      <Ball position={[-0.025, 0.1, -1.75]} texture={tex2} />
+      <Ball position={[0.05, 0.05, -1.15]} texture={tex1} />
+      <Ball position={[-0.025, 0.1, -1.75]} texture={tex2} trigger />
     </group>
   )
 }
