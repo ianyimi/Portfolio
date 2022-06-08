@@ -6,7 +6,7 @@ export default function Camera() {
       <OrbitControls />
       <PerspectiveCamera
         makeDefault
-        position={[0, 0.06, 1.1]}
+        position={[0, 0.05, 1.1]}
         fov={75}
         near={0.01}
         far={20}
