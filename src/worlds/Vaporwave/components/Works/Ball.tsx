@@ -29,14 +29,12 @@ export default function Ball(props: BallProps) {
     onCollide: bounce
   }))
 
+  const paletteRef = useRef(palette)
+  paletteRef.current = palette;
   function newPalette(): Vector3[] {
-    const currIndex = palettes.indexOf(palette);
+    const currIndex = palettes.indexOf(paletteRef.current);
     const randInt = Math.floor(Math.random()*palettes.length)
-    if (randInt === currIndex) {
-      return newPalette();
-    } else {
-      return palettes[randInt];
-    }
+    return palettes[randInt] || palettes[randInt+1] || palettes[randInt-1];
   }
 
   function bounce(e: CollideEvent): void {
