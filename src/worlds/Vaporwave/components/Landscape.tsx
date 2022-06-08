@@ -5,9 +5,6 @@ import Terrain from "./Terrain";
 import { useWorld } from "./WorldState";
 import { usePlane } from "@react-three/cannon";
 import * as THREE from "three";
-import {DoubleSide} from "three";
-
-const colors = ["red", "orange", "yellow", "green", "blue", "purple"];
 
 export default function Landscape() {
   const terrain1Ref = useRef();
@@ -30,16 +27,6 @@ export default function Landscape() {
     // @ts-ignore
     terrain2Ref.current.position.z = ((clock.getElapsedTime() * 0.15) % 2) - 2;
   });
-
-  const onClick = () => {
-    console.log("click")
-  }
-  useEffect(() => {
-    document.addEventListener("click", onClick);
-    // return (
-    //   document.removeEventListener("click", onClick)
-    // )
-  }, [])
 
   return (
     <group>
