@@ -16,7 +16,7 @@ export default function Vaporwave() {
   return (
     <Canvas>
       <Physics gravity={[0, -0.1, 0]}>
-        {/*<Debug scale={1} color="red">*/}
+        <Debug scale={1} color="red">
           <WorldState>
             <ambientLight />
             <Camera />
@@ -27,7 +27,7 @@ export default function Vaporwave() {
             <Works />
             {/*<PostProcessing />*/}
           </WorldState>
-        {/*</Debug>*/}
+        </Debug>
       </Physics>
     </Canvas>
   );

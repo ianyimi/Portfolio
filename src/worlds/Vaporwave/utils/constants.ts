@@ -23,3 +23,36 @@ export const palettes = [
   vec3Palette("https://coolors.co/040f0f-248232-2ba84a-2d3a3a-fcfffc"),
   vec3Palette("https://coolors.co/d6d6d6-ffee32-ffd100-202020-333533"),
 ];
+
+export const Works = [
+  {
+    name: "About Me",
+    desc: " hobbies, pastimes, socials, etc",
+    url: ""
+  },
+  {
+    name: "Muse x Chad Knight",
+    desc: "",
+    url: "https://muse.place/chadknight/seasons"
+  },
+  {
+    name: "Web3 & EtherRealms",
+    desc: "",
+    url: ""
+  },
+  {
+    name: "Station",
+    desc: "",
+    url: "https://etherrealms.org/station"
+  },
+  {
+    name: "Winter Temple",
+    desc: "",
+    url: "https://etherrealms.org/wintertemple"
+  },
+  {
+    name: "About Me",
+    desc: "",
+    url: ""
+  },
+]
