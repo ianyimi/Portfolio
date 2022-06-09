@@ -23,7 +23,7 @@ export default function Vaporwave() {
             <Landscape />
             <Lights />
             <Works />
-            <PostProcessing />
+            {/*<PostProcessing />*/}
           </WorldState>
         {/*</Debug>*/}
       </Physics>
