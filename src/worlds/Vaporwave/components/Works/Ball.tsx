@@ -49,7 +49,7 @@ export default function Ball(props: BallProps) {
 
   const paletteRef = useRef(palette)
   paletteRef.current = palette;
-  function newPalette(): Vector3[] {
+  function newPalette(): string[] {
     const randInt = Math.floor(Math.random()*palettes.length)
     return palettes[randInt] || palettes[randInt+1] || palettes[randInt-1];
   }
