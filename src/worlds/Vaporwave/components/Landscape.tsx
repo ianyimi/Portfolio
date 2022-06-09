@@ -38,6 +38,7 @@ export default function Landscape() {
   return (
     <group>
       <Audio url={AUDIO} setAudioAnalyser={setAa} />
+      <Fog color={new THREE.Color(palette[colorIndex])} near={1} far={2} />
       <group ref={terrain1Ref}>
         <Terrain />
         {aa && <AudioVisualizer
@@ -59,7 +60,6 @@ export default function Landscape() {
           reverse
         />}
       </group>
-      <Fog color={new THREE.Color(palette[colorIndex])} near={1} far={2.75} />
       <mesh name="skybox">
         <boxBufferGeometry args={[10, 10, 10]} />
         <meshStandardMaterial

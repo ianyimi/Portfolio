@@ -49,7 +49,7 @@ const vert = `
 
 const frag = `
   #define fogNear 1.
-  #define fogFar 2.75
+  #define fogFar 2.5
   // #define fogColor vec3(0., 0., 0.)
 
   uniform highp float time;
