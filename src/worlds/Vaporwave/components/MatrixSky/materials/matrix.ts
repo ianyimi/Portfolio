@@ -4,6 +4,7 @@ import { useLimiter } from "spacesvr";
 import { useFrame, useLoader } from "@react-three/fiber";
 import * as THREE from "three";
 import { useWorld } from "../../WorldState";
+import { hexToVec3 } from "../../../utils/constants"
 
 export const useMatrixMat = (fogColor = "black"): ShaderMaterial => {
   const { palette } = useWorld();
@@ -12,8 +13,8 @@ export const useMatrixMat = (fogColor = "black"): ShaderMaterial => {
     () =>
       new ShaderMaterial({
         uniforms: {
-          color: new Uniform(palette[colorIndex]),
-          fogColor: new Uniform(palette[colorIndex+2]),
+          color: new Uniform(hexToVec3(palette[colorIndex])),
+          fogColor: new Uniform(hexToVec3(palette[colorIndex+2])),
           time: new Uniform(0),
           resolution: new Uniform(new THREE.Vector2(window.innerWidth, window.innerHeight)),
           intensity: new Uniform(1.0)

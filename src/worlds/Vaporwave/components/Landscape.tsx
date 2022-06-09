@@ -1,9 +1,10 @@
 import { useLimiter, Fog } from "spacesvr";
 import { useFrame } from "@react-three/fiber";
-import React, {useEffect, useRef} from "react";
+import React, { useRef } from "react";
 import Terrain from "./Terrain";
 import { useWorld } from "./WorldState";
 import { usePlane } from "@react-three/cannon";
+import Audio from "./Audio";
 import * as THREE from "three";
 
 export default function Landscape() {
@@ -30,17 +31,23 @@ export default function Landscape() {
 
   return (
     <group>
-      <Terrain ref={terrain1Ref} z={0} />
-      <Terrain ref={terrain2Ref} z={-2} />
-      <Fog color={new THREE.Color(palette[colorIndex].x, palette[colorIndex].y, palette[colorIndex].z)} near={1} far={2.75} />
-      <mesh>
+      <group ref={terrain1Ref}>
+        <Terrain />
+        <Audio />
+      </group>
+      <group ref={terrain2Ref}>
+        <Terrain />
+        <Audio reverse />
+      </group>
+      <Fog color={new THREE.Color(palette[colorIndex])} near={1} far={2.75} />
+      <mesh name="skybox">
         <boxBufferGeometry args={[10, 10, 10]} />
         <meshStandardMaterial
-          color={new THREE.Color(palette[colorIndex].x, palette[colorIndex].y, palette[colorIndex].z)}
+          color={new THREE.Color(palette[colorIndex])}
           side={THREE.DoubleSide}
         />
       </mesh>
-      <mesh ref={collider}>
+      <mesh name="ground" ref={collider}>
         <planeBufferGeometry attach="geometry" args={[2, 5, 24, 24]} />
         <meshBasicMaterial visible={false} />
       </mesh>

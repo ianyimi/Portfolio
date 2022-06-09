@@ -16,8 +16,8 @@ export type WorldState = {
   setLights: Dispatch<SetStateAction<MutableRefObject<any>[]>>,
   bloomObjects: MutableRefObject<any>[],
   setBloomObjects: Dispatch<SetStateAction<MutableRefObject<any>[]>>,
-  palette: (Vector3)[],
-  setPalette: Dispatch<SetStateAction<(Vector3)[]>>,
+  palette: string[],
+  setPalette: Dispatch<SetStateAction<string[]>>,
   themeIntensity: number,
   setThemeIntensity: Dispatch<SetStateAction<number>>
 }

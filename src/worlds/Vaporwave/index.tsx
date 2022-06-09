@@ -16,18 +16,17 @@ export default function Vaporwave() {
   return (
     <Canvas>
       <Physics gravity={[0, -0.1, 0]}>
-        <Debug scale={1} color="red">
+        {/*<Debug scale={1} color="red">*/}
           <WorldState>
             <ambientLight />
             <Camera />
             <Landscape />
             {/*<fog attach="fog" args={["#000000", 1, 2.5]} />*/}
             <Lights />
-
             <Works />
             {/*<PostProcessing />*/}
           </WorldState>
-        </Debug>
+        {/*</Debug>*/}
       </Physics>
     </Canvas>
   );

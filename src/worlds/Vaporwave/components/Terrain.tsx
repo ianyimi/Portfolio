@@ -6,8 +6,8 @@ import MatrixSky from "./MatrixSky";
 import * as THREE from "three";
 import {Vector3} from "three";
 
-const Terrain = React.forwardRef((props: { z: number }, ref) => {
-  const { z } = props;
+const Terrain = React.forwardRef((props: { z?: number }, ref) => {
+  const { z = 0 } = props;
   const { palette } = useWorld()
   const lineColorIndex = 0;
   const baseColorIndex = 4;
@@ -18,8 +18,8 @@ const Terrain = React.forwardRef((props: { z: number }, ref) => {
   ]);
 
   const { lineColor, baseColor } = useSpring({
-    lineColor: new THREE.Color(palette[lineColorIndex].x, palette[lineColorIndex].y, palette[lineColorIndex].z),
-    baseColor: new THREE.Color(palette[baseColorIndex].x, palette[baseColorIndex].y, palette[baseColorIndex].z),
+    lineColor: new THREE.Color(palette[lineColorIndex]),
+    baseColor: new THREE.Color(palette[baseColorIndex]),
     args: {
       mass: 1
     }
@@ -27,7 +27,7 @@ const Terrain = React.forwardRef((props: { z: number }, ref) => {
 
   return (
     // @ts-ignore
-    <group ref={ref} position={[0, 0, z]}>
+    <group ref={ref} position={[0, 0, 0]}>
       <MatrixSky />
       <group rotation={[-Math.PI * 0.5, 0, 0]}>
         <mesh>
