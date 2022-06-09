@@ -1,35 +1,76 @@
-import Visualizer from "./Visualizer";
-import { GroupProps, useFrame } from "@react-three/fiber";
-import { useState } from "react";
-import { AudioAnalyser } from "three";
-import Sound from "./Sound"
+import { useEffect, useMemo, useState } from "react";
+import { GroupProps, useThree } from "@react-three/fiber";
+import { AudioAnalyser, Vector3, AudioListener, Audio } from "three";
 
-type AudioProps = {
-  mute?: boolean,
-  volume?: number,
-  reverse?: boolean
-} & GroupProps
+type SoundProps = {
+  url: string;
+  volume?: number;
+  setAudioAnalyser?: (aa: AudioAnalyser) => void;
+  fftSize?: 64 | 128 | 256 | 512 | 1024;
+} & GroupProps;
 
-export default function Audio(props: AudioProps) {
+export default function Sound(props: SoundProps) {
+  const {
+    url,
+    volume = 1,
+    setAudioAnalyser,
+    fftSize = 128,
+    ...rest
+  } = props;
 
-  const { mute, volume, reverse, ...restProps } = props;
-  const [aa, setAa] = useState<AudioAnalyser>();
+  const [speaker, setSpeaker] = useState<Audio>();
+  const camera = useThree((state) => state.camera);
+
+  const audio = useMemo(() => {
+    const a = document.createElement("audio");
+    a.src = url;
+    a.autoplay = false;
+    a.preload = "auto";
+    a.crossOrigin = "Anonymous";
+    a.loop = true;
+    return a;
+  }, []);
+
+  useEffect(() => {
+    const setupAudio = () => {
+      if (!audio.paused && !speaker) {
+        const listener = new AudioListener();
+        camera.add(listener);
+
+        const speak = new Audio(listener);
+        speak.setMediaElementSource(audio);
+        speak.setVolume(volume);
+
+        if (setAudioAnalyser) {
+          setAudioAnalyser(new AudioAnalyser(speak, fftSize));
+        }
+
+        setSpeaker(speak);
+      }
+    };
+
+    const playAudio = () => audio.play().then(() => setupAudio());
+
+    if (audio) {
+      audio.setAttribute("src", url);
+      audio.play().then(() => setupAudio());
+      document.addEventListener("click", playAudio);
+      return () => {
+        document.removeEventListener("click", playAudio);
+      };
+    }
+  }, [speaker, audio, url]);
+
+  useEffect(() => {
+    if (!speaker) return;
+
+    speaker.setVolume(volume);
+  }, [volume]);
 
   return (
-    <group {...restProps}>
-      <Sound
-        url="https://dqeczc7c9n9n1.cloudfront.net/audio/3320+Biggs+-+Get+Busy+(Prodigy+Master).mp3"
-        setAudioAnalyser={setAa}
-        volume={mute ? 0 : volume ? volume : 1}
-      />
-      {aa && <Visualizer
-        position={[0, 0, -1.25]}
-        radius={0.5}
-        reverse={reverse}
-        barCount={64}
-        aa={aa}
-        index={1}
-      />}
+    <group name="spacesvr-audio" {...rest}>
+      {speaker && <primitive object={speaker} />}
     </group>
-  )
+  );
 }
+

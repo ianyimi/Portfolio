@@ -2,7 +2,7 @@ import {AudioAnalyser, Mesh, Vector3} from 'three'
 import {ReactNode, useRef} from "react";
 import { GroupProps, useFrame } from "@react-three/fiber";
 import { useLimiter } from "spacesvr"
-import { useWorld } from "../WorldState";
+import { useWorld } from "./WorldState";
 import { animated } from "react-spring/three";
 import * as THREE from "three";
 
@@ -16,7 +16,7 @@ type VisualizerProps = {
   index: number
 } & GroupProps
 
-export default function Visualizer (props: VisualizerProps) {
+export default function AudioVisualizer (props: VisualizerProps) {
 
   const {
     barCount = 32,
@@ -34,9 +34,9 @@ export default function Visualizer (props: VisualizerProps) {
   const { palette } = useWorld();
 
   for (let i = 0; i < barCount; ++i) {
-    cubes.push(<mesh name={`cube-${index}-${i}`} position={new Vector3(0, 0, i * barWidth + i / 50)}>
+    cubes.push(<mesh name={`cube-${index}-${i}`} position={new Vector3(0, 0, i * barWidth + i / 50)} key={`cube-${index}-${i}`}>
       <boxBufferGeometry args={[barWidth, barHeight, barWidth, 1, 15]} />
-      <animated.meshBasicMaterial color={
+      <animated.meshToonMaterial color={
         new THREE.Color(palette[Math.floor(Math.random() * palette.length)])}
       />
     </mesh>)

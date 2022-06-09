@@ -21,7 +21,6 @@ export default function Vaporwave() {
             <ambientLight />
             <Camera />
             <Landscape />
-            {/*<fog attach="fog" args={["#000000", 1, 2.5]} />*/}
             <Lights />
             <Works />
             {/*<PostProcessing />*/}

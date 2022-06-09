@@ -1,11 +1,16 @@
 import { useLimiter, Fog } from "spacesvr";
 import { useFrame } from "@react-three/fiber";
-import React, { useRef } from "react";
+import React, {useRef, useState} from "react";
 import Terrain from "./Terrain";
 import { useWorld } from "./WorldState";
 import { usePlane } from "@react-three/cannon";
-import Audio from "./Audio";
+import Index from "./Audio";
 import * as THREE from "three";
+import { AudioAnalyser } from "three";
+import Audio from "./Audio";
+import AudioVisualizer from "./AudioVisualizer";
+
+const AUDIO = "https://dqeczc7c9n9n1.cloudfront.net/audio/The+Weeknd+-+Out+of+Time+(Official+Video).mp3";
 
 export default function Landscape() {
   const terrain1Ref = useRef();
@@ -13,6 +18,7 @@ export default function Landscape() {
 
   const { palette } = useWorld();
   const colorIndex = 3;
+  const [aa, setAa] = useState<AudioAnalyser>();
 
   const [collider, api] = usePlane(() => ({
     args: [2, 5],
@@ -31,13 +37,27 @@ export default function Landscape() {
 
   return (
     <group>
+      <Audio url={AUDIO} setAudioAnalyser={setAa} />
       <group ref={terrain1Ref}>
         <Terrain />
-        <Audio />
+        {aa && <AudioVisualizer
+          position={[0, 0, -1.25]}
+          radius={0.5}
+          barCount={64}
+          aa={aa}
+          index={1}
+        />}
       </group>
       <group ref={terrain2Ref}>
         <Terrain />
-        <Audio reverse />
+        {aa && <AudioVisualizer
+          position={[0, 0, -1.25]}
+          radius={0.5}
+          barCount={64}
+          aa={aa}
+          index={1}
+          reverse
+        />}
       </group>
       <Fog color={new THREE.Color(palette[colorIndex])} near={1} far={2.75} />
       <mesh name="skybox">
