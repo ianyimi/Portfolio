@@ -1,7 +1,7 @@
 import { useMemo } from "react";
-import { ShaderMaterial, ShaderMaterialParameters } from "three";
-
-const uniforms = () => ({ uniforms: { time: { value: 0 } } });
+import {ShaderMaterial, ShaderMaterialParameters, Uniform} from "three";
+import {hexToVec3} from "../../../../utils/constants";
+import {useWorld} from "../../../WorldState";
 
 export const vert = `
   precision highp float;
@@ -174,14 +174,20 @@ export const frag = `
 
 export const useParticleMaterial = (
   shaderParams?: Partial<ShaderMaterialParameters>
-) =>
-  useMemo(
+) => {
+  const { palette } = useWorld();
+  const colorIndex = 1;
+  return useMemo(
     () =>
       new ShaderMaterial({
-        ...uniforms(),
+        uniforms: {
+          time: new Uniform(0),
+          fogColor: new Uniform(hexToVec3(palette[colorIndex+2])),
+        },
         vertexShader: vert,
         fragmentShader: frag,
         ...shaderParams,
       }),
-    [frag, vert, uniforms]
+    [frag, vert]
   );
+}
