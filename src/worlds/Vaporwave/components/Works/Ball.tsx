@@ -108,7 +108,7 @@ export default function Ball(props: BallProps) {
         </mesh>
         <mesh ref={mesh}>
           <sphereBufferGeometry args={[0.015, 32, 32]} />
-          <meshStandardMaterial map={texture} />
+          <meshBasicMaterial map={texture} />
         </mesh>
       </group>
       <animated.group scale={displaySize}>

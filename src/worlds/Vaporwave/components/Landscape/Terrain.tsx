@@ -1,8 +1,8 @@
 import { useTexture } from "@react-three/drei";
 import React, {useRef, useState} from "react";
 import { animated, useSpring } from "react-spring/three";
-import { useWorld } from "./WorldState";
-import MatrixSky from "./MatrixSky";
+import { useWorld } from "../WorldState";
+import MatrixSky from "../MatrixSky";
 import * as THREE from "three";
 import {Vector3} from "three";
 

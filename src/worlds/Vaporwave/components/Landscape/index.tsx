@@ -2,17 +2,18 @@ import { useLimiter, Fog } from "spacesvr";
 import { useFrame } from "@react-three/fiber";
 import React, {useRef, useState} from "react";
 import Terrain from "./Terrain";
-import { useWorld } from "./WorldState";
+import { useWorld } from "../WorldState";
 import { usePlane } from "@react-three/cannon";
-import Index from "./Audio";
+import Audio from "../Audio";
 import * as THREE from "three";
 import { AudioAnalyser } from "three";
-import Audio from "./Audio";
 import AudioVisualizer from "./AudioVisualizer";
+import Lights from "./Lights";
+import Title from "./Title";
 
 const AUDIO = "https://dqeczc7c9n9n1.cloudfront.net/audio/The+Weeknd+-+Out+of+Time+(Official+Video).mp3";
 
-export default function Landscape() {
+export default function Index() {
   const terrain1Ref = useRef();
   const terrain2Ref = useRef();
 
@@ -39,6 +40,8 @@ export default function Landscape() {
     <group>
       <Audio url={AUDIO} setAudioAnalyser={setAa} />
       <Fog color={new THREE.Color(palette[colorIndex])} near={1} far={2} />
+      <Lights />
+      {/*<Title position={[0, 0.5, -0.5]} />*/}
       <group ref={terrain1Ref}>
         <Terrain />
         {aa && <AudioVisualizer

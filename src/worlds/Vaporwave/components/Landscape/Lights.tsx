@@ -1,6 +1,6 @@
 import { Object3D } from "three";
 import { useRef } from "react";
-import { useWorld } from "./WorldState";
+import { useWorld } from "../WorldState";
 import { animated } from "react-spring/three";
 import * as THREE from "three";
 

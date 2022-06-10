@@ -2,7 +2,7 @@ import {AudioAnalyser, Mesh, Vector3} from 'three'
 import {ReactNode, useRef} from "react";
 import { GroupProps, useFrame } from "@react-three/fiber";
 import { useLimiter } from "spacesvr"
-import { useWorld } from "./WorldState";
+import { useWorld } from "../WorldState";
 import { animated } from "react-spring/three";
 import * as THREE from "three";
 
