@@ -18,8 +18,8 @@ export type WorldState = {
   setBloomObjects: Dispatch<SetStateAction<MutableRefObject<any>[]>>,
   palette: string[],
   setPalette: Dispatch<SetStateAction<string[]>>,
-  themeIntensity: number,
-  setThemeIntensity: Dispatch<SetStateAction<number>>
+  speed: number,
+  setSpeed: Dispatch<SetStateAction<number>>
 }
 
 export const WorldContext = createContext({} as WorldState);
@@ -37,11 +37,11 @@ export default function WorldState(props: WorldStateProps) {
   const [lights, setLights] = useState<MutableRefObject<any>[]>([lightRef1, lightRef2]);
   const [bloomObjects, setBloomObjects] = useState<MutableRefObject<any>[]>([]);
   const [palette, setPalette] = useState(palettes[0])
-  const [themeIntensity, setThemeIntensity] = useState<number>(0)
+  const [speed, setSpeed] = useState<number>(0)
 
 
   return (
-    <WorldContext.Provider value={{lights, setLights, bloomObjects, setBloomObjects, palette, setPalette, themeIntensity, setThemeIntensity}}>
+    <WorldContext.Provider value={{lights, setLights, bloomObjects, setBloomObjects, palette, setPalette, speed, setSpeed}}>
       {children}
     </WorldContext.Provider>
   )

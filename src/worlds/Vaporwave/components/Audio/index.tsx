@@ -63,7 +63,6 @@ export default function Sound(props: SoundProps) {
 
   useEffect(() => {
     if (!speaker) return;
-
     speaker.setVolume(volume);
   }, [volume]);
 

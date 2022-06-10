@@ -20,6 +20,7 @@ export default function Lights() {
       <animated.spotLight
         ref={spotlight1Ref}
         target={dummy1}
+        // color={new THREE.Color(palette[colorIndex])}
         color={new THREE.Color(palette[colorIndex])}
         intensity={40}
         position={[0.5, 0.75, 2.1]}
@@ -31,6 +32,7 @@ export default function Lights() {
       <animated.spotLight
         ref={spotlight2Ref}
         target={dummy2}
+        // color={new THREE.Color(palette[colorIndex])}
         color={new THREE.Color(palette[colorIndex])}
         intensity={40}
         position={[-0.5, 0.75, 2.1]}

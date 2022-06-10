@@ -36,8 +36,10 @@ export default function AudioVisualizer (props: VisualizerProps) {
   for (let i = 0; i < barCount; ++i) {
     cubes.push(<mesh name={`cube-${index}-${i}`} position={new Vector3(0, 0, i * barWidth + i / 50)} key={`cube-${index}-${i}`}>
       <boxBufferGeometry args={[barWidth, barHeight, barWidth, 1, 15]} />
-      <animated.meshToonMaterial color={
-        new THREE.Color(palette[Math.floor(Math.random() * palette.length)])}
+      <animated.meshStandardMaterial
+        color={new THREE.Color(palette[Math.floor(Math.random() * palette.length)])}
+        metalness={0.9}
+        roughness={0.5}
       />
     </mesh>)
   }

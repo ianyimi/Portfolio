@@ -27,7 +27,7 @@ export default function Ball(props: BallProps) {
   const cPos = useRef(new Vector3());
   const dPos = useRef(new Vector3());
   const pSet = useRef(false);
-  const displayPosition = new Vector3(0.075, 0.1, 1);
+  const displayPosition = new Vector3(-0.00025, 0.085, 1);
   const ACTIVE_DISPLAY = displayKey === index,
     NO_ACTIVE_DISPLAY = displayKey === null;
 
