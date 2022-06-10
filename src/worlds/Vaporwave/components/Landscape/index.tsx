@@ -9,6 +9,7 @@ import * as THREE from "three";
 import { AudioAnalyser } from "three";
 import AudioVisualizer from "./AudioVisualizer";
 import Lights from "./Lights";
+import AmbientParticles from "./AmbientParticles";
 import Title from "./Title";
 
 const AUDIO = "https://dqeczc7c9n9n1.cloudfront.net/audio/The+Weeknd+-+Out+of+Time+(Official+Video).mp3";
@@ -30,17 +31,17 @@ export default function Index() {
 
   const limiter = useLimiter(30);
   useFrame(({ clock }, delta) => {
-    if (!limiter.isReady || !terrain1Ref.current || !terrain2Ref.current || !aa) return;
-    const volume = getVolume(aa.getFrequencyData())
+    if (!limiter.isReady || !terrain1Ref.current || !terrain2Ref.current) return;
+    const volume = getVolume(aa?.getFrequencyData())
     const speed = volume > 0.6 ?
       0.5 : volume > 0.3 ?
         1 : 1.5;
     // console.log(`VOL: ${volume} - LEVEL: ${speed}`)
 
     // @ts-ignore
-    terrain1Ref.current.position.z += delta/(5*speed);
+    terrain1Ref.current.position.z += delta/(5*(aa ? speed : 1.5));
     // @ts-ignore
-    terrain2Ref.current.position.z += delta/(5*speed);
+    terrain2Ref.current.position.z += delta/(5*(aa ? speed : 1.5));
 
     // @ts-ignore
     if (terrain1Ref.current.position.z >= 2) {
@@ -58,12 +59,13 @@ export default function Index() {
 
   return (
     <group>
-      <Audio url={AUDIO2} setAudioAnalyser={setAa} />
+      <Audio url={AUDIO} setAudioAnalyser={setAa} />
       <Fog color={new THREE.Color(palette[colorIndex])} near={1} far={2} />
       <Lights />
       {/*<Title position={[0, 0.5, -0.5]} />*/}
       <group ref={terrain1Ref}>
         <Terrain />
+        <AmbientParticles />
         {aa && <AudioVisualizer
           position={[0, 0, -1.25]}
           radius={0.5}
@@ -74,6 +76,7 @@ export default function Index() {
       </group>
       <group ref={terrain2Ref}>
         <Terrain />
+        <AmbientParticles />
         {aa && <AudioVisualizer
           position={[0, 0, -1.25]}
           radius={0.5}
@@ -98,7 +101,8 @@ export default function Index() {
   );
 };
 
-function getVolume(data: Uint8Array) {
+function getVolume(data?: Uint8Array) {
+  if (!data) return 0;
   let sum = 0;
   for (const num of data) {
     sum += num
