@@ -1,8 +1,7 @@
 import { useMemo } from "react";
-import {ShaderMaterial, ShaderMaterialParameters, Uniform} from "three";
-import {hexToVec3} from "../../../../utils/constants";
-import {useWorld} from "../../../WorldState";
-import * as THREE from "three";
+import { ShaderMaterial, ShaderMaterialParameters, Uniform } from "three";
+import { hexToVec3 } from "../../../../utils/constants";
+import { useWorld } from "../../../WorldState";
 
 export const vert = `
   precision highp float;
@@ -15,7 +14,8 @@ export const vert = `
    
   void main() {
     vColor = color;
-    gl_Position = projectionMatrix * modelViewMatrix * instanceMatrix * vec4(position, 1.);
+    float cNormal = normal == vec3(0., 1., 0.) ? 1 : 0
+    gl_Position = projectionMatrix * modelViewMatrix * instanceMatrix * vec4(scale(position, ), 1.);
   }
 `;
 
@@ -41,23 +41,25 @@ export const frag = `
 `;
 
 export const useCubeMaterial = (
-  shaderParams?: Partial<ShaderMaterialParameters>
+	shaderParams?: Partial<ShaderMaterialParameters>
 ) => {
-  const { palette } = useWorld();
-  const colorIndex = 1;
-  return useMemo(
-    () =>
-      new ShaderMaterial({
-        uniforms: {
-          time: new Uniform(0),
-          data: new Uniform(new Uint8Array()),
-          color: new Uniform(hexToVec3(palette[colorIndex])),
-          fogColor: new Uniform(hexToVec3(palette[colorIndex+2])),
-        },
-        vertexShader: vert,
-        fragmentShader: frag,
-        ...shaderParams,
-      }),
-    [frag, vert]
-  );
-}
+
+	const { palette } = useWorld();
+	const colorIndex = 1;
+	return useMemo(
+		() =>
+			new ShaderMaterial( {
+				uniforms: {
+					time: new Uniform( 0 ),
+					data: new Uniform( new Uint8Array() ),
+					// color: new Uniform(hexToVec3(palette[colorIndex])),
+					fogColor: new Uniform( hexToVec3( palette[ colorIndex + 2 ] ) ),
+				},
+				vertexShader: vert,
+				fragmentShader: frag,
+				...shaderParams,
+			} ),
+		[ frag, vert ]
+	);
+
+};
