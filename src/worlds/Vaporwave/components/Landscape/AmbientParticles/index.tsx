@@ -50,7 +50,7 @@ export default function AmbientParticles(props: GroupProps) {
       dummy.position.fromArray([x, y, z]);
       dummy.updateMatrix();
       mesh.current.setMatrixAt(i, dummy.matrix);
-      seeds[i] = 0.5;
+      seeds[i] = Math.random();
     }
     mesh.current.instanceMatrix.needsUpdate = true;
 
@@ -58,7 +58,7 @@ export default function AmbientParticles(props: GroupProps) {
 
     (mesh.current.geometry as InstancedBufferGeometry).setAttribute(
       "seed",
-      new InstancedBufferAttribute(seeds, 1, false, COUNT)
+      new InstancedBufferAttribute(seeds, 1)
     );
   }, [COUNT, mesh]);
 

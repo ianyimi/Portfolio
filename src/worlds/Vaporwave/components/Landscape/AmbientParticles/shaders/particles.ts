@@ -179,14 +179,14 @@ export const frag = `
 export const useParticleMaterial = (
   shaderParams?: Partial<ShaderMaterialParameters>
 ) => {
-  const { palette, aa } = useWorld();
+  const { palette } = useWorld();
   const colorIndex = 1;
   return useMemo(
     () =>
       new ShaderMaterial({
         uniforms: {
           time: new Uniform(0),
-          volume: new Uniform(aa?.getAverageFrequency()),
+          volume: new Uniform(0),
           color: new Uniform(hexToVec3(palette[colorIndex])),
           fogColor: new Uniform(hexToVec3(palette[colorIndex+2])),
         },

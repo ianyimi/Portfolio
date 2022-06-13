@@ -65,7 +65,6 @@ export default function Index() {
         <Terrain />
         <AmbientParticles />
         <AudioVisualizer
-          position={[0, 0, -1.25]}
           radius={0.5}
           barCount={64}
           index={1}
@@ -75,7 +74,6 @@ export default function Index() {
         <Terrain />
         <AmbientParticles />
         <AudioVisualizer
-          position={[0, 0, -1.25]}
           radius={0.5}
           barCount={64}
           index={1}
