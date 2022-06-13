@@ -11,10 +11,11 @@ import {
 import {ReactNode, useEffect, useMemo, useRef} from "react";
 import { GroupProps, useFrame } from "@react-three/fiber";
 import { useLimiter } from "spacesvr"
-import { useWorld } from "../WorldState";
+import { useWorld } from "../../WorldState";
 import { animated } from "react-spring/three";
 import * as THREE from "three";
-import {positions} from "./AmbientParticles/utils/constants";
+import { useCubeMaterial } from "./shaders/cubes";
+import {positions} from "../AmbientParticles/utils/constants";
 
 type VisualizerProps = {
   barCount?: number,
@@ -25,7 +26,7 @@ type VisualizerProps = {
   index: number
 } & GroupProps
 
-export default function AudioVisualizer (props: VisualizerProps) {
+export default function AudioVisualizer(props: VisualizerProps) {
 
   const {
     barCount = 32,
@@ -39,9 +40,8 @@ export default function AudioVisualizer (props: VisualizerProps) {
   const group1 = useRef();
   const group2 = useRef();
   const mesh = useRef();
-  const mesh2 = useRef();
   const cubes: ReactNode[] = [];
-  const { palette, aa } = useWorld();
+  const { palette, aa, getVolume } = useWorld();
   const colors: THREE.Color[] = [];
   const instancedMeshMat = new MeshStandardMaterial({ metalness: 0.9, roughness: 0.5 })
 
@@ -49,8 +49,9 @@ export default function AudioVisualizer (props: VisualizerProps) {
     colors.push(new THREE.Color(color))
   }
 
+  const cubeMaterial = useCubeMaterial();
+
   const dummy = useMemo(() => new Object3D(), []);
-  const dummy2 = useMemo(() => new Object3D(), []);
 
   useEffect(() => {
     if (!mesh.current) return;
@@ -114,6 +115,10 @@ export default function AudioVisualizer (props: VisualizerProps) {
     const data = aa.getFrequencyData();
     const step = data.length / cubes.length;
 
+    if (cubeMaterial) {
+      cubeMaterial.uniforms.time.value = clock.getElapsedTime() * 0.4;
+      if (aa) cubeMaterial.uniforms.data.value = aa.getFrequencyData();
+    }
 
     for (let i = 0; i<barCount; i++) {
       const right = i%2;
@@ -124,9 +129,9 @@ export default function AudioVisualizer (props: VisualizerProps) {
       dummy.updateMatrix();
       // console.log(newHeight)
       // @ts-ignore
-      mesh.current.setMatrixAt(i*2+1, dummy.matrix)
+      mesh.current.setMatrixAt(i*2, dummy.matrix)
       // @ts-ignore
-      mesh.current.setMatrixAt(i*2+2, dummy.matrix)
+      mesh.current.setMatrixAt(i*2+1, dummy.matrix)
       // cubeMatrix.makeScale(0, newHeight, 0)
       // @ts-ignore
       // mesh.current.setMatrixAt(i, cubeMatrix)
@@ -158,23 +163,10 @@ export default function AudioVisualizer (props: VisualizerProps) {
           key="cubes-1"
           // @ts-ignore
           args={[null, null, barCount*2]}
-          material={instancedMeshMat}
+          material={cubeMaterial}
         >
           <boxBufferGeometry args={[barWidth, barHeight, barWidth, 1, 1]} />
         </instancedMesh>
-      </group>
-      <group ref={group2} position={[0, 0, reverse ? 2 : 0]} rotation-y={reverse ? Math.PI : 0}>
-        {/*<instancedMesh*/}
-        {/*  ref={mesh2}*/}
-        {/*  name="cubes-2"*/}
-        {/*  // position={new Vector3(0, 0, i * barWidth + i / 50)}*/}
-        {/*  key="cubes-2"*/}
-        {/*  // @ts-ignore*/}
-        {/*  args={[null, null, barCount]}*/}
-        {/*  material={instancedMeshMat}*/}
-        {/*>*/}
-        {/*  <boxBufferGeometry args={[barWidth, barHeight, barWidth, 1, 15]} />*/}
-        {/*</instancedMesh>*/}
       </group>
     </group>
   )
