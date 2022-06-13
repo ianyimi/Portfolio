@@ -11,7 +11,7 @@ export const vert = `
   attribute float seed;
   
   #define radiusNoiseFrequency 46.
-  #define radiusVariationAmplitude 0.1
+  #define radiusVariationAmplitude 0.075
   #define radius 0.0001
   
   
@@ -145,13 +145,13 @@ export const vert = `
       vec3 scroll = seed * 1000. * vec3(1.);
       float offset = fsnoise(scroll.x + updateTime * 0.4, scroll.y * updateTime * 0.4, scroll.z + updateTime * 0.4);
       
-      vec3 pos = transformed * offset;
-      float time_pos = updateTime * .3 + seed * 0.5 + seed * 100.;
-      pos.x += 0.025 * fsnoise(time_pos, time_pos, time_pos);
-      pos.y += 0.3 * sin(time_pos);
-      pos.z += 0.025 * fsnoise(time_pos, time_pos, time_pos);
+      // vec3 pos = transformed * offset;
+      // float time_pos = updateTime * .3 + seed * 0.5 + seed * 100.;
+      // pos.x += 0.025 * fsnoise(time_pos, time_pos, time_pos);
+      // pos.y += 0.3 * sin(time_pos);
+      // pos.z += 0.025 * fsnoise(time_pos, time_pos, time_pos);
       
-      gl_Position = projectionMatrix * modelViewMatrix * instanceMatrix * vec4(pos, 1.);
+      gl_Position = projectionMatrix * modelViewMatrix * instanceMatrix * vec4(transformed, 1.);
   }
 `;
 

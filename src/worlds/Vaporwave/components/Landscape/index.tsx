@@ -55,8 +55,6 @@ export default function Index() {
     }
   });
 
-  console.log(aa?.analyser)
-
   return (
     <group>
       <Audio url={AUDIO} setAudioAnalyser={setAa} />

@@ -7,10 +7,13 @@ import {
   Object3D,
 } from "three";
 import { GroupProps, useFrame } from "@react-three/fiber";
+import { positions } from "./utils/constants";
 
 const COUNT = 500;
 const X_RANGE = 10;
+// const X_RANGE = 1;
 const Z_RANGE = 8;
+// const Z_RANGE = 1;
 const XZ_POW = 1.2;
 const Y_RANGE = 3;
 const Y_POW = 2;
@@ -27,11 +30,16 @@ export default function AmbientParticles(props: GroupProps) {
     if (!mesh.current) return;
 
     const seeds = new Float32Array(COUNT);
+    // let positions = "";
 
     for (let i = 0; i < COUNT; i++) {
-      const rx = (Math.pow(Math.random(), XZ_POW) - 0.5) * 0.25;
-      const ry = (Math.pow(Math.random(), Y_POW) - 0.5) * 0.25;
-      const rz = (Math.pow(Math.random(), XZ_POW) - 0.5) * 0.25;
+      const rx = positions[3*i];
+      const ry = positions[3*i + 1];
+      const rz = positions[3*i + 2];
+
+      // positions += `${rx}, `
+      // positions += `${ry}, `
+      // positions += `${rz}, `
 
       const x = rx * X_RANGE;
       const z = rz * Z_RANGE;
@@ -43,9 +51,11 @@ export default function AmbientParticles(props: GroupProps) {
     }
     mesh.current.instanceMatrix.needsUpdate = true;
 
+    // console.log(positions);
+
     (mesh.current.geometry as InstancedBufferGeometry).setAttribute(
       "seed",
-      new InstancedBufferAttribute(seeds, 1)
+      new InstancedBufferAttribute(seeds, 1, false, COUNT)
     );
   }, [COUNT, mesh]);
 
