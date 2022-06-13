@@ -19,9 +19,9 @@ export default function Index() {
   const terrain1Ref = useRef();
   const terrain2Ref = useRef();
 
-  const { palette } = useWorld();
+  const { palette, aa, setAa, getVolume } = useWorld();
   const colorIndex = 3;
-  const [aa, setAa] = useState<AudioAnalyser>();
+  // const [aa, setAa] = useState<AudioAnalyser>();
 
   const [collider, api] = usePlane(() => ({
     args: [2, 5],
@@ -64,25 +64,23 @@ export default function Index() {
       <group ref={terrain1Ref}>
         <Terrain />
         <AmbientParticles />
-        {aa && <AudioVisualizer
+        <AudioVisualizer
           position={[0, 0, -1.25]}
           radius={0.5}
           barCount={64}
-          aa={aa}
           index={1}
-        />}
+        />
       </group>
       <group ref={terrain2Ref}>
         <Terrain />
         <AmbientParticles />
-        {aa && <AudioVisualizer
+        <AudioVisualizer
           position={[0, 0, -1.25]}
           radius={0.5}
           barCount={64}
-          aa={aa}
           index={1}
           reverse
-        />}
+        />
       </group>
       <mesh name="skybox">
         <boxBufferGeometry args={[10, 10, 10]} />
@@ -98,12 +96,3 @@ export default function Index() {
     </group>
   );
 };
-
-function getVolume(data?: Uint8Array) {
-  if (!data) return 0;
-  let sum = 0;
-  for (const num of data) {
-    sum += num
-  }
-  return sum/10000
-}

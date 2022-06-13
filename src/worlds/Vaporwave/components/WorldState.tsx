@@ -8,7 +8,7 @@ import {
   useRef,
   useState
 } from "react";
-import { Vector3 } from "three";
+import {AudioAnalyser, Vector3} from "three";
 import { palettes } from "../utils/constants";
 
 export type WorldState = {
@@ -19,7 +19,10 @@ export type WorldState = {
   palette: string[],
   setPalette: Dispatch<SetStateAction<string[]>>,
   speed: number,
-  setSpeed: Dispatch<SetStateAction<number>>
+  setSpeed: Dispatch<SetStateAction<number>>,
+  aa?: AudioAnalyser,
+  setAa?: Dispatch<SetStateAction<AudioAnalyser | undefined>>,
+  getVolume: (data?: (Uint8Array | undefined)) => any
 }
 
 export const WorldContext = createContext({} as WorldState);
@@ -36,12 +39,21 @@ export default function WorldState(props: WorldStateProps) {
   const lightRef2 = useRef();
   const [lights, setLights] = useState<MutableRefObject<any>[]>([lightRef1, lightRef2]);
   const [bloomObjects, setBloomObjects] = useState<MutableRefObject<any>[]>([]);
-  const [palette, setPalette] = useState(palettes[0])
-  const [speed, setSpeed] = useState<number>(0)
+  const [palette, setPalette] = useState(palettes[0]);
+  const [speed, setSpeed] = useState<number>(0);
+  const [aa, setAa] = useState<AudioAnalyser>();
+  const getVolume = (data?: Uint8Array) => {
+    if (!data) return 0;
+    let sum = 0;
+    for (const num of data) {
+      sum += num
+    }
+    return sum/10000
+  }
 
 
   return (
-    <WorldContext.Provider value={{lights, setLights, bloomObjects, setBloomObjects, palette, setPalette, speed, setSpeed}}>
+    <WorldContext.Provider value={{lights, setLights, bloomObjects, setBloomObjects, palette, setPalette, speed, setSpeed, aa, setAa, getVolume}}>
       {children}
     </WorldContext.Provider>
   )

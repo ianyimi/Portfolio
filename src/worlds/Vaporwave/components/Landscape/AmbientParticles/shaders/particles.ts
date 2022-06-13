@@ -7,6 +7,7 @@ export const vert = `
   precision highp float;
   
   uniform float time;
+  uniform float volume;
   
   attribute float seed;
   
@@ -138,7 +139,7 @@ export const vert = `
   void main() {
       float updateTime = time * 0.0001;
       vec3 transformed = position.xyz * 6.;
-      transformed = distortFunct(transformed, 0.1);
+      transformed = distortFunct(transformed, volume/7.5);
       vec3 distortedNormal = distortNormal(position, transformed, normal);
       vec3 vNormal = normal + distortedNormal;
       
@@ -158,12 +159,15 @@ export const vert = `
 export const frag = `
   precision highp float;
   
+  uniform vec3 color;
+  uniform vec3 fogColor;
+  
   #define fogNear 1.
   #define fogFar 2.5
-  #define fogColor vec3(0., 0., 0.)
+  
 
   void main() {
-    gl_FragColor = vec4(0.5, 0.5, 0.5, 1);
+    gl_FragColor = vec4(color, 1);
     
     // account for fog
     float depth = gl_FragCoord.z / gl_FragCoord.w;
@@ -175,13 +179,15 @@ export const frag = `
 export const useParticleMaterial = (
   shaderParams?: Partial<ShaderMaterialParameters>
 ) => {
-  const { palette } = useWorld();
+  const { palette, aa } = useWorld();
   const colorIndex = 1;
   return useMemo(
     () =>
       new ShaderMaterial({
         uniforms: {
           time: new Uniform(0),
+          volume: new Uniform(aa?.getAverageFrequency()),
+          color: new Uniform(hexToVec3(palette[colorIndex])),
           fogColor: new Uniform(hexToVec3(palette[colorIndex+2])),
         },
         vertexShader: vert,

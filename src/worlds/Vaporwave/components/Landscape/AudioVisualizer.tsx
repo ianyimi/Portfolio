@@ -12,7 +12,6 @@ type VisualizerProps = {
   barHeight?: number,
   reverse?: boolean,
   radius?: number,
-  aa: AudioAnalyser,
   index: number
 } & GroupProps
 
@@ -24,29 +23,30 @@ export default function AudioVisualizer (props: VisualizerProps) {
     barHeight = 0.25,
     reverse,
     radius = 0.5,
-    aa,
     index,
     ...restProps
   } = props;
   const group1 = useRef();
   const group2 = useRef();
   const cubes: ReactNode[] = [];
-  const { palette } = useWorld();
+  const { palette, aa } = useWorld();
 
   for (let i = 0; i < barCount; ++i) {
-    cubes.push(<mesh name={`cube-${index}-${i}`} position={new Vector3(0, 0, i * barWidth + i / 50)} key={`cube-${index}-${i}`}>
-      <boxBufferGeometry args={[barWidth, barHeight, barWidth, 1, 15]} />
-      <animated.meshStandardMaterial
-        color={new THREE.Color(palette[Math.floor(Math.random() * palette.length)])}
-        metalness={0.9}
-        roughness={0.5}
-      />
-    </mesh>)
+    cubes.push(
+      <mesh name={`cube-${index}-${i}`} position={new Vector3(0, 0, i * barWidth + i / 50)} key={`cube-${index}-${i}`}>
+        <boxBufferGeometry args={[barWidth, barHeight, barWidth, 1, 15]} />
+        <animated.meshStandardMaterial
+          color={new THREE.Color(palette[Math.floor(Math.random() * palette.length)])}
+          metalness={0.9}
+          roughness={0.5}
+        />
+      </mesh>
+    )
   }
 
   const limiter = useLimiter(45);
   useFrame(({ clock }) => {
-    if (!limiter.isReady(clock) || !group1.current || !group2.current) return;
+    if (!limiter.isReady(clock) || !group1.current || !group2.current || !aa) return;
     const data = aa.getFrequencyData()
     const step = data.length / cubes.length;
     for (let i = 0; i < cubes.length; ++i) {
@@ -60,6 +60,8 @@ export default function AudioVisualizer (props: VisualizerProps) {
       cube2.geometry.computeBoundingBox();
     }
   })
+
+  if (!aa) return <></>
 
   return (
     <group {...restProps}>
