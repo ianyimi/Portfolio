@@ -63,7 +63,7 @@ export default function Index() {
 
 	return (
 		<group>
-			<Audio url={AUDIO} setAudioAnalyser={setAa}/>
+			<Audio setAudioAnalyser={setAa}/>
 			<Fog color={new THREE.Color( palette[ colorIndex ] )} near={1} far={2}/>
 			<Lights/>
 			{/*<Title position={[0, 0.5, -0.5]} />*/}
