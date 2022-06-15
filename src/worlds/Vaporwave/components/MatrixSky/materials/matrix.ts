@@ -1,40 +1,46 @@
+import * as THREE from "three";
 import { DoubleSide, ShaderMaterial, Uniform } from "three";
 import { useMemo } from "react";
 import { useLimiter } from "spacesvr";
-import { useFrame, useLoader } from "@react-three/fiber";
-import * as THREE from "three";
+import { useFrame } from "@react-three/fiber";
 import { useWorld } from "../../WorldState";
-import { hexToVec3 } from "../../../utils/constants"
+import { hexToVec3 } from "../../../utils/constants";
 
-export const useMatrixMat = (fogColor = "black"): ShaderMaterial => {
-  const { palette } = useWorld();
-  const colorIndex = 1;
-  const mat = useMemo(
-    () =>
-      new ShaderMaterial({
-        uniforms: {
-          color: new Uniform(hexToVec3(palette[colorIndex])),
-          fogColor: new Uniform(hexToVec3(palette[colorIndex+2])),
-          time: new Uniform(0),
-          resolution: new Uniform(new THREE.Vector2(window.innerWidth, window.innerHeight)),
-          intensity: new Uniform(1.0)
-        },
-        vertexShader: vert,
-        fragmentShader: frag,
-        side: DoubleSide,
-      }),
-    [frag, vert, palette, fogColor]
-  );
+export const useMatrixMat = ( fogColor = "black" ): ShaderMaterial => {
 
-  const limiter = useLimiter(30);
-  useFrame(({ clock }) => {
-    if (mat && limiter.isReady(clock)) {
-      mat.uniforms.time.value = clock.getElapsedTime()/2;
-      // mat.uniforms.intensity.value = 0.5*Math.cos(clock.getElapsedTime()*(2*Math.PI/(100/60))) + 0.5
-    }
-  });
+	const { playlist } = useWorld();
+	const colorIndex = 1;
+	const mat = useMemo(
+		() =>
+			new ShaderMaterial( {
+				uniforms: {
+					color: new Uniform( hexToVec3( playlist[ colorIndex ] ) ),
+					fogColor: new Uniform( hexToVec3( playlist[ colorIndex + 2 ] ) ),
+					time: new Uniform( 0 ),
+					resolution: new Uniform( new THREE.Vector2( window.innerWidth, window.innerHeight ) ),
+					intensity: new Uniform( 1.0 )
+				},
+				vertexShader: vert,
+				fragmentShader: frag,
+				side: DoubleSide,
+			} ),
+		[ frag, vert, playlist, fogColor ]
+	);
 
-  return mat;
+	const limiter = useLimiter( 30 );
+	useFrame( ( { clock } ) => {
+
+		if ( mat && limiter.isReady( clock ) ) {
+
+			mat.uniforms.time.value = clock.getElapsedTime() / 2;
+			// mat.uniforms.intensity.value = 0.5*Math.cos(clock.getElapsedTime()*(2*Math.PI/(100/60))) + 0.5
+
+		}
+
+	} );
+
+	return mat;
+
 };
 
 const vert = `

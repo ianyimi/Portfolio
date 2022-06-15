@@ -18,7 +18,7 @@ export default function Index() {
 	const terrain1Ref = useRef();
 	const terrain2Ref = useRef();
 
-	const { palette, aa, setAa, getVolume } = useWorld();
+	const { playlist, aa, setAa, getVolume } = useWorld();
 	const colorIndex = 3;
 	// const [aa, setAa] = useState<AudioAnalyser>();
 
@@ -67,7 +67,7 @@ export default function Index() {
 	return (
 		<group>
 			<Audio setAudioAnalyser={setAa}/>
-			<Fog color={new THREE.Color( palette[ colorIndex ] )} near={1} far={2}/>
+			<Fog color={new THREE.Color( playlist[ colorIndex ] )} near={1} far={2}/>
 			<Lights/>
 			{/*<Title position={[0, 0.5, -0.5]} />*/}
 			<group ref={terrain1Ref}>
@@ -94,7 +94,7 @@ export default function Index() {
 			<mesh name="skybox">
 				<boxBufferGeometry args={[ 10, 10, 10 ]}/>
 				<meshStandardMaterial
-					color={new THREE.Color( palette[ colorIndex ] )}
+					color={new THREE.Color( playlist[ colorIndex ] )}
 					side={THREE.DoubleSide}
 				/>
 			</mesh>

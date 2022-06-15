@@ -1,7 +1,7 @@
 import { useMemo } from "react";
-import {ShaderMaterial, ShaderMaterialParameters, Uniform} from "three";
-import {hexToVec3} from "../../../../utils/constants";
-import {useWorld} from "../../../WorldState";
+import { ShaderMaterial, ShaderMaterialParameters, Uniform } from "three";
+import { hexToVec3 } from "../../../../utils/constants";
+import { useWorld } from "../../../WorldState";
 
 export const vert = `
   precision highp float;
@@ -177,23 +177,25 @@ export const frag = `
 `;
 
 export const useParticleMaterial = (
-  shaderParams?: Partial<ShaderMaterialParameters>
+	shaderParams?: Partial<ShaderMaterialParameters>
 ) => {
-  const { palette, aa } = useWorld();
-  const colorIndex = 1;
-  return useMemo(
-    () =>
-      new ShaderMaterial({
-        uniforms: {
-          time: new Uniform(0),
-          volume: new Uniform(aa?.getAverageFrequency()),
-          color: new Uniform(hexToVec3(palette[colorIndex])),
-          fogColor: new Uniform(hexToVec3(palette[colorIndex+2])),
-        },
-        vertexShader: vert,
-        fragmentShader: frag,
-        ...shaderParams,
-      }),
-    [frag, vert]
-  );
-}
+
+	const { playlist, aa } = useWorld();
+	const colorIndex = 1;
+	return useMemo(
+		() =>
+			new ShaderMaterial( {
+				uniforms: {
+					time: new Uniform( 0 ),
+					volume: new Uniform( aa?.getAverageFrequency() ),
+					color: new Uniform( hexToVec3( playlist[ colorIndex ] ) ),
+					fogColor: new Uniform( hexToVec3( playlist[ colorIndex + 2 ] ) ),
+				},
+				vertexShader: vert,
+				fragmentShader: frag,
+				...shaderParams,
+			} ),
+		[ frag, vert ]
+	);
+
+};

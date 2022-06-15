@@ -29,7 +29,7 @@ export default function AudioVisualizer( props: VisualizerProps ) {
 	const group1 = useRef();
 	const group2 = useRef();
 	const cubes: ReactNode[] = [];
-	const { palette, aa } = useWorld();
+	const { playlist, aa } = useWorld();
 
 	for ( let i = 0; i < barCount; ++ i ) {
 
@@ -37,7 +37,7 @@ export default function AudioVisualizer( props: VisualizerProps ) {
 			<mesh name={`cube-${index}-${i}`} position={new Vector3( 0, 0, i * barWidth + i / 50 )} key={`cube-${index}-${i}`}>
 				<boxBufferGeometry args={[ barWidth, barHeight, barWidth, 1, 15 ]}/>
 				<animated.meshStandardMaterial
-					color={new THREE.Color( palette[ Math.floor( Math.random() * palette.length ) ] )}
+					color={new THREE.Color( playlist[ Math.floor( Math.random() * playlist.length ) ] )}
 					metalness={0.9}
 					roughness={0.5}
 				/>
