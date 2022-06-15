@@ -4,6 +4,8 @@ import { animated, useSpring } from "react-spring/three";
 import { useWorld } from "../WorldState";
 import MatrixSky from "../MatrixSky";
 import * as THREE from "three";
+import AmbientParticles from "./AmbientParticles";
+import AudioVisualizer from "./AudioVisualizer";
 
 const Terrain = React.forwardRef( ( props: { z?: number }, ref ) => {
 
@@ -27,8 +29,22 @@ const Terrain = React.forwardRef( ( props: { z?: number }, ref ) => {
 
 	return (
 	// @ts-ignore
-		<group ref={ref} position={[ 0, 0, 0 ]}>
+		<group ref={ref} position={[ 0, 0, z ]}>
 			<MatrixSky/>
+			<AmbientParticles/>
+			<AudioVisualizer
+				position={[ 0, 0, 0 ]}
+				radius={0.5}
+				barCount={45}
+				index={1}
+			/>
+			<AudioVisualizer
+				position={[ 0, 0, - 2 ]}
+				radius={0.5}
+				barCount={45}
+				index={1}
+				reverse
+			/>
 			<group rotation={[ - Math.PI * 0.5, 0, 0 ]}>
 				<mesh>
 					<animated.meshStandardMaterial
@@ -40,7 +56,7 @@ const Terrain = React.forwardRef( ( props: { z?: number }, ref ) => {
 						roughness={0.5}
 						wireframe
 					/>
-					<planeBufferGeometry attach="geometry" args={[ 1, 2, 24, 24 ]}/>
+					<planeBufferGeometry attach="geometry" args={[ 1, 4, 24, 24 ]}/>
 				</mesh>
 				<mesh>
 					<meshStandardMaterial
@@ -51,7 +67,7 @@ const Terrain = React.forwardRef( ( props: { z?: number }, ref ) => {
 						metalness={0.9}
 						roughness={0.5}
 					/>
-					<planeBufferGeometry attach="geometry" args={[ 1, 2, 24, 24 ]}/>
+					<planeBufferGeometry attach="geometry" args={[ 1, 4, 24, 24 ]}/>
 				</mesh>
 				<mesh position-y={- 0.1}>
 					<meshStandardMaterial
@@ -60,7 +76,7 @@ const Terrain = React.forwardRef( ( props: { z?: number }, ref ) => {
 						metalness={0.9}
 						roughness={0.5}
 					/>
-					<planeBufferGeometry attach="geometry" args={[ 1, 2, 24, 24 ]}/>
+					<planeBufferGeometry attach="geometry" args={[ 1, 4, 24, 24 ]}/>
 				</mesh>
 			</group>
 		</group>

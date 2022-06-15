@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { GroupProps, useFrame, useThree } from "@react-three/fiber";
 import { Audio, AudioAnalyser, AudioListener } from "three";
-import { lateNights } from "./utils/constants";
+import { beenTurnt } from "./utils/constants";
 import { useLimiter } from "spacesvr";
 
 type SoundProps = {
@@ -19,7 +19,7 @@ export default function Sound( props: SoundProps ) {
 		...rest
 	} = props;
 
-	let songs = JSON.parse( JSON.stringify( lateNights ) );
+	let songs = JSON.parse( JSON.stringify( beenTurnt ) );
 	const newUrlIndex = () => {
 
 		return Math.floor( Math.random() * songs.length );
@@ -46,7 +46,7 @@ export default function Sound( props: SoundProps ) {
 
 	useEffect( () => {
 
-		if ( songs.length === 0 ) songs = JSON.parse( JSON.stringify( lateNights ) );
+		if ( songs.length === 0 ) songs = JSON.parse( JSON.stringify( beenTurnt ) );
 		if ( ! end ) return;
 		setUrlIndex( newUrlIndex() );
 		setEnd( false );

@@ -6,9 +6,7 @@ import { useWorld } from "../WorldState";
 import { usePlane } from "@react-three/cannon";
 import Audio from "../Audio";
 import * as THREE from "three";
-import AudioVisualizer from "./AudioVisualizer";
 import Lights from "./Lights";
-import AmbientParticles from "./AmbientParticles";
 
 const AUDIO = "https://dqeczc7c9n9n1.cloudfront.net/audio/The+Weeknd+-+Out+of+Time+(Official+Video).mp3";
 const AUDIO2 = "https://dqeczc7c9n9n1.cloudfront.net/audio/DND-+Kanye+west.mp3";
@@ -42,23 +40,23 @@ export default function Index() {
 		// console.log(`VOL: ${volume} - LEVEL: ${speed}`)
 
 		// @ts-ignore
-		terrain1Ref.current.position.z += delta / ( 5 * ( aa ? speed : 1.5 ) );
+		terrain1Ref.current.position.z += delta / ( 5 * ( speed ) );
 		// @ts-ignore
-		terrain2Ref.current.position.z += delta / ( 5 * ( aa ? speed : 1.5 ) );
+		terrain2Ref.current.position.z += delta / ( 5 * ( speed ) );
 
 		// @ts-ignore
-		if ( terrain1Ref.current.position.z >= 2 ) {
+		if ( terrain1Ref.current.position.z >= 3.5 ) {
 
 			// @ts-ignore
-			terrain1Ref.current.position.z = 0;
+			terrain1Ref.current.position.z = - 4;
 
 		}
 
 		// @ts-ignore
-		if ( terrain2Ref.current.position.z >= 0 ) {
+		if ( terrain2Ref.current.position.z >= 3.5 ) {
 
 			// @ts-ignore
-			terrain2Ref.current.position.z = - 2;
+			terrain2Ref.current.position.z = - 4;
 
 		}
 
@@ -70,27 +68,8 @@ export default function Index() {
 			<Fog color={new THREE.Color( playlist[ colorIndex ] )} near={1} far={2}/>
 			<Lights/>
 			{/*<Title position={[0, 0.5, -0.5]} />*/}
-			<group ref={terrain1Ref}>
-				<Terrain/>
-				<AmbientParticles/>
-				<AudioVisualizer
-					position={[ 0, 0, - 0.975 ]}
-					radius={0.5}
-					barCount={64}
-					index={1}
-				/>
-			</group>
-			<group ref={terrain2Ref}>
-				<Terrain/>
-				<AmbientParticles/>
-				<AudioVisualizer
-					position={[ 0, 0, - 1 ]}
-					radius={0.5}
-					barCount={45}
-					index={1}
-					reverse
-				/>
-			</group>
+			<Terrain ref={terrain1Ref}/>
+			<Terrain z={- 4} ref={terrain2Ref}/>
 			<mesh name="skybox">
 				<boxBufferGeometry args={[ 10, 10, 10 ]}/>
 				<meshStandardMaterial

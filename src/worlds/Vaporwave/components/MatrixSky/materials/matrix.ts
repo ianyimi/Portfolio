@@ -84,7 +84,7 @@ const frag = `
   }
 
   void main() {
-    vec2 S = 5. * vec2(10., 50.);
+    vec2 S = 5. * vec2(25., 50.);
     vec2 c = floor(vUv * S);
 
     float offset = random(c.x) * S.x;
