@@ -52,15 +52,16 @@ export default function AudioVisualizer( props: VisualizerProps ) {
 		if ( ! limiter.isReady( clock ) || ! group1.current || ! group2.current || ! aa ) return;
 		const data = aa.getFrequencyData();
 		const step = data.length / cubes.length;
+		// console.log( data[ data.length / 2 ] );
 		for ( let i = 0; i < cubes.length; ++ i ) {
 
 			// @ts-ignore
 			const cube = group1.current.getObjectByName( `cube-${index}-${i}` );
-			cube.scale.y = Math.max( data[ i * step ] / 100 + 0.25, barHeight / 2 );
+			cube.scale.y = Math.max( data[ Math.floor( i / 2 * step ) ] / 100 + 0.25, barHeight / 2 );
 			cube.geometry.computeBoundingBox();
 			// @ts-ignore
 			const cube2 = group2.current.getObjectByName( `cube-${index}-${i}` );
-			cube2.scale.y = Math.max( data[ i * step ] / 100 + 0.25, barHeight / 2 );
+			cube2.scale.y = Math.max( data[ Math.floor( i / 2 * step ) ] / 100 + 0.25, barHeight / 2 );
 			cube2.geometry.computeBoundingBox();
 
 		}

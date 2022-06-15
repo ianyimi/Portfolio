@@ -32,10 +32,13 @@ export default function Index() {
 	useFrame( ( { clock }, delta ) => {
 
 		if ( ! limiter.isReady || ! terrain1Ref.current || ! terrain2Ref.current ) return;
-		const volume = getVolume( aa?.getFrequencyData() );
-		const speed = volume > 0.6 ?
+		const data = aa?.getFrequencyData();
+		// console.log(data ? [0])
+		const volume = getVolume( data );
+		let speed = volume > 0.6 ?
 			0.5 : volume > 0.3 ?
 				1 : 1.5;
+		speed -= 0.25 * ( data ? data[ 0 ] / 255 : 0 );
 		// console.log(`VOL: ${volume} - LEVEL: ${speed}`)
 
 		// @ts-ignore
@@ -83,7 +86,7 @@ export default function Index() {
 				<AudioVisualizer
 					position={[ 0, 0, - 1 ]}
 					radius={0.5}
-					barCount={64}
+					barCount={45}
 					index={1}
 					reverse
 				/>

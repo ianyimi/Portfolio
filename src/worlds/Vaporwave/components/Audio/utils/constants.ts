@@ -43,7 +43,6 @@ export const beenTurnt = [
 	`${beenTurntUrl}EST+Gee+-+Who+Hotter+Than+Gee.mp3`,
 	`${beenTurntUrl}EST+Gee+-+Young+Shiners.mp3`,
 	`${beenTurntUrl}EST+Gee%2C+42+Dugg+-+Members+Only+(feat.+42+Dugg).mp3`,
-	`${beenTurntUrl}EST+Gee%2C+Jack+Harlow+-+The+Department+(feat.+Jack+Harlow).mp3`,
 	`${beenTurntUrl}fivio+foreign+etc+-+squeeze.mp3`,
 	`${beenTurntUrl}Fivio+Foreign%2C+Quavo+-+Through+the+Fire+(feat.+Quavo).mp3`,
 	`${beenTurntUrl}Fivio+Foreign%2C+Vory%2C+Polo+G+-+Changed+On+Me+(feat.+Vory+%26+Polo+G).mp3`,
