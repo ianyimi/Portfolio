@@ -7,7 +7,7 @@ import { useWorld } from "../../WorldState";
 
 const COUNT = 500;
 const X_RANGE = 10;
-const Z_RANGE = 8;
+const Z_RANGE = 16;
 const XZ_POW = 1.2;
 const Y_RANGE = 7;
 const Y_POW = 2;
