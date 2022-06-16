@@ -40,7 +40,7 @@ export default function WorldState( props: WorldStateProps ) {
 	const lightRef2 = useRef();
 	const [ lights, setLights ] = useState<MutableRefObject<any>[]>( [ lightRef1, lightRef2 ] );
 	const [ bloomObjects, setBloomObjects ] = useState<MutableRefObject<any>[]>( [] );
-	const [ playlist, setPlaylist ] = useState( { ...playlists[ 0 ], palette: playlists[ 0 ].palettes[ 0 ] } );
+	const [ playlist, setPlaylist ] = useState( startPlaylist() );
 	const [ speed, setSpeed ] = useState<number>( 0 );
 	const [ aa, setAa ] = useState<AudioAnalyser>();
 	const getVolume = ( data?: Uint8Array ) => {
@@ -56,7 +56,6 @@ export default function WorldState( props: WorldStateProps ) {
 		return sum / 10000;
 
 	};
-
 
 	return (
 		<WorldContext.Provider value={{
@@ -75,5 +74,22 @@ export default function WorldState( props: WorldStateProps ) {
 			{children}
 		</WorldContext.Provider>
 	);
+
+}
+
+function startPlaylist() {
+
+	const randomItem = ( arr: any[] ): any => {
+
+		return arr[ Math.floor( Math.random() * arr.length ) ];
+
+	};
+
+	const zeroPlaylist = playlists[ 0 ];
+	const firstPlaylist = {
+		...zeroPlaylist,
+		palette: randomItem( zeroPlaylist.palettes )
+	};
+	return firstPlaylist;
 
 }
