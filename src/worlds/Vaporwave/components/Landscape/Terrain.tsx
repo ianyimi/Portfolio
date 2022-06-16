@@ -11,8 +11,6 @@ const Terrain = React.forwardRef( ( props: { z?: number }, ref ) => {
 
 	const { z = 0 } = props;
 	const { playlist } = useWorld();
-	const lineColorIndex = 0;
-	const baseColorIndex = 4;
 
 	const [ heightTexture, metalnessTexture ] = useTexture( [
 		"displacement-7.png",
@@ -20,8 +18,8 @@ const Terrain = React.forwardRef( ( props: { z?: number }, ref ) => {
 	] );
 
 	const { lineColor, baseColor } = useSpring( {
-		lineColor: new THREE.Color( playlist[ lineColorIndex ] ),
-		baseColor: new THREE.Color( playlist[ baseColorIndex ] ),
+		lineColor: new THREE.Color( playlist.palette[ playlist.mainColorIndex ] ),
+		baseColor: new THREE.Color( playlist.palette[ playlist.backgroundColorIndex ] ),
 		args: {
 			mass: 1
 		}
@@ -59,7 +57,7 @@ const Terrain = React.forwardRef( ( props: { z?: number }, ref ) => {
 					<planeBufferGeometry attach="geometry" args={[ 1, 4, 24, 24 ]}/>
 				</mesh>
 				<mesh>
-					<meshStandardMaterial
+					<animated.meshStandardMaterial
 						color="black"
 						displacementMap={heightTexture}
 						displacementScale={0.3975}
@@ -70,7 +68,7 @@ const Terrain = React.forwardRef( ( props: { z?: number }, ref ) => {
 					<planeBufferGeometry attach="geometry" args={[ 1, 4, 24, 24 ]}/>
 				</mesh>
 				<mesh position-y={- 0.1}>
-					<meshStandardMaterial
+					<animated.meshStandardMaterial
 						color="black"
 						metalnessMap={metalnessTexture}
 						metalness={0.9}

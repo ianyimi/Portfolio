@@ -5,8 +5,6 @@ import { useLimiter } from "spacesvr";
 import { CollideEvent } from "@react-three/cannon/dist/setup";
 import * as THREE from "three";
 import { Vector3 } from "three";
-import { useWorld } from "../WorldState";
-import { palettes } from "../../utils/constants";
 import { animated, useSpring } from "react-spring/three";
 import Display from "./Display";
 
@@ -16,13 +14,11 @@ type BallProps = {
   displayKey: number | null,
   setDisplayKey: Dispatch<SetStateAction<number | null>>,
   index: number,
-  trigger?: boolean
 }
 
 export default function Ball( props: BallProps ) {
 
-	const { position = [ 0, 0, 0 ], texture, trigger, displayKey, setDisplayKey, index } = props;
-	const { playlist, setPlaylist } = useWorld();
+	const { position = [ 0, 0, 0 ], texture, displayKey, setDisplayKey, index } = props;
 	const mesh = useRef( new THREE.Mesh() );
 	const cPos = useRef( new Vector3() );
 	const dPos = useRef( new Vector3() );
@@ -47,21 +43,10 @@ export default function Ball( props: BallProps ) {
 		onCollide: bounce
 	} ) );
 
-	const playlistRef = useRef( playlist );
-	playlistRef.current = playlist;
-
-	function newPalette(): string[] {
-
-		const randInt = Math.floor( Math.random() * palettes.length );
-		return palettes[ randInt ] || palettes[ randInt + 1 ] || palettes[ randInt - 1 ];
-
-	}
-
 	function bounce( e: CollideEvent ): void {
 
 		if ( ! api ) return;
 		api.applyImpulse( [ 0, position[ 1 ], 0 ], [ 0, - 1, 0 ] );
-		trigger && setPlaylist( newPalette );
 
 	}
 

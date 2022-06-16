@@ -3,6 +3,7 @@ import { GroupProps, useFrame, useThree } from "@react-three/fiber";
 import { Audio, AudioAnalyser, AudioListener } from "three";
 import { lateNights } from "./utils/constants";
 import { useLimiter } from "spacesvr";
+import { useWorld } from "../WorldState";
 
 type SoundProps = {
   volume?: number;
@@ -18,6 +19,14 @@ export default function Sound( props: SoundProps ) {
 		fftSize = 128,
 		...rest
 	} = props;
+	const { playlist, setPlaylist } = useWorld();
+	const newPalette = (): string[] => {
+
+		const palettes = playlist.palettes;
+		const randInt = Math.floor( Math.random() * palettes.length );
+		return palettes[ randInt ] || palettes[ randInt + 1 ] || palettes[ randInt - 1 ];
+
+	};
 
 	let songs = JSON.parse( JSON.stringify( lateNights ) );
 	const newUrlIndex = () => {
@@ -49,6 +58,7 @@ export default function Sound( props: SoundProps ) {
 		if ( songs.length === 0 ) songs = JSON.parse( JSON.stringify( lateNights ) );
 		if ( ! end ) return;
 		setUrlIndex( newUrlIndex() );
+		setPlaylist( { ...playlist, palette: newPalette() } );
 		setEnd( false );
 
 	}, [ end ] );

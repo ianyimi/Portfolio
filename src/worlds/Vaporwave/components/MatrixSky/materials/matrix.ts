@@ -9,13 +9,12 @@ import { hexToVec3 } from "../../../utils/constants";
 export const useMatrixMat = ( fogColor = "black" ): ShaderMaterial => {
 
 	const { playlist } = useWorld();
-	const colorIndex = 1;
 	const mat = useMemo(
 		() =>
 			new ShaderMaterial( {
 				uniforms: {
-					color: new Uniform( hexToVec3( playlist[ colorIndex ] ) ),
-					fogColor: new Uniform( hexToVec3( playlist[ colorIndex + 2 ] ) ),
+					color: new Uniform( hexToVec3( playlist.palette[ playlist.mainColorIndex ] ) ),
+					fogColor: new Uniform( hexToVec3( playlist.palette[ playlist.backgroundColorIndex ] ) ),
 					time: new Uniform( 0 ),
 					resolution: new Uniform( new THREE.Vector2( window.innerWidth, window.innerHeight ) ),
 					intensity: new Uniform( 1.0 )
@@ -56,7 +55,6 @@ const vert = `
 const frag = `
   #define fogNear 1.
   #define fogFar 2.5
-  // #define fogColor vec3(0., 0., 0.)
 
   uniform highp float time;
   uniform sampler2D tex;
@@ -108,8 +106,12 @@ const frag = `
             curRGB.g = intensity/2. + 0.25;
             curRGB.b = intensity/2. + 0.25;
             }
-        else
-            curRGB = curRGB * u * intensity;
+        else if( u > 0. )
+        		{
+            curRGB = mix(fogColor, curRGB, u);
+						}
+				else
+						curRGB = fogColor;
     }
     else
         curRGB = fogColor;

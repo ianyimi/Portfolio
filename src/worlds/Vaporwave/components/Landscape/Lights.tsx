@@ -9,7 +9,6 @@ export default function Lights() {
 	const spotlight1Ref = useRef();
 	const spotlight2Ref = useRef();
 	const { playlist } = useWorld();
-	const colorIndex = 2;
 
 	const dummy1 = new Object3D(),
 		dummy2 = new Object3D();
@@ -17,12 +16,11 @@ export default function Lights() {
 	dummy2.position.set( 0.25, 0.25, 0.25 );
 
 	return (
-		<>
+		<group>
 			<animated.spotLight
 				ref={spotlight1Ref}
 				target={dummy1}
-				// color={new THREE.Color(playlist[colorIndex])}
-				color={new THREE.Color( playlist[ colorIndex ] )}
+				color={new THREE.Color( playlist.palette[ playlist.secondaryColorIndex ] )}
 				intensity={40}
 				position={[ 0.5, 0.75, 2.1 ]}
 				distance={25}
@@ -33,8 +31,7 @@ export default function Lights() {
 			<animated.spotLight
 				ref={spotlight2Ref}
 				target={dummy2}
-				// color={new THREE.Color(playlist[colorIndex])}
-				color={new THREE.Color( playlist[ colorIndex ] )}
+				color={new THREE.Color( playlist.palette[ playlist.secondaryColorIndex ] )}
 				intensity={40}
 				position={[ - 0.5, 0.75, 2.1 ]}
 				distance={25}
@@ -42,7 +39,7 @@ export default function Lights() {
 				penumbra={0.25}
 				decay={10}
 			/>
-		</>
+		</group>
 	);
 
 }

@@ -65,7 +65,7 @@ export default function Index() {
 	return (
 		<group>
 			<Audio setAudioAnalyser={setAa}/>
-			<Fog color={new THREE.Color( playlist[ colorIndex ] )} near={1} far={2}/>
+			<Fog color={new THREE.Color( playlist.palette[ playlist.backgroundColorIndex ] )} near={1} far={2}/>
 			<Lights/>
 			{/*<Title position={[0, 0.5, -0.5]} />*/}
 			<Terrain ref={terrain1Ref}/>
@@ -73,7 +73,7 @@ export default function Index() {
 			<mesh name="skybox">
 				<boxBufferGeometry args={[ 10, 10, 10 ]}/>
 				<meshStandardMaterial
-					color={new THREE.Color( playlist[ colorIndex ] )}
+					color={new THREE.Color( playlist.palette[ playlist.mainColorIndex ] )}
 					side={THREE.DoubleSide}
 				/>
 			</mesh>

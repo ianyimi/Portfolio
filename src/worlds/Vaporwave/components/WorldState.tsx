@@ -9,15 +9,15 @@ import {
 	useState
 } from "react";
 import { AudioAnalyser } from "three";
-import { palettes } from "../utils/constants";
+import { Playlist, playlists } from "../utils/constants";
 
 export type WorldState = {
   lights: MutableRefObject<any>[],
   setLights: Dispatch<SetStateAction<MutableRefObject<any>[]>>,
   bloomObjects: MutableRefObject<any>[],
   setBloomObjects: Dispatch<SetStateAction<MutableRefObject<any>[]>>,
-  playlist: string[],
-  setPlaylist: Dispatch<SetStateAction<string[]>>,
+  playlist: Playlist,
+  setPlaylist: Dispatch<SetStateAction<Playlist>>,
   speed: number,
   setSpeed: Dispatch<SetStateAction<number>>,
   aa?: AudioAnalyser,
@@ -40,7 +40,7 @@ export default function WorldState( props: WorldStateProps ) {
 	const lightRef2 = useRef();
 	const [ lights, setLights ] = useState<MutableRefObject<any>[]>( [ lightRef1, lightRef2 ] );
 	const [ bloomObjects, setBloomObjects ] = useState<MutableRefObject<any>[]>( [] );
-	const [ playlist, setPlaylist ] = useState( palettes[ 0 ] );
+	const [ playlist, setPlaylist ] = useState( { ...playlists[ 0 ], palette: playlists[ 0 ].palettes[ 0 ] } );
 	const [ speed, setSpeed ] = useState<number>( 0 );
 	const [ aa, setAa ] = useState<AudioAnalyser>();
 	const getVolume = ( data?: Uint8Array ) => {

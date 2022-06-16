@@ -188,8 +188,8 @@ export const useParticleMaterial = (
 				uniforms: {
 					time: new Uniform( 0 ),
 					volume: new Uniform( aa?.getAverageFrequency() ),
-					color: new Uniform( hexToVec3( playlist[ colorIndex ] ) ),
-					fogColor: new Uniform( hexToVec3( playlist[ colorIndex + 2 ] ) ),
+					color: new Uniform( hexToVec3( playlist.palette[ playlist.mainColorIndex ] ) ),
+					fogColor: new Uniform( hexToVec3( playlist.palette[ playlist.backgroundColorIndex ] ) ),
 				},
 				vertexShader: vert,
 				fragmentShader: frag,
