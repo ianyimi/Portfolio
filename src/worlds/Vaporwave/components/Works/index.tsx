@@ -20,7 +20,7 @@ export default function Works() {
 			<Ball position={[ 0.075, 0.05, - 1.15 ]} texture={tex1} displayKey={displayKey} setDisplayKey={setDisplayKey}
 				index={0}/>
 			<Ball position={[ - 0.025, 0.1, - 1.75 ]} texture={tex2} displayKey={displayKey} setDisplayKey={setDisplayKey}
-				index={1} trigger/>
+				index={1}/>
 		</group>
 	);
 
