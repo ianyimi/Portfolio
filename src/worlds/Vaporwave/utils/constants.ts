@@ -28,11 +28,9 @@ export const playlists: Playlist[] = [
 		name: "Late Nights",
 		palette: [],
 		palettes: [
-			// parse( "https://coolors.co/202020-ffee32-ffd100-d6d6d6-333533" ),
-			// parse( "https://coolors.co/f4f4f8-2ab7ca-fe4a49-133c55-22577a" ),
-			// parse( "https://coolors.co/69306d-809bce-ea526f-f7fff7-0e103d" ),
 			parse( "https://coolors.co/69306d-0075a2-ea526f-f7fff7-d6d3f0" ),
-			// parse( "https://coolors.co/69306d-0075a2-d6d3f0-f7fff7-ea526f" ),
+			parse( "https://coolors.co/00120b-35605a-31e981-d8e4ff-6b818c" ),
+			parse( "https://coolors.co/04052e-0d00a4-22007c-140152-02010a" ),
 		],
 		backgroundColorIndex: 0,
 		mainColorIndex: 1,
@@ -53,6 +51,7 @@ export const playlists: Playlist[] = [
 		palette: [],
 		palettes: [
 			parse( "https://coolors.co/d6d6d6-ffee32-ffd100-202020-333533" ),
+			parse( "https://coolors.co/00120b-fe7f2d-fcca46-d8e4ff-6b818c" ),
 		],
 		backgroundColorIndex: 0,
 		mainColorIndex: 1,
