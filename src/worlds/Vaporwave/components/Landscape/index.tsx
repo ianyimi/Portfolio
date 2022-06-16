@@ -48,7 +48,7 @@ export default function Index() {
 		if ( terrain1Ref.current.position.z >= 3.5 ) {
 
 			// @ts-ignore
-			terrain1Ref.current.position.z = - 4;
+			terrain1Ref.current.position.z = - 4.5;
 
 		}
 
@@ -56,7 +56,7 @@ export default function Index() {
 		if ( terrain2Ref.current.position.z >= 3.5 ) {
 
 			// @ts-ignore
-			terrain2Ref.current.position.z = - 4;
+			terrain2Ref.current.position.z = - 4.5;
 
 		}
 
