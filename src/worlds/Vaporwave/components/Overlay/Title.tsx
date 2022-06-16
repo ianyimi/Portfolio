@@ -1,11 +1,9 @@
 import styled from "@emotion/styled";
 
 const Container = styled.div`
-  position: absolute;
   top: 0;
-  left: 5%;
+  margin-top: 10%;
   //border: 2px dashed red;
-  z-index: 2;
 `;
 
 const Name = styled.h1`
@@ -20,9 +18,10 @@ const Name = styled.h1`
 
 export default function Title() {
 
-  return (
-    <Container>
-      <Name>Isaiah Anyimi</Name>
-    </Container>
-  )
+	return (
+		<Container>
+			<Name>Isaiah Anyimi</Name>
+		</Container>
+	);
+
 }
