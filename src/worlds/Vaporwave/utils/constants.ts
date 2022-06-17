@@ -40,7 +40,9 @@ export const playlists: Playlist[] = [
 		id: "beenTurnt",
 		name: "Been Turnt",
 		palette: [],
-		palettes: [],
+		palettes: [
+			parse( "https://coolors.co/11001c-a71d31-3a015c-eee5e9-92dce5" )
+		],
 		backgroundColorIndex: 0,
 		mainColorIndex: 1,
 		secondaryColorIndex: 2

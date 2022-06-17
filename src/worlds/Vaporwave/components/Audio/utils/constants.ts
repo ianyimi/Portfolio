@@ -3,7 +3,7 @@ const s3 = "https://dqeczc7c9n9n1.cloudfront.net/audio/playlists/";
 const beenTurntUrl = `${s3}Been+Turnt/`;
 const lateNightsUrl = `${s3}Late+Nights/`;
 
-export const beenTurnt = [
+const beenTurnt = [
 	`${beenTurntUrl}22nd+Jim+-+Blitz+Freestyle.mp3`,
 	`${beenTurntUrl}22nd+Jim+-+Members+Only.mp3`,
 	`${beenTurntUrl}22nd+Jim%2C+EST+Gee+-+Off+White+Mikes+(feat.+EST+Gee).mp3`,
@@ -110,7 +110,7 @@ export const beenTurnt = [
 	`${beenTurntUrl}YoungBoy+Never+Broke+Again+-+I+Came+Thru.mp3`
 ];
 
-export const lateNights = [
+const lateNights = [
 	`${lateNightsUrl}%C2%BFT%C3%A9o+-+Buena.mp3`,
 	`${lateNightsUrl}%C2%BFT%C3%A9o+-+Pantera.mp3`,
 	`${lateNightsUrl}Abstract+Mindstate+-+A+Wise+Tale.mp3`,
@@ -331,3 +331,8 @@ export const lateNights = [
 	`${lateNightsUrl}Yeek+-+Only+in+the+West.mp3`,
 	`${lateNightsUrl}Yves+Tumor+-+Romanticist.mp3`
 ];
+
+export const playlists = {
+	lateNights: lateNights,
+	beenTurnt: beenTurnt
+};
