@@ -181,7 +181,6 @@ export const useParticleMaterial = (
 ) => {
 
 	const { playlist, aa } = useWorld();
-	const colorIndex = 1;
 	return useMemo(
 		() =>
 			new ShaderMaterial( {
