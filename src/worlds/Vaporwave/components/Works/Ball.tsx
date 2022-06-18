@@ -80,7 +80,10 @@ export default function Ball( props: BallProps ) {
 		} else if ( cPos.current.z > 1.15 ) {
 
 			// Respawning balls after the roll past the camera
+			api.sleep();
 			api.position.set( position[ 0 ], position[ 1 ], - 1.25 );
+			api.wakeUp;
+			api.applyForce( [ 0, 0, 10 ], [ 0, 0, 1 ] );
 
 		} else if ( pSet.current ) {
 
