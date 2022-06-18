@@ -23,15 +23,7 @@ export default function Sound( props: SoundProps ) {
 	const newPalette = (): string[] => {
 
 		const palettes = playlist.palettes;
-		const randInt = Math.floor( Math.random() * palettes.length );
-		if ( randInt === palettes.indexOf( playlist.palette ) ) {
-
-			console.log( "same palette" );
-			return palettes[ randInt + 1 ] || palettes[ randInt - 1 ];
-
-		}
-
-		return palettes[ randInt ];
+		return palettes[ ( palettes.indexOf( playlist.palette ) + 1 ) % palettes.length ];
 
 	};
 
