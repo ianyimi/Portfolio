@@ -17,9 +17,10 @@ const Terrain = React.forwardRef( ( props: { z?: number }, ref ) => {
 		"metalness-2.png",
 	] );
 
-	const { lineColor, baseColor } = useSpring( {
-		lineColor: new THREE.Color( playlist.palette[ playlist.mainColorIndex ] ),
+	const { lineColor, baseColor, secondaryColor } = useSpring( {
+		lineColor: new THREE.Color( playlist.palette[ playlist.outlineColorIndex || playlist.mainColorIndex ] ),
 		baseColor: new THREE.Color( playlist.palette[ playlist.backgroundColorIndex ] ),
+		secondaryColor: new THREE.Color( playlist.palette[ playlist.secondaryColorIndex ] ),
 		args: {
 			mass: 1
 		}
@@ -47,6 +48,7 @@ const Terrain = React.forwardRef( ( props: { z?: number }, ref ) => {
 				<mesh>
 					<animated.meshStandardMaterial
 						color={lineColor}
+						emissive={lineColor}
 						displacementMap={heightTexture}
 						displacementScale={0.4}
 						metalnessMap={metalnessTexture}
