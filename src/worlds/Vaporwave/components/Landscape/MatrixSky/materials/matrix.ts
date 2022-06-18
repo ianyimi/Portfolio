@@ -3,10 +3,10 @@ import { DoubleSide, ShaderMaterial, Uniform } from "three";
 import { useMemo } from "react";
 import { useLimiter } from "spacesvr";
 import { useFrame } from "@react-three/fiber";
-import { useWorld } from "../../WorldState";
-import { hexToVec3 } from "../../../utils/constants";
+import { useWorld } from "../../../WorldState";
+import { hexToVec3 } from "../../../../utils/constants";
 
-export const useMatrixMat = ( fogColor = "black" ): ShaderMaterial => {
+export const useMatrixMat = (): ShaderMaterial => {
 
 	const { playlist } = useWorld();
 	const mat = useMemo(
@@ -23,7 +23,7 @@ export const useMatrixMat = ( fogColor = "black" ): ShaderMaterial => {
 				fragmentShader: frag,
 				side: DoubleSide,
 			} ),
-		[ frag, vert, playlist, fogColor ]
+		[ frag, vert, playlist.palette ]
 	);
 
 	const limiter = useLimiter( 30 );

@@ -2,7 +2,7 @@ import { useTexture } from "@react-three/drei";
 import React from "react";
 import { animated, useSpring } from "react-spring/three";
 import { useWorld } from "../WorldState";
-import MatrixSky from "../MatrixSky";
+import MatrixSky from "./MatrixSky";
 import * as THREE from "three";
 import AmbientParticles from "./AmbientParticles";
 import AudioVisualizer from "./AudioVisualizer";

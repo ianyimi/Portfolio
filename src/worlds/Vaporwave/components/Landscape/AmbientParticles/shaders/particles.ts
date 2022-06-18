@@ -194,7 +194,7 @@ export const useParticleMaterial = (
 				fragmentShader: frag,
 				...shaderParams,
 			} ),
-		[ frag, vert ]
+		[ frag, vert, playlist.palette ]
 	);
 
 };
