@@ -6,9 +6,9 @@ import { useLimiter } from "spacesvr";
 import { useWorld } from "../WorldState";
 
 type SoundProps = {
-  volume?: number;
-  setAudioAnalyser?: ( aa: AudioAnalyser ) => void;
-  fftSize?: 64 | 128 | 256 | 512 | 1024;
+	volume?: number;
+	setAudioAnalyser?: ( aa: AudioAnalyser ) => void;
+	fftSize?: 64 | 128 | 256 | 512 | 1024 | 2048;
 } & GroupProps;
 
 export default function Sound( props: SoundProps ) {

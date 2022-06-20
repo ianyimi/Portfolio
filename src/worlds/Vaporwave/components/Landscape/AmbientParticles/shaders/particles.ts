@@ -139,7 +139,7 @@ export const vert = `
   void main() {
       float updateTime = time * 0.0001;
       vec3 transformed = position.xyz * 6.;
-      transformed = distortFunct(transformed, volume/7.5);
+      transformed = distortFunct(transformed, volume/5.);
       vec3 distortedNormal = distortNormal(position, transformed, normal);
       vec3 vNormal = normal + distortedNormal;
       

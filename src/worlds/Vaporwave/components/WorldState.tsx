@@ -12,24 +12,24 @@ import { AudioAnalyser } from "three";
 import { Playlist, playlists } from "../utils/constants";
 
 export type WorldState = {
-  lights: MutableRefObject<any>[],
-  setLights: Dispatch<SetStateAction<MutableRefObject<any>[]>>,
-  bloomObjects: MutableRefObject<any>[],
-  setBloomObjects: Dispatch<SetStateAction<MutableRefObject<any>[]>>,
-  playlist: Playlist,
-  setPlaylist: Dispatch<SetStateAction<Playlist>>,
-  speed: number,
-  setSpeed: Dispatch<SetStateAction<number>>,
-  aa?: AudioAnalyser,
-  setAa?: Dispatch<SetStateAction<AudioAnalyser | undefined>>,
-  getVolume: ( data?: ( Uint8Array | undefined ) ) => any
+	lights: MutableRefObject<any>[],
+	setLights: Dispatch<SetStateAction<MutableRefObject<any>[]>>,
+	bloomObjects: MutableRefObject<any>[],
+	setBloomObjects: Dispatch<SetStateAction<MutableRefObject<any>[]>>,
+	playlist: Playlist,
+	setPlaylist: Dispatch<SetStateAction<Playlist>>,
+	speed: number,
+	setSpeed: Dispatch<SetStateAction<number>>,
+	aa?: AudioAnalyser,
+	setAa?: Dispatch<SetStateAction<AudioAnalyser | undefined>>,
+	getVolume: ( data?: ( Uint8Array | undefined ) ) => any
 }
 
 export const WorldContext = createContext( {} as WorldState );
 export const useWorld = (): WorldState => useContext( WorldContext );
 
 type WorldStateProps = {
-  children: ReactNode | ReactNode[]
+	children: ReactNode | ReactNode[]
 }
 
 export default function WorldState( props: WorldStateProps ) {
@@ -53,7 +53,7 @@ export default function WorldState( props: WorldStateProps ) {
 
 		}
 
-		return sum / 10000;
+		return sum / 100000;
 
 	};
 
