@@ -53,12 +53,6 @@ export default function Sound( props: SoundProps ) {
 
 	}, [] );
 
-	// const res = await fetch( songs.splice( urlIndex, 1 )[ 0 ] );
-	// const buffer = await res.arrayBuffer();
-	// const context = new ( window.AudioContext || window.webkitAudioContext )();
-	// const analyser = context.createAnalyser();
-
-
 	useEffect( () => {
 
 		if ( songs.length === 0 ) { // @ts-ignore

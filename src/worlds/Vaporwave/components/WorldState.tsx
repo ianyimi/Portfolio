@@ -10,16 +10,18 @@ import {
 } from "react";
 import { AudioAnalyser } from "three";
 import { Playlist, playlists } from "../utils/constants";
+import create from "zustand";
+import produce from "immer";
 
 export type WorldState = {
-	lights: MutableRefObject<any>[],
-	setLights: Dispatch<SetStateAction<MutableRefObject<any>[]>>,
-	bloomObjects: MutableRefObject<any>[],
-	setBloomObjects: Dispatch<SetStateAction<MutableRefObject<any>[]>>,
+	// lights: MutableRefObject<any>[],
+	// setLights: any,
+	// bloomObjects: MutableRefObject<any>[],
+	// setBloomObjects: any,
 	playlist: Playlist,
-	setPlaylist: Dispatch<SetStateAction<Playlist>>,
-	speed: number,
-	setSpeed: Dispatch<SetStateAction<number>>,
+	setPlaylist: any,
+	// speed: number,
+	// setSpeed: any,
 	aa?: AudioAnalyser,
 	setAa?: Dispatch<SetStateAction<AudioAnalyser | undefined>>,
 	getVolume: ( data?: ( Uint8Array | undefined ) ) => any
@@ -41,7 +43,7 @@ export default function WorldState( props: WorldStateProps ) {
 	const [ lights, setLights ] = useState<MutableRefObject<any>[]>( [ lightRef1, lightRef2 ] );
 	const [ bloomObjects, setBloomObjects ] = useState<MutableRefObject<any>[]>( [] );
 	const [ playlist, setPlaylist ] = useState( startPlaylist() );
-	const [ speed, setSpeed ] = useState<number>( 0 );
+	// const [ speed, setSpeed ] = useState<number>( 0 );
 	const [ aa, setAa ] = useState<AudioAnalyser>();
 	const getVolume = ( data?: Uint8Array ) => {
 
@@ -56,6 +58,44 @@ export default function WorldState( props: WorldStateProps ) {
 		return sum / 100000;
 
 	};
+
+	const useStore = create<any>( ( set: any, get: any ) => ( {
+		// lights: [ lightRef1, lightRef2 ],
+		// setLights: ( lightRef: MutableRefObject<any> ) => set(
+		// 	( prev ) => ( { lights: [ ...prev.lights, lightRef ] } )
+		// ),
+		playlist: playlists[ 0 ],
+		setPlaylist: ( playlist: Playlist ) => set(
+			() => ( { playlist: playlist } )
+		),
+		setPalette: ( palette: string[] ) => set(
+			produce( ( state: any ) => {
+
+				state.playlist.palette = palette;
+
+			} )
+		),
+		aa: undefined,
+		setAa: ( aa: AudioAnalyser ) => set(
+			() => ( { aa: aa } )
+		),
+		getVolume: () => {
+
+			if ( ! aa ) return 0;
+			const data = get().aa.getFrequencyData();
+			let sum = 0;
+			for ( const num of data ) {
+
+				sum += num;
+
+			}
+
+			return sum / 100000;
+
+		}
+
+	} ) );
+
 
 	return (
 		<WorldContext.Provider value={{
