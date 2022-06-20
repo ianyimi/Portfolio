@@ -31,7 +31,6 @@ export default function Index() {
 		const data = aa?.getFrequencyData();
 		const volume = getVolume( data );
 		const variable = playlist.id === "beenTurnt" ? data ? data[ 0 ] / 255 : 0 : volume;
-		if ( ! data ) return;
 		if ( setSpeed.current === 0 ) {
 
 			speed.current = variable > 0.6 ?
