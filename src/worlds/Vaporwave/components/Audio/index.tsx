@@ -96,6 +96,7 @@ export default function Sound( props: SoundProps ) {
 		console.log( end );
 		setUrlIndex( newUrlIndex() );
 		setPalette( newPalette() );
+		setEnd( false );
 
 	}, [ end ] );
 
