@@ -3,11 +3,11 @@ import { GroupProps, useFrame, useThree } from "@react-three/fiber";
 import { Audio, AudioAnalyser, AudioListener } from "three";
 import { playlists } from "./utils/constants";
 import { useLimiter } from "spacesvr";
-import { useWorld } from "../WorldState";
+import { useStore } from "utils/store";
+import shallow from "zustand/shallow";
 
 type SoundProps = {
 	volume?: number;
-	setAudioAnalyser?: ( aa: AudioAnalyser ) => void;
 	fftSize?: 64 | 128 | 256 | 512 | 1024 | 2048;
 } & GroupProps;
 
@@ -15,11 +15,14 @@ export default function Sound( props: SoundProps ) {
 
 	const {
 		volume = 1,
-		setAudioAnalyser,
 		fftSize = 128,
 		...rest
 	} = props;
-	const { playlist, setPlaylist } = useWorld();
+	const { playlist, setPlaylist, setAa } = useStore( ( state: any ) => ( {
+		playlist: state.playlist,
+		setPlaylist: state.setPlaylist,
+		setAa: state.setAa
+	} ), shallow );
 	const newPalette = (): string[] => {
 
 		const palettes = playlist.palettes;
@@ -86,11 +89,7 @@ export default function Sound( props: SoundProps ) {
 				speak.setMediaElementSource( audio );
 				speak.setVolume( volume );
 
-				if ( setAudioAnalyser ) {
-
-					setAudioAnalyser( new AudioAnalyser( speak, fftSize ) );
-
-				}
+				setAa( new AudioAnalyser( speak, fftSize ) );
 
 				setSpeaker( speak );
 

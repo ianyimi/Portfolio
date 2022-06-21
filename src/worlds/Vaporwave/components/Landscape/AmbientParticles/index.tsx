@@ -3,7 +3,8 @@ import { useEffect, useMemo, useRef } from "react";
 import { InstancedBufferAttribute, InstancedBufferGeometry, InstancedMesh, Object3D, } from "three";
 import { GroupProps, useFrame } from "@react-three/fiber";
 import { positions } from "./utils/constants";
-import { useWorld } from "../../WorldState";
+import { useStore } from "utils/store";
+import shallow from "zustand/shallow";
 
 const COUNT = 500;
 const X_RANGE = 10;
@@ -16,7 +17,10 @@ const SCALE = 30;
 export default function AmbientParticles( props: GroupProps ) {
 
 	const mesh = useRef<InstancedMesh>();
-	const { aa, getVolume } = useWorld();
+	const { aa, getVolume } = useStore( ( state ) => ( {
+		aa: state.aa,
+		getVolume: state.getVolume
+	} ), shallow );
 
 	const particleMaterial = useParticleMaterial();
 
@@ -70,7 +74,7 @@ export default function AmbientParticles( props: GroupProps ) {
 		if ( particleMaterial ) {
 
 			particleMaterial.uniforms.time.value = clock.getElapsedTime() * 0.4;
-			if ( aa ) particleMaterial.uniforms.volume.value = getVolume( aa.getFrequencyData() );
+			if ( aa ) particleMaterial.uniforms.volume.value = getVolume();
 
 		}
 

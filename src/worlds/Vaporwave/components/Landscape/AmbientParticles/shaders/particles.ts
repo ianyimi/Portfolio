@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { ShaderMaterial, ShaderMaterialParameters, Uniform } from "three";
-import { hexToVec3 } from "../../../../utils/constants";
-import { useWorld } from "../../../WorldState";
+import { useStore } from "utils/store";
+import shallow from "zustand/shallow";
 
 export const vert = `
   precision highp float;
@@ -180,21 +180,27 @@ export const useParticleMaterial = (
 	shaderParams?: Partial<ShaderMaterialParameters>
 ) => {
 
-	const { playlist, aa } = useWorld();
+	const { playlist, aa, palette, hexToVec3 } = useStore( ( state ) => ( {
+		playlist: state.playlist,
+		aa: state.aa,
+		palette: state.playlist.palette,
+		hexToVec3: state.hexToVec3,
+	} ), shallow );
+
 	return useMemo(
 		() =>
 			new ShaderMaterial( {
 				uniforms: {
 					time: new Uniform( 0 ),
 					volume: new Uniform( aa?.getAverageFrequency() ),
-					color: new Uniform( hexToVec3( playlist.palette[ playlist.mainColorIndex ] ) ),
-					fogColor: new Uniform( hexToVec3( playlist.palette[ playlist.backgroundColorIndex ] ) ),
+					color: new Uniform( hexToVec3( palette[ playlist.mainColorIndex ] ) ),
+					fogColor: new Uniform( hexToVec3( palette[ playlist.backgroundColorIndex ] ) ),
 				},
 				vertexShader: vert,
 				fragmentShader: frag,
 				...shaderParams,
 			} ),
-		[ frag, vert, playlist.palette ]
+		[ frag, vert, palette ]
 	);
 
 };

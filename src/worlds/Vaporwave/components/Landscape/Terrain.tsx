@@ -1,16 +1,19 @@
 import { useTexture } from "@react-three/drei";
 import React from "react";
 import { animated, useSpring } from "react-spring/three";
-import { useWorld } from "../WorldState";
 import MatrixSky from "./MatrixSky";
 import * as THREE from "three";
 import AmbientParticles from "./AmbientParticles";
 import AudioVisualizer from "./AudioVisualizer";
+import { useStore } from "utils/store";
+import shallow from "zustand/shallow";
 
 const Terrain = React.forwardRef( ( props: { z?: number }, ref ) => {
 
 	const { z = 0 } = props;
-	const { playlist } = useWorld();
+	const { playlist } = useStore( ( state ) => ( {
+		playlist: state.playlist,
+	} ), shallow );
 
 	const [ heightTexture, metalnessTexture ] = useTexture( [
 		"displacement-7.png",
@@ -27,7 +30,7 @@ const Terrain = React.forwardRef( ( props: { z?: number }, ref ) => {
 	} );
 
 	return (
-	// @ts-ignore
+		// @ts-ignore
 		<group ref={ref} position={[ 0, 0, z ]}>
 			<MatrixSky/>
 			<AmbientParticles/>

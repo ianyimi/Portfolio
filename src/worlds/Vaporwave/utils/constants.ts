@@ -1,26 +1,14 @@
-import { Vector3 } from "three";
 import { parse } from "coolors-io";
 
-export function hexToVec3( hex: string ): Vector3 {
-
-	const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec( hex );
-	return result ? new Vector3(
-		Math.floor( parseInt( result[ 1 ], 16 ) / 255 * 1000 ) / 1000,
-		Math.floor( parseInt( result[ 2 ], 16 ) / 255 * 1000 ) / 1000,
-		Math.floor( parseInt( result[ 3 ], 16 ) / 255 * 1000 ) / 1000
-	) : new Vector3( 0., 0., 0. );
-
-}
-
 export type Playlist = {
-  id: string,
-  name: string,
-  palette: string[],
-  palettes: string[][],
-  backgroundColorIndex: number,
-  mainColorIndex: number,
-  secondaryColorIndex: number,
-  outlineColorIndex?: number
+	id: string,
+	name: string,
+	palette: string[],
+	palettes: string[][],
+	backgroundColorIndex: number,
+	mainColorIndex: number,
+	secondaryColorIndex: number,
+	outlineColorIndex?: number
 }
 
 export const playlists: Playlist[] = [

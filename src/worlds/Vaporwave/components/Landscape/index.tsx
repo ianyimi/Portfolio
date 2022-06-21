@@ -2,11 +2,12 @@ import { Fog, useLimiter } from "spacesvr";
 import { useFrame } from "@react-three/fiber";
 import React, { useRef } from "react";
 import Terrain from "./Terrain";
-import { useWorld } from "../WorldState";
 import { usePlane } from "@react-three/cannon";
 import Audio from "../Audio";
 import * as THREE from "three";
 import Lights from "./Lights";
+import { useStore } from "utils/store";
+import shallow from "zustand/shallow";
 
 
 export default function Index() {
@@ -14,7 +15,13 @@ export default function Index() {
 	const terrain1Ref = useRef();
 	const terrain2Ref = useRef();
 
-	const { playlist, aa, setAa, getVolume } = useWorld();
+	const { playlist, aa, getVolume } = useStore( ( state: any ) => ( {
+		playlist: state.playlist,
+		aa: state.aa,
+		getVolume: state.getVolume
+	} ), shallow );
+
+	console.log( playlist );
 
 	const [ collider, api ] = usePlane( () => ( {
 		args: [ 2, 5 ],
@@ -29,7 +36,7 @@ export default function Index() {
 
 		if ( ! limiter.isReady || ! terrain1Ref.current || ! terrain2Ref.current || ! speed.current ) return;
 		const data = aa?.getFrequencyData();
-		const volume = getVolume( data );
+		const volume = getVolume();
 		const variable = playlist.id === "beenTurnt" ? data ? data[ 0 ] / 255 : 0 : volume;
 		if ( setSpeed.current === 0 ) {
 
@@ -67,7 +74,7 @@ export default function Index() {
 
 	return (
 		<group>
-			<Audio setAudioAnalyser={setAa} fftSize={2048}/>
+			<Audio fftSize={2048}/>
 			<Fog color={new THREE.Color( playlist.palette[ playlist.backgroundColorIndex ] )} near={1} far={2}/>
 			<Lights/>
 			{/*<Title position={[0, 0.5, -0.5]} />*/}

@@ -3,16 +3,17 @@ import { Vector3 } from 'three';
 import { ReactNode, useRef } from "react";
 import { GroupProps, useFrame } from "@react-three/fiber";
 import { useLimiter } from "spacesvr";
-import { useWorld } from "../WorldState";
 import { animated } from "react-spring/three";
+import { useStore } from "utils/store";
+import shallow from "zustand/shallow";
 
 type VisualizerProps = {
-  barCount?: number,
-  barWidth?: number,
-  barHeight?: number,
-  reverse?: boolean,
-  radius?: number,
-  index: number
+	barCount?: number,
+	barWidth?: number,
+	barHeight?: number,
+	reverse?: boolean,
+	radius?: number,
+	index: number
 } & GroupProps
 
 export default function AudioVisualizer( props: VisualizerProps ) {
@@ -29,7 +30,10 @@ export default function AudioVisualizer( props: VisualizerProps ) {
 	const group1 = useRef();
 	const group2 = useRef();
 	const cubes: ReactNode[] = [];
-	const { playlist, aa } = useWorld();
+	const { playlist, aa } = useStore( ( state ) => ( {
+		playlist: state.playlist,
+		aa: state.aa
+	} ), shallow );
 
 	for ( let i = 0; i < barCount; ++ i ) {
 

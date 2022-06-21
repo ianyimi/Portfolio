@@ -1,14 +1,14 @@
 import * as THREE from "three";
 import { Object3D } from "three";
 import { useRef } from "react";
-import { useWorld } from "../WorldState";
 import { animated } from "react-spring/three";
+import { useStore } from "utils/store";
 
 export default function Lights() {
 
 	const spotlight1Ref = useRef();
 	const spotlight2Ref = useRef();
-	const { playlist } = useWorld();
+	const playlist = useStore( ( state ) => state.playlist );
 
 	const dummy1 = new Object3D(),
 		dummy2 = new Object3D();

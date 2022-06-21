@@ -3,18 +3,23 @@ import { DoubleSide, ShaderMaterial, Uniform } from "three";
 import { useMemo } from "react";
 import { useLimiter } from "spacesvr";
 import { useFrame } from "@react-three/fiber";
-import { useWorld } from "../../../WorldState";
-import { hexToVec3 } from "../../../../utils/constants";
+import { useStore } from "utils/store";
+import shallow from "zustand/shallow";
 
 export const useMatrixMat = (): ShaderMaterial => {
 
-	const { playlist } = useWorld();
+	const { playlist, palette, hexToVec3 } = useStore( ( state ) => ( {
+		playlist: state.playlist,
+		palette: state.playlist.palette,
+		hexToVec3: state.hexToVec3,
+	} ), shallow );
+
 	const mat = useMemo(
 		() =>
 			new ShaderMaterial( {
 				uniforms: {
-					color: new Uniform( hexToVec3( playlist.palette[ playlist.mainColorIndex ] ) ),
-					fogColor: new Uniform( hexToVec3( playlist.palette[ playlist.backgroundColorIndex ] ) ),
+					color: new Uniform( hexToVec3( palette[ playlist.mainColorIndex ] ) ),
+					fogColor: new Uniform( hexToVec3( palette[ playlist.backgroundColorIndex ] ) ),
 					time: new Uniform( 0 ),
 					resolution: new Uniform( new THREE.Vector2( window.innerWidth, window.innerHeight ) ),
 					intensity: new Uniform( 1.0 )
@@ -23,7 +28,7 @@ export const useMatrixMat = (): ShaderMaterial => {
 				fragmentShader: frag,
 				side: DoubleSide,
 			} ),
-		[ frag, vert, playlist.palette ]
+		[ frag, vert, palette ]
 	);
 
 	const limiter = useLimiter( 30 );
