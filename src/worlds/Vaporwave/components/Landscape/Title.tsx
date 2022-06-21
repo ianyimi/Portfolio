@@ -15,7 +15,6 @@ export default function Title( props: { position?: [number, number, number] } & 
 
 	const font = useLoader( THREE.FontLoader, "/fonts/Thunderstormttf.json" );
 
-
 	const size = 0.25;
 	const config = useMemo( () => ( {
 		font: font,

@@ -58,7 +58,6 @@ export default function AudioVisualizer( props: VisualizerProps ) {
 		if ( ! limiter.isReady( clock ) || ! group1.current || ! group2.current || ! aa ) return;
 		const data = aa.getFrequencyData();
 		const step = data.length / cubes.length;
-		// console.log( data[ data.length / 2 ] );
 		for ( let i = 0; i < cubes.length; ++ i ) {
 
 			// @ts-ignore

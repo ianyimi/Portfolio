@@ -17,9 +17,10 @@ const SCALE = 30;
 export default function AmbientParticles( props: GroupProps ) {
 
 	const mesh = useRef<InstancedMesh>();
-	const { aa, getVolume } = useStore( ( state ) => ( {
+	const { playlist, aa, getVolume } = useStore( ( state ) => ( {
+		playlist: state.playlist,
 		aa: state.aa,
-		getVolume: state.getVolume
+		getVolume: state.getVolume,
 	} ), shallow );
 
 	const particleMaterial = useParticleMaterial();
@@ -67,7 +68,7 @@ export default function AmbientParticles( props: GroupProps ) {
 			new InstancedBufferAttribute( seeds, 1, false, COUNT )
 		);
 
-	}, [ COUNT, mesh ] );
+	}, [ COUNT, mesh, playlist.id ] );
 
 	useFrame( ( { clock } ) => {
 

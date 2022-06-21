@@ -18,11 +18,13 @@ export default function Sound( props: SoundProps ) {
 		fftSize = 128,
 		...rest
 	} = props;
+
 	const { playlist, setPlaylist, setAa } = useStore( ( state: any ) => ( {
 		playlist: state.playlist,
 		setPlaylist: state.setPlaylist,
 		setAa: state.setAa
 	} ), shallow );
+
 	const newPalette = (): string[] => {
 
 		const palettes = playlist.palettes;
@@ -113,7 +115,7 @@ export default function Sound( props: SoundProps ) {
 
 		}
 
-	}, [ speaker, audio, urlIndex ] );
+	}, [ speaker, audio, urlIndex, playlist.id ] );
 
 	useEffect( () => {
 

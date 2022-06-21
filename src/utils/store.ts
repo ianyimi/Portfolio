@@ -5,7 +5,10 @@ import produce from "immer";
 
 export type StoreState = {
 	playlist: Playlist,
+	setPlaylist: ( playlist: Playlist ) => void,
+	setPalette: ( palette: string[] ) => void,
 	aa: AudioAnalyser | undefined,
+	setAa: ( aa: AudioAnalyser ) => void,
 	getVolume: () => number,
 	hexToVec3: ( color: string ) => Vector3
 }
@@ -62,7 +65,7 @@ function startPlaylist() {
 
 	};
 
-	const zeroPlaylist = playlists[ 1 ];
+	const zeroPlaylist = playlists[ 2 ];
 	const firstPlaylist = {
 		...zeroPlaylist,
 		palette: randomItem( zeroPlaylist.palettes )

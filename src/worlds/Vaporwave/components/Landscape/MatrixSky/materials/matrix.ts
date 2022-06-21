@@ -28,7 +28,7 @@ export const useMatrixMat = (): ShaderMaterial => {
 				fragmentShader: frag,
 				side: DoubleSide,
 			} ),
-		[ frag, vert, palette ]
+		[ frag, vert, palette, playlist.id ]
 	);
 
 	const limiter = useLimiter( 30 );
