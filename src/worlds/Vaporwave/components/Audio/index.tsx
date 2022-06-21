@@ -33,12 +33,12 @@ export default function Sound( props: SoundProps ) {
 	};
 
 	// @ts-ignore
-	let songs = JSON.parse( JSON.stringify( playlists[ `${playlist.id}` ] ) );
-	const newUrlIndex = () => {
+	let songs = useMemo( () => JSON.parse( JSON.stringify( playlists[ `${playlist.id}` ] ) ), [ playlist.id ] );
+	const newUrlIndex = useMemo( () => {
 
 		return Math.floor( Math.random() * songs.length );
 
-	};
+	}, [ playlist.id ] );
 
 	const [ speaker, setSpeaker ] = useState<Audio>();
 	const [ urlIndex, setUrlIndex ] = useState<number>( newUrlIndex );
@@ -60,6 +60,12 @@ export default function Sound( props: SoundProps ) {
 
 	useEffect( () => {
 
+		setUrlIndex( newUrlIndex );
+
+	} );
+
+	useEffect( () => {
+
 		if ( songs.length === 0 ) { // @ts-ignore
 
 			songs = JSON.parse( JSON.stringify( playlists[ `${playlist.id}` ] ) );
@@ -67,11 +73,11 @@ export default function Sound( props: SoundProps ) {
 		}
 
 		if ( ! end ) return;
-		setUrlIndex( newUrlIndex() );
+		setUrlIndex( newUrlIndex );
 		setPlaylist( { ...playlist, palette: newPalette() } );
 		setEnd( false );
 
-	}, [ end ] );
+	}, [ end, playlist.id ] );
 
 	useEffect( () => {
 
@@ -109,13 +115,12 @@ export default function Sound( props: SoundProps ) {
 			return () => {
 
 				document.removeEventListener( "click", playAudio );
-				// audio.remove();
 
 			};
 
 		}
 
-	}, [ speaker, audio, urlIndex, playlist.id ] );
+	}, [ speaker, audio, urlIndex ] );
 
 	useEffect( () => {
 

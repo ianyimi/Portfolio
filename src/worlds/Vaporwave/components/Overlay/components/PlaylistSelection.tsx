@@ -20,6 +20,7 @@ export default function PlaylistSelection() {
 
 	function changePlaylist( id: number ) {
 
+		if ( playlists[ id ].id === playlist.id ) return;
 		setPlaylist( playlists[ id ] );
 		setPalette( playlists[ id ].palettes[ Math.floor( Math.random() * playlists[ id ].palettes.length ) ] );
 
@@ -34,14 +35,14 @@ export default function PlaylistSelection() {
 			}}>The Cookout</Label>
 			<Label onClick={() => {
 
-				changePlaylist( 0 );
-
-			}}>Late Nights</Label>
-			<Label onClick={() => {
-
 				changePlaylist( 1 );
 
 			}}>Been Turnt</Label>
+			<Label onClick={() => {
+
+				changePlaylist( 0 );
+
+			}}>Late Nights</Label>
 		</div>
 	);
 

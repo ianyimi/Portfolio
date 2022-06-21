@@ -21,33 +21,42 @@ export default function Index() {
 		getVolume: state.getVolume
 	} ), shallow );
 
-	console.log( playlist );
-
 	const [ collider, api ] = usePlane( () => ( {
 		args: [ 2, 5 ],
 		rotation: [ - Math.PI * 0.5, 0, 0 ],
 		type: "Static"
 	} ) );
 	const speed = useRef( 1.5 );
+	const targetSpeed = useRef( 1.5 );
 	const setSpeed = useRef( 0 );
 
 	const limiter = useLimiter( 30 );
 	useFrame( ( { clock }, delta ) => {
 
-		if ( ! limiter.isReady || ! terrain1Ref.current || ! terrain2Ref.current || ! speed.current ) return;
+		if ( ! limiter.isReady || ! terrain1Ref.current || ! terrain2Ref.current || ! speed.current || ! targetSpeed.current ) return;
 		const data = aa?.getFrequencyData();
 		const volume = getVolume();
 		const variable = playlist.id === "beenTurnt" ? data ? data[ 0 ] / 255 : 0 : volume;
 		if ( setSpeed.current === 0 ) {
 
-			speed.current = variable > 0.6 ?
+			targetSpeed.current = variable > 0.6 ?
 				0.5 - 0.25 * variable : variable > 0.3 ?
 					1 : 1.5;
 
 		}
 
+		if ( targetSpeed.current < speed.current ) {
+
+			speed.current -= 0.05;
+
+		} else if ( targetSpeed.current > speed.current ) {
+
+			speed.current += 0.05;
+
+		}
+
 		// Setting how often to change speed
-		setSpeed.current = ( setSpeed.current + 1 ) % 5;
+		setSpeed.current = ( setSpeed.current + 1 ) % 2;
 
 		// @ts-ignore
 		terrain1Ref.current.position.z += delta / ( 5 * ( speed.current ) );
