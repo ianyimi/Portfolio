@@ -94,7 +94,7 @@ export default function Sound( props: SoundProps ) {
 		if ( ! end ) return;
 		console.log( "palette change" );
 		console.log( end );
-		setUrlIndex( newUrlIndex );
+		setUrlIndex( newUrlIndex() );
 		setPalette( newPalette() );
 
 	}, [ end ] );
