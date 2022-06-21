@@ -7,6 +7,10 @@ export type StoreState = {
 	playlist: Playlist,
 	setPlaylist: ( playlist: Playlist ) => void,
 	setPalette: ( palette: string[] ) => void,
+	audioSrc: string,
+	setAudioSrc: ( src: string ) => void,
+	paused: boolean,
+	setPaused: ( paused: boolean ) => void,
 	aa: AudioAnalyser | undefined,
 	setAa: ( aa: AudioAnalyser ) => void,
 	getVolume: () => number,
@@ -19,11 +23,19 @@ export const useStore = create<StoreState>()( ( set: any, get: any ) => ( {
 		() => ( { playlist: playlist } )
 	),
 	setPalette: ( palette: string[] ) => set(
-		produce( ( state: any ) => {
+		produce( ( state: StoreState ) => {
 
 			state.playlist.palette = palette;
 
 		} )
+	),
+	audioSrc: "",
+	setAudioSrc: ( src: string ) => set(
+		() => ( { audioSrc: src } )
+	),
+	paused: false,
+	setPaused: ( paused: boolean ) => set(
+		() => ( { paused: paused } )
 	),
 	aa: undefined,
 	setAa: ( aa: AudioAnalyser ) => set(

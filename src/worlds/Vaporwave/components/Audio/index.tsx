@@ -19,10 +19,13 @@ export default function Sound( props: SoundProps ) {
 		...rest
 	} = props;
 
-	const { playlist, setPlaylist, setAa } = useStore( ( state: any ) => ( {
+	const { playlist, setPalette, setAudioSrc, setAa, paused, setPaused } = useStore( ( state: any ) => ( {
 		playlist: state.playlist,
-		setPlaylist: state.setPlaylist,
-		setAa: state.setAa
+		setPalette: state.setPalette,
+		setAudioSrc: state.setAudioSrc,
+		setAa: state.setAa,
+		paused: state.paused,
+		setPaused: state.setPaused,
 	} ), shallow );
 
 	const newPalette = (): string[] => {
@@ -34,11 +37,11 @@ export default function Sound( props: SoundProps ) {
 
 	// @ts-ignore
 	let songs = useMemo( () => JSON.parse( JSON.stringify( playlists[ `${playlist.id}` ] ) ), [ playlist.id ] );
-	const newUrlIndex = useMemo( () => {
+	const newUrlIndex = () => {
 
 		return Math.floor( Math.random() * songs.length );
 
-	}, [ playlist.id ] );
+	};
 
 	const [ speaker, setSpeaker ] = useState<Audio>();
 	const [ urlIndex, setUrlIndex ] = useState<number>( newUrlIndex );
@@ -60,9 +63,25 @@ export default function Sound( props: SoundProps ) {
 
 	useEffect( () => {
 
-		setUrlIndex( newUrlIndex );
+		if ( paused ) {
 
-	} );
+			audio.pause();
+
+		} else {
+
+			audio.play();
+
+		}
+
+	}, [ paused ] );
+
+	useEffect( () => {
+
+		setUrlIndex( newUrlIndex() );
+		setPaused( false );
+		setEnd( false );
+
+	}, [ playlist.id ] );
 
 	useEffect( () => {
 
@@ -73,16 +92,17 @@ export default function Sound( props: SoundProps ) {
 		}
 
 		if ( ! end ) return;
+		console.log( "palette change" );
+		console.log( end );
 		setUrlIndex( newUrlIndex );
-		setPlaylist( { ...playlist, palette: newPalette() } );
-		setEnd( false );
+		setPalette( newPalette() );
 
-	}, [ end, playlist.id ] );
+	}, [ end ] );
 
 	useEffect( () => {
 
 		const url = songs.splice( urlIndex, 1 )[ 0 ];
-		console.log( url );
+		setAudioSrc( url );
 
 		const setupAudio = () => {
 
