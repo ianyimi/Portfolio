@@ -45,11 +45,11 @@ export default function Index() {
 
 		}
 
-		if ( targetSpeed.current < speed.current ) {
+		if ( targetSpeed.current < speed.current && speed.current - targetSpeed.current > 0.1 ) {
 
 			speed.current -= 0.05;
 
-		} else if ( targetSpeed.current > speed.current ) {
+		} else if ( targetSpeed.current > speed.current && targetSpeed.current - speed.current > 0.1 ) {
 
 			speed.current += 0.05;
 
