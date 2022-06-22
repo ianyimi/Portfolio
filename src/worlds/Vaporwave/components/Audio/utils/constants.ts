@@ -407,7 +407,6 @@ const theCookout = [
 	`${theCookoutUrl}Four+Tops+-+I+Can't+Help+Myself+(Sugar+Pie%2C+Honey+Bunch).mp3`,
 	`${theCookoutUrl}Evelyn+'Champagne'+King+-+Love+Come+Down+-+Single+Version.mp3`,
 	`${theCookoutUrl}Evelyn+'Champagne'+King+-+I'm+In+Love.mp3`,
-	`${theCookoutUrl}Eurythmics%2C+Annie+Lennox%2C+Dave+Stewart+-+Sweet+Dreams+(Are+Made+of+This)+-+Remastered.mp3`,
 	`${theCookoutUrl}Earth%2C+Wind+%26+Fire%2C+The+Emotions+-+Boogie+Wonderland.mp3`,
 	`${theCookoutUrl}Earth%2C+Wind+%26+Fire%2C+Lucky+Daye+-+You+Want+My+Love.mp3`,
 	`${theCookoutUrl}Earth%2C+Wind+%26+Fire+-+Sing+a+Song.mp3`,
