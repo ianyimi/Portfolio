@@ -64,7 +64,6 @@ export default function Sound( props: SoundProps ) {
 
 	useEffect( () => {
 
-		console.log( paused );
 		if ( paused ) {
 
 			audio.pause();
@@ -132,7 +131,6 @@ export default function Sound( props: SoundProps ) {
 
 		const playAudio = () => {
 
-			console.log( paused );
 			if ( paused ) return;
 			audio.play().then( () => setupAudio() );
 
