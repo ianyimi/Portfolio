@@ -8,6 +8,7 @@ import shallow from "zustand/shallow";
 
 export const useMatrixMat = (): ShaderMaterial => {
 
+	// @ts-ignore
 	const { playlist, palette, hexToVec3 } = useStore( ( state ) => ( {
 		playlist: state.playlist,
 		palette: state.playlist.palette,
