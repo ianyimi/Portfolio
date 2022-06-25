@@ -2388,11 +2388,6 @@ convert-source-map@^1.5.0, convert-source-map@^1.7.0:
   dependencies:
     safe-buffer "~5.1.1"
 
-coolors-io@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/coolors-io/-/coolors-io-1.1.1.tgz#d3c36d8632386ff065866d118e9f0a7b574564fd"
-  integrity sha512-o3yY3eM6ZqUazQDDC06vEW1PXN1dcVEEZfknEpp/r56KSr1TmgR3ssFcNn0E/CRDGd5kFgCnkcv78FoZMJvmTA==
-
 core-js-compat@^3.14.0, core-js-compat@^3.16.0:
   version "3.16.3"
   resolved "https://registry.yarnpkg.com/core-js-compat/-/core-js-compat-3.16.3.tgz#ae12a6e20505a1d79fbd16b6689dfc77fc989114"

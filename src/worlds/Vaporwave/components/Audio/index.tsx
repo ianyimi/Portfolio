@@ -47,6 +47,7 @@ export default function Sound( props: SoundProps ) {
 	const [ urlIndex, setUrlIndex ] = useState<number>( newUrlIndex );
 	const camera = useThree( ( state ) => state.camera );
 	const [ end, setEnd ] = useState( false );
+	const [ controlLock, setControlLock ] = useState( false );
 
 
 	const audio = useMemo( () => {
@@ -63,13 +64,16 @@ export default function Sound( props: SoundProps ) {
 
 	useEffect( () => {
 
+		console.log( paused );
 		if ( paused ) {
 
 			audio.pause();
+			! controlLock && setControlLock( true );
 
 		} else {
 
 			audio.play();
+			controlLock && setControlLock( false );
 
 		}
 
@@ -100,6 +104,8 @@ export default function Sound( props: SoundProps ) {
 
 	useEffect( () => {
 
+		if ( paused || controlLock ) return;
+
 		const url = songs.splice( urlIndex, 1 )[ 0 ];
 		setAudioSrc( url );
 
@@ -124,7 +130,13 @@ export default function Sound( props: SoundProps ) {
 
 		};
 
-		const playAudio = () => audio.play().then( () => setupAudio() );
+		const playAudio = () => {
+
+			console.log( paused );
+			if ( paused ) return;
+			audio.play().then( () => setupAudio() );
+
+		};
 
 		if ( audio ) {
 
@@ -139,7 +151,7 @@ export default function Sound( props: SoundProps ) {
 
 		}
 
-	}, [ speaker, audio, urlIndex ] );
+	}, [ speaker, audio, urlIndex, paused ] );
 
 	useEffect( () => {
 

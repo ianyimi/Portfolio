@@ -15,7 +15,6 @@
     "@react-three/drei": "7.0.6",
     "@react-three/fiber": "6.0.14",
     "@react-three/postprocessing": "^2.3.2",
-    "coolors-io": "^1.1.1",
     "glsl-noise-simplex": "^0.0.2",
     "glslify": "^7.1.1",
     "immer": "^9.0.15",

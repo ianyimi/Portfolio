@@ -9,11 +9,11 @@ import { animated, useSpring } from "react-spring/three";
 import Display from "./Display";
 
 type BallProps = {
-  position?: [x: number, y: number, z: number],
-  texture: THREE.Texture,
-  displayKey: number | null,
-  setDisplayKey: Dispatch<SetStateAction<number | null>>,
-  index: number,
+	position?: [x: number, y: number, z: number],
+	texture: THREE.Texture,
+	displayKey: number | null,
+	setDisplayKey: Dispatch<SetStateAction<number | null>>,
+	index: number,
 }
 
 export default function Ball( props: BallProps ) {
@@ -23,7 +23,7 @@ export default function Ball( props: BallProps ) {
 	const cPos = useRef( new Vector3() );
 	const dPos = useRef( new Vector3() );
 	const pSet = useRef( false );
-	const displayPosition = new Vector3( - 0.00025, 0.085, 1 );
+	const displayPosition = new Vector3( - 0.00025, 0.175, 0.9 );
 	const ACTIVE_DISPLAY = displayKey === index,
 		NO_ACTIVE_DISPLAY = displayKey === null;
 
