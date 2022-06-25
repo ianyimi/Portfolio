@@ -2,11 +2,14 @@ import { AudioAnalyser, Vector3 } from "three";
 import { Playlist, playlists } from "../worlds/Vaporwave/utils/constants";
 import create from "zustand";
 import produce from "immer";
+import { MutableRefObject } from "react";
 
 export type StoreState = {
 	playlist: Playlist,
 	setPlaylist: ( playlist: Playlist ) => void,
 	setPalette: ( palette: string[] ) => void,
+	portal: MutableRefObject<HTMLElement> | undefined,
+	setPortal: ( portal: MutableRefObject<HTMLElement> ) => void,
 	audioSrc: string,
 	setAudioSrc: ( src: string ) => void,
 	paused: boolean,
@@ -28,6 +31,10 @@ export const useStore = create<StoreState>()( ( set: any, get: any ) => ( {
 			state.playlist.palette = palette;
 
 		} )
+	),
+	portal: undefined,
+	setPortal: ( portal: any ) => set(
+		() => ( { portal: portal } )
 	),
 	audioSrc: "",
 	setAudioSrc: ( src: string ) => set(

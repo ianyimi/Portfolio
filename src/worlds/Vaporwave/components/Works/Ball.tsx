@@ -122,7 +122,7 @@ export default function Ball( props: BallProps ) {
 				</mesh>
 			</group>
 			<animated.group scale={displaySize}>
-				<Display i={0}/>
+				{ACTIVE_DISPLAY && <Display i={0}/>}
 			</animated.group>
 		</group>
 	);
