@@ -3,6 +3,15 @@ import { useStore } from "utils/store";
 import shallow from "zustand/shallow";
 import { Works } from "./utils/constants";
 
+const ClickToClose = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+`;
+
 const Container = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
   position: absolute;
@@ -11,16 +20,16 @@ const Container = styled.div`
   display: flex;
   width: 100vw;
   height: 100vh;
-  z-index: 1;
   justify-content: center;
   align-items: center;
+  z-index: 3;
 `;
 
 const Content = styled.div<{ color: string, bgColor: string, opacity: number }>`
   width: 50%;
   height: 50%;
   border-radius: 15px;
-  diaplay: flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
   background-color: ${props => props.bgColor};
@@ -28,20 +37,41 @@ const Content = styled.div<{ color: string, bgColor: string, opacity: number }>`
   font-family: Thunderstorm;
   opacity: ${props => props.opacity};
   transition: opacity 2s;
-  z-index: 2;
+`;
+
+const Exit = styled.p`
+  position: relative;
+  top: 10px;
+  left: 45%;
+  font-weight: bold;
+  cursor: pointer;
 `;
 
 const Header = styled.h4`
   text-align: center;
   font-size: 3em;
-  border: 2px dashed blue;
   margin-top: 25px;
+  //border: 2px dashed blue;
 `;
 
-const Close = styled.p`
+const Description = styled.p`
+  margin-top: -25px;
+  text-align: center;
+  font-family: Times;
+  width: 70%;
+  //border: 2px dashed green;
+`;
+
+const Visit = styled.button<{ color: string, bgColor: string }>`
+  border-radius: 15px;
+  border: none;
   position: relative;
-  top: 10px;
-  left: 95%;
+  bottom: -25px;
+  padding: 0.5em 2em 0.5em 2em;
+  background-color: ${props => props.bgColor};
+  color: ${props => props.color};
+  font-family: Thunderstorm;
+  font-size: 1em;
   cursor: pointer;
 `;
 
@@ -53,20 +83,36 @@ export default function Display() {
 		playlist: state.playlist
 	} ), shallow );
 
-	console.log( display );
+	const visit = () => {
+
+		if ( display === null ) return;
+		window.open( Works[ display ].url, "_blank" );
+
+	};
+
 	if ( display === null ) return <></>;
 
 	return (
-		<Container onClick={() => ( setDisplay( null ) )}>
+		<Container>
+			<ClickToClose onClick={() => setDisplay( null )}/>
 			<Content
 				opacity={display === null ? 0 : 1}
 				color={playlist.palette[ playlist.mainColorIndex ]}
 				bgColor={playlist.palette[ playlist.backgroundColorIndex ]}
 			>
-				<Close onClick={() => ( setDisplay( null ) )}>X</Close>
+				<Exit onClick={() => ( setDisplay( null ) )}>X</Exit>
 				<Header>{Works[ display ].header}</Header>
+				<Description>{Works[ display ].desc}</Description>
+				{Works[ display ].url !== "" && <Visit
+					onClick={visit}
+					color={playlist.palette[ playlist.backgroundColorIndex ]}
+					bgColor={playlist.palette[ playlist.mainColorIndex ]}
+				>
+          Visit
+				</Visit>}
 			</Content>
 		</Container>
 	);
+
 
 }

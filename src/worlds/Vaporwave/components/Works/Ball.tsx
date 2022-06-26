@@ -73,8 +73,6 @@ export default function Ball( props: BallProps ) {
 
 	function toggleDisplay() {
 
-		console.log( NO_ACTIVE_DISPLAY );
-		console.log( ACTIVE_DISPLAY );
 		if ( NO_ACTIVE_DISPLAY || ACTIVE_DISPLAY ) {
 
 			setDisplay( ACTIVE_DISPLAY ? null : index );
