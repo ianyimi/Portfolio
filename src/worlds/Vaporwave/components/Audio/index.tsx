@@ -67,10 +67,12 @@ export default function Sound( props: SoundProps ) {
 		if ( paused ) {
 
 			audio.pause();
+			// speaker?.setVolume( 0 );
 			! controlLock && setControlLock( true );
 
 		} else {
 
+			// speaker?.setVolume( 1 );
 			audio.play();
 			controlLock && setControlLock( false );
 
@@ -80,9 +82,8 @@ export default function Sound( props: SoundProps ) {
 
 	useEffect( () => {
 
-		setUrlIndex( newUrlIndex() );
-		setPaused( false );
-		setEnd( false );
+		setEnd( true );
+		setControlLock( false );
 
 	}, [ playlist.id ] );
 
@@ -98,6 +99,7 @@ export default function Sound( props: SoundProps ) {
 		setUrlIndex( newUrlIndex() );
 		setPalette( newPalette() );
 		setEnd( false );
+		setPaused( false );
 
 	}, [ end ] );
 
