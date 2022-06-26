@@ -10,6 +10,8 @@ export type StoreState = {
 	setPalette: ( palette: string[] ) => void,
 	portal: MutableRefObject<HTMLElement> | undefined,
 	setPortal: ( portal: MutableRefObject<HTMLElement> ) => void,
+	display: number | null,
+	setDisplay: ( value: number | null ) => void,
 	audioSrc: string,
 	setAudioSrc: ( src: string ) => void,
 	paused: boolean,
@@ -35,6 +37,10 @@ export const useStore = create<StoreState>()( ( set: any, get: any ) => ( {
 	portal: undefined,
 	setPortal: ( portal: any ) => set(
 		() => ( { portal: portal } )
+	),
+	display: null,
+	setDisplay: ( id: number | null ) => set(
+		() => ( { display: id } )
 	),
 	audioSrc: "",
 	setAudioSrc: ( src: string ) => set(

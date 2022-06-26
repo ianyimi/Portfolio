@@ -1,38 +1,30 @@
 import { useSphere } from "@react-three/cannon";
-import { Dispatch, SetStateAction, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { useLimiter } from "spacesvr";
 import { CollideEvent } from "@react-three/cannon/dist/setup";
 import * as THREE from "three";
 import { Vector3 } from "three";
-import { animated, useSpring } from "react-spring/three";
-import Display from "./Display";
+import { useStore } from "utils/store";
+import shallow from "zustand/shallow";
 
 type BallProps = {
 	position?: [x: number, y: number, z: number],
 	texture: THREE.Texture,
-	displayKey: number | null,
-	setDisplayKey: Dispatch<SetStateAction<number | null>>,
 	index: number,
 }
 
 export default function Ball( props: BallProps ) {
 
-	const { position = [ 0, 0, 0 ], texture, displayKey, setDisplayKey, index } = props;
+	const { position = [ 0, 0, 0 ], texture, index } = props;
+	const { display, setDisplay } = useStore( state => ( {
+		display: state.display,
+		setDisplay: state.setDisplay
+	} ), shallow );
 	const mesh = useRef( new THREE.Mesh() );
 	const cPos = useRef( new Vector3() );
-	const dPos = useRef( new Vector3() );
-	const pSet = useRef( false );
-	const displayPosition = new Vector3( - 0.00025, 0.175, 0.9 );
-	const ACTIVE_DISPLAY = displayKey === index,
-		NO_ACTIVE_DISPLAY = displayKey === null;
-
-	const { displaySize } = useSpring( {
-		displaySize: ACTIVE_DISPLAY ? 1 : 0,
-		config: {
-			mass: 1
-		}
-	} );
+	const ACTIVE_DISPLAY = display === index,
+		NO_ACTIVE_DISPLAY = display === null;
 
 	const [ collider, api ] = useSphere( () => ( {
 		args: 0.015,
@@ -50,13 +42,6 @@ export default function Ball( props: BallProps ) {
 
 	}
 
-	// Update displayPos Ref
-	useEffect( () => {
-
-		ACTIVE_DISPLAY && dPos.current.lerp( displayPosition, 0.9 );
-
-	}, [ ACTIVE_DISPLAY ] );
-
 	// Update currentPos Ref
 	useEffect( () => {
 
@@ -70,14 +55,8 @@ export default function Ball( props: BallProps ) {
 	useFrame( ( { clock } ) => {
 
 		if ( ! limiter.isReady( clock ) || ! collider.current || ! mesh.current || ! api || ! cPos.current ) return;
-		if ( ACTIVE_DISPLAY && ! pSet.current ) {
 
-			// Putting Ball in place for display and turning motion off
-			api.position.set( dPos.current.x, dPos.current.y, dPos.current.z );
-			api.sleep();
-			if ( ! pSet.current ) pSet.current = true;
-
-		} else if ( cPos.current.z > 1.15 ) {
+		if ( cPos.current.z > 1.15 ) {
 
 			// Respawning balls after the roll past the camera
 			api.sleep();
@@ -85,25 +64,20 @@ export default function Ball( props: BallProps ) {
 			api.wakeUp;
 			api.applyForce( [ 0, 0, 10 ], [ 0, 0, 1 ] );
 
-		} else if ( pSet.current ) {
-
-			// Waking up Balls after closing display
-			api.wakeUp();
-			api.applyForce( [ 0, 0, 10 ], [ 0, 0, 1 ] );
-			pSet.current = false;
-
 		}
 
-		mesh.current.position.lerp( ACTIVE_DISPLAY ? dPos.current : cPos.current, 0.9 );
+		mesh.current.position.lerp( cPos.current, 0.9 );
 		mesh.current.rotation.set( - clock.getElapsedTime() * 3, 0, 0 );
 
 	} );
 
 	function toggleDisplay() {
 
+		console.log( NO_ACTIVE_DISPLAY );
+		console.log( ACTIVE_DISPLAY );
 		if ( NO_ACTIVE_DISPLAY || ACTIVE_DISPLAY ) {
 
-			setDisplayKey( ACTIVE_DISPLAY ? null : index );
+			setDisplay( ACTIVE_DISPLAY ? null : index );
 
 		}
 
@@ -121,9 +95,6 @@ export default function Ball( props: BallProps ) {
 					<meshBasicMaterial map={texture}/>
 				</mesh>
 			</group>
-			<animated.group scale={displaySize}>
-				{ACTIVE_DISPLAY && <Display i={0}/>}
-			</animated.group>
 		</group>
 	);
 

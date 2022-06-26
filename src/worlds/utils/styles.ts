@@ -24,7 +24,7 @@ export const globalStyles = css`
   }
 
   canvas {
-    z-index: 1;
+    z-index: -1;
   }
 
   //*:focus {

@@ -4,22 +4,11 @@ import Camera from "../components/Camera";
 import Landscape from "./components/Landscape";
 import Works from "./components/Works";
 import Overlay from "./components/Overlay";
-import { MutableRefObject, useEffect, useRef } from "react";
-import { useStore } from "utils/store";
 
 export default function Vaporwave() {
 
-	const portal = useRef<HTMLDivElement>( null );
-	const setPortal = useStore( state => state.setPortal );
-
-	useEffect( () => {
-
-		setPortal( portal as MutableRefObject<HTMLElement> );
-
-	}, [] );
-
 	return (
-		<div ref={portal}>
+		<div>
 			<Overlay/>
 			<Canvas>
 				<Physics gravity={[ 0, - 0.1, 0 ]}>

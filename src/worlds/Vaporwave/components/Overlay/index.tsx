@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
-import Title from "./Title";
 import { useState } from "react";
-import { NavButton, Playback, PlaylistSelection } from "./components";
+import { Displays, NavButton, Playback, PlaylistSelection, Title } from "./components";
 
 const Container = styled.div<{ open?: boolean }>`
   position: absolute;
@@ -29,6 +28,7 @@ export default function Overlay() {
 				<PlaylistSelection/>
 				<Playback/>
 			</Container>
+			<Displays/>
 		</div>
 	);
 
