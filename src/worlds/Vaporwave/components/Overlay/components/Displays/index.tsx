@@ -39,12 +39,13 @@ const Content = styled.div<{ color: string, bgColor: string, opacity: number }>`
   transition: opacity 2s;
 `;
 
-const Exit = styled.p`
+const Exit = styled.div`
   position: relative;
   top: 10px;
   left: 45%;
   font-weight: bold;
   cursor: pointer;
+  padding: 10px;
 `;
 
 const Header = styled.h4`
@@ -66,7 +67,6 @@ const Links = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-
 `;
 
 const Visit = styled.button<{ color: string, bgColor: string }>`
