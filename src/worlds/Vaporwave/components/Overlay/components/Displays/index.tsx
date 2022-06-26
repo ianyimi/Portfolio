@@ -62,6 +62,13 @@ const Description = styled.p`
   //border: 2px dashed green;
 `;
 
+const Links = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+`;
+
 const Visit = styled.button<{ color: string, bgColor: string }>`
   border-radius: 15px;
   border: none;
@@ -73,6 +80,7 @@ const Visit = styled.button<{ color: string, bgColor: string }>`
   font-family: Thunderstorm;
   font-size: 1em;
   cursor: pointer;
+  margin: 0 5px 0 5px;
 `;
 
 export default function Display() {
@@ -103,13 +111,22 @@ export default function Display() {
 				<Exit onClick={() => ( setDisplay( null ) )}>X</Exit>
 				<Header>{Works[ display ].header}</Header>
 				<Description>{Works[ display ].desc}</Description>
-				{Works[ display ].url !== "" && <Visit
-					onClick={visit}
-					color={playlist.palette[ playlist.backgroundColorIndex ]}
-					bgColor={playlist.palette[ playlist.mainColorIndex ]}
-				>
-          Visit
-				</Visit>}
+				<Links>
+					{Works[ display ].url !== "" && <Visit
+						onClick={visit}
+						color={playlist.palette[ playlist.backgroundColorIndex ]}
+						bgColor={playlist.palette[ playlist.mainColorIndex ]}
+					>
+            Visit
+					</Visit>}
+					{Works[ display ].os !== "" && <Visit
+						onClick={visit}
+						color={playlist.palette[ playlist.backgroundColorIndex ]}
+						bgColor={playlist.palette[ playlist.mainColorIndex ]}
+					>
+            Opensea
+					</Visit>}
+				</Links>
 			</Content>
 		</Container>
 	);
