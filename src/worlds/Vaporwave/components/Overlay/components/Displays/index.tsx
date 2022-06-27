@@ -22,7 +22,7 @@ const Container = styled.div`
   height: 100vh;
   justify-content: center;
   align-items: center;
-  z-index: 3;
+  z-index: 5;
 `;
 
 const Content = styled.div<{ color: string, bgColor: string, opacity: number }>`

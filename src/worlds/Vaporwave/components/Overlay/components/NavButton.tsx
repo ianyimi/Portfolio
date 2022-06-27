@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef } from "react";
 
 const Button = styled.button`
   position: absolute;
@@ -11,7 +11,7 @@ const Button = styled.button`
   border: none;
   color: white;
   padding: 0.5rem;
-  z-index: 2;
+  z-index: 3;
   //border: 2px dashed blue;
   cursor: pointer;
 
@@ -50,27 +50,38 @@ const Button = styled.button`
 export default function NavButton( props: { open: boolean, setOpen: Dispatch<SetStateAction<boolean>> } ) {
 
 	const { open, setOpen } = props;
+	const isMounted = useRef( false );
 
-	function onClick() {
+	console.log( open );
 
-		const rotations = document.querySelectorAll( ".rotate" );
-		const translations = document.querySelectorAll( ".translate" );
-		translations.forEach( translate => {
+	useEffect( () => {
 
-			translate.classList.toggle( "open" );
+		if ( isMounted.current ) {
 
-		} );
-		rotations.forEach( rotate => {
+			const rotations = document.querySelectorAll( ".rotate" );
+			const translations = document.querySelectorAll( ".translate" );
+			translations.forEach( translate => {
 
-			rotate.classList.toggle( "open" );
+				translate.classList.toggle( "open" );
 
-		} );
-		setOpen( ! open );
+			} );
+			rotations.forEach( rotate => {
 
-	}
+				rotate.classList.toggle( "open" );
+
+			} );
+
+		} else {
+
+			isMounted.current = true;
+			return;
+
+		}
+
+	}, [ open ] );
 
 	return (
-		<Button onClick={onClick}>
+		<Button onClick={() => setOpen( ! open )}>
 			<svg viewBox="-50 -40 100 80" width="50" height="40">
 				<defs>
 					<path id="line" fill="none" stroke="currentColor" strokeWidth="15" strokeLinecap="round"
