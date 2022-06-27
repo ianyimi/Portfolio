@@ -4,8 +4,12 @@ const FONT = "https://dqeczc7c9n9n1.cloudfront.net/fonts/Thunderstorm.otf";
 
 export const globalStyles = css`
   @font-face {
-    font-family: 'Thunderstorm';
-    src: url("https://dqeczc7c9n9n1.cloudfront.net/fonts/Thunderstorm.otf") format('opentype');
+    font-family: "Thunderstorm";
+    src: url("https://dqeczc7c9n9n1.cloudfront.net/fonts/Thunderstorm.otf") format("opentype");
+  }
+  @font-face {
+    font-family: "Bitmap";
+    src: url("https://dqeczc7c9n9n1.cloudfront.net/fonts/bitmap.otf") format("opentype");
   }
 
   html,

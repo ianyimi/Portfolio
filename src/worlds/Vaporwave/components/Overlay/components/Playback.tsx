@@ -3,7 +3,7 @@ import { useStore } from "utils/store";
 import shallow from "zustand/shallow";
 
 const Credits = styled.p`
-  font-family: Thunderstorm;
+  font-family: Bitmap;
   font-size: 1em;
   text-align: center;
   color: white;
