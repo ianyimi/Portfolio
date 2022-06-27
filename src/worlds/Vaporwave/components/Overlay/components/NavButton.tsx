@@ -52,8 +52,6 @@ export default function NavButton( props: { open: boolean, setOpen: Dispatch<Set
 	const { open, setOpen } = props;
 	const isMounted = useRef( false );
 
-	console.log( open );
-
 	useEffect( () => {
 
 		if ( isMounted.current ) {

@@ -27,36 +27,18 @@ export default function Index() {
 		type: "Static"
 	} ) );
 	const speed = useRef( 1.5 );
-	const targetSpeed = useRef( 1.5 );
-	const setSpeed = useRef( 0 );
 
 	const limiter = useLimiter( 30 );
 	useFrame( ( { clock }, delta ) => {
 
-		if ( ! limiter.isReady || ! terrain1Ref.current || ! terrain2Ref.current || ! speed.current || ! targetSpeed.current ) return;
+		if ( ! limiter.isReady || ! terrain1Ref.current || ! terrain2Ref.current || ! speed.current ) return;
 		const data = aa?.getFrequencyData();
 		const volume = getVolume();
 		const variable = playlist.id === "beenTurnt" ? data ? data[ 0 ] / 255 : 0 : volume;
-		if ( setSpeed.current === 0 ) {
 
-			targetSpeed.current = variable > 0.6 ?
-				0.5 - 0.25 * variable : variable > 0.3 ?
-					1 : 1.5;
-
-		}
-
-		if ( targetSpeed.current < speed.current && speed.current - targetSpeed.current > 0.1 ) {
-
-			speed.current -= 0.05;
-
-		} else if ( targetSpeed.current > speed.current && targetSpeed.current - speed.current > 0.1 ) {
-
-			speed.current += 0.05;
-
-		}
-
-		// Setting how often to change speed
-		setSpeed.current = ( setSpeed.current + 1 ) % 2;
+		speed.current = variable > 0.6 ?
+			0.5 - 0.25 * variable : variable > 0.3 ?
+				1 : 1.5;
 
 		// @ts-ignore
 		terrain1Ref.current.position.z += delta / ( 5 * ( speed.current ) );
