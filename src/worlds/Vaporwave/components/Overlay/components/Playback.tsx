@@ -45,12 +45,16 @@ function getCredits( src: string ): string[] {
 		.replaceAll( "+", " " )
 		.replaceAll( "%26", "&" )
 		.replaceAll( "%2C", "," )
-		.replaceAll( "%E2%80%99", "'" );
+		.replaceAll( "%E2%80%99", "'" )
+		.replaceAll( "%C2%BF", "¿" )
+		.replaceAll( "%C3%A9", "é" );
 	const song = credits[ 1 ]
 		.replaceAll( "+", " " )
 		.replaceAll( "%26", "&" )
 		.replaceAll( "%2C", "," )
-		.replaceAll( "%E2%80%99", "'" );
+		.replaceAll( "%E2%80%99", "'" )
+		.replaceAll( "%C2%BF", "¿" )
+		.replaceAll( "%C3%A9", "é" );
 	return [ song, artists ];
 
 }
