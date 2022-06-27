@@ -18,6 +18,7 @@ export type StoreState = {
 	setPaused: ( paused: boolean ) => void,
 	aa: AudioAnalyser | undefined,
 	setAa: ( aa: AudioAnalyser ) => void,
+	getSpeed: () => number,
 	getVolume: () => number,
 	hexToVec3: ( color: string ) => Vector3
 }
@@ -66,6 +67,17 @@ export const useStore = create<StoreState>()( ( set: any, get: any ) => ( {
 		}
 
 		return sum / 100000;
+
+	},
+	getSpeed: () => {
+
+		const data = get().aa?.getFrequencyData();
+		const volume = get().getVolume();
+		const variable = get().playlist.id === "beenTurnt" ? data ? data[ 0 ] / 255 : 0 : volume;
+
+		return variable > 0.6 ?
+			0.5 - 0.15 * variable : variable > 0.3 ?
+				1 : 1.5;
 
 	},
 	hexToVec3: ( hex: string ) => {

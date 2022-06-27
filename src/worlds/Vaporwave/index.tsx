@@ -3,7 +3,6 @@ import { Physics } from "@react-three/cannon";
 import { Loader } from "@react-three/drei";
 import Camera from "../components/Camera";
 import Landscape from "./components/Landscape";
-import Works from "./components/Works";
 import Overlay from "./components/Overlay";
 import { Suspense } from "react";
 
@@ -18,7 +17,6 @@ export default function Vaporwave() {
 					<Suspense fallback={null}>
 						<Camera/>
 						<Landscape/>
-						<Works/>
 					</Suspense>
 					{/*<PostProcessing/>*/}
 					{/*</Debug>*/}

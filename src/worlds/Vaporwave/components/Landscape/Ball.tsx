@@ -1,5 +1,5 @@
+import React, { useEffect, useRef } from "react";
 import { useSphere } from "@react-three/cannon";
-import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { useLimiter } from "spacesvr";
 import { CollideEvent } from "@react-three/cannon/dist/setup";
@@ -9,14 +9,14 @@ import { useStore } from "utils/store";
 import shallow from "zustand/shallow";
 
 type BallProps = {
-	position?: [x: number, y: number, z: number],
+	pos?: [x: number, y: number, z: number],
 	texture: THREE.Texture,
 	index: number,
 }
 
-export default function Ball( props: BallProps ) {
+const Ball = React.forwardRef( ( props: BallProps, ref ) => {
 
-	const { position = [ 0, 0, 0 ], texture, index } = props;
+	const { pos = [ 0, 0, 0 ], texture, index } = props;
 	const { display, setDisplay } = useStore( state => ( {
 		display: state.display,
 		setDisplay: state.setDisplay
@@ -29,7 +29,7 @@ export default function Ball( props: BallProps ) {
 	const [ collider, api ] = useSphere( () => ( {
 		args: 0.015,
 		mass: 1,
-		position: [ position[ 0 ], position[ 1 ], position[ 2 ] ],
+		position: [ pos[ 0 ], pos[ 1 ], pos[ 2 ] ],
 		linearFactor: [ 0, 1, 1 ],
 		linearDamping: 0,
 		onCollide: bounce
@@ -38,7 +38,7 @@ export default function Ball( props: BallProps ) {
 	function bounce( e: CollideEvent ): void {
 
 		if ( ! api ) return;
-		api.applyImpulse( [ 0, position[ 1 ], 0 ], [ 0, - 1, 0 ] );
+		api.applyImpulse( [ 0, pos[ 1 ], 0 ], [ 0, - 1, 0 ] );
 
 	}
 
@@ -46,25 +46,15 @@ export default function Ball( props: BallProps ) {
 	useEffect( () => {
 
 		if ( ! collider.current || ! api ) return;
-		api.applyForce( [ 0, 0, 10 ], [ 0, 0, 1 ] );
+		// api.applyForce( [ 0, 0, 10 ], [ 0, 0, 1 ] );
 		api.position.subscribe( ( p ) => cPos.current.set( p[ 0 ], p[ 1 ], p[ 2 ] ) );
 
 	}, [ collider ] );
 
 	const limiter = useLimiter( 45 );
-	useFrame( ( { clock } ) => {
+	useFrame( ( { clock }, delta ) => {
 
 		if ( ! limiter.isReady( clock ) || ! collider.current || ! mesh.current || ! api || ! cPos.current ) return;
-
-		if ( cPos.current.z > 1.15 ) {
-
-			// Respawning balls after the roll past the camera
-			api.sleep();
-			api.position.set( position[ 0 ], position[ 1 ], - 1.25 );
-			api.wakeUp;
-			api.applyForce( [ 0, 0, 10 ], [ 0, 0, 1 ] );
-
-		}
 
 		mesh.current.position.lerp( cPos.current, 0.9 );
 		mesh.current.rotation.set( - clock.getElapsedTime() * 3, 0, 0 );
@@ -83,7 +73,8 @@ export default function Ball( props: BallProps ) {
 
 	return (
 		<group>
-			<group onClick={toggleDisplay}>
+			{/* @ts-ignore */}
+			<group ref={ref} onClick={toggleDisplay}>
 				<mesh ref={collider}>
 					<sphereBufferGeometry args={[ 0.015, 32, 32 ]}/>
 					<meshBasicMaterial map={texture} visible={false}/>
@@ -96,4 +87,6 @@ export default function Ball( props: BallProps ) {
 		</group>
 	);
 
-}
+} );
+
+export default Ball;
