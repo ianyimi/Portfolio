@@ -1,26 +1,28 @@
-import { AudioAnalyser, Vector3 } from "three";
+import { Vector3 } from "three";
 import { Playlist, playlists } from "../worlds/Vaporwave/utils/constants";
 import create from "zustand";
 import produce from "immer";
 import { MutableRefObject } from "react";
 
 export type StoreState = {
-	playlist: Playlist,
-	setPlaylist: ( playlist: Playlist ) => void,
-	setPalette: ( palette: string[] ) => void,
-	portal: MutableRefObject<HTMLElement> | undefined,
-	setPortal: ( portal: MutableRefObject<HTMLElement> ) => void,
-	display: number | null,
-	setDisplay: ( value: number | null ) => void,
-	audioSrc: string,
-	setAudioSrc: ( src: string ) => void,
-	paused: boolean,
-	setPaused: ( paused: boolean ) => void,
-	aa: AudioAnalyser | undefined,
-	setAa: ( aa: AudioAnalyser ) => void,
-	getSpeed: () => number,
-	getVolume: () => number,
-	hexToVec3: ( color: string ) => Vector3
+  playlist: Playlist,
+  setPlaylist: ( playlist: Playlist ) => void,
+  setPalette: ( palette: string[] ) => void,
+  portal: MutableRefObject<HTMLElement> | undefined,
+  setPortal: ( portal: MutableRefObject<HTMLElement> ) => void,
+  display: number | null,
+  setDisplay: ( value: number | null ) => void,
+  audioSrc: string,
+  setAudioSrc: ( src: string ) => void,
+  paused: boolean,
+  setPaused: ( paused: boolean ) => void,
+  aa: AnalyserNode | undefined,
+  setAa: ( aa: AnalyserNode ) => void,
+  audioData: Uint8Array,
+  updateAudioData: () => void,
+  getSpeed: () => number,
+  getVolume: () => number,
+  hexToVec3: ( color: string ) => Vector3
 }
 
 export const useStore = create<StoreState>()( ( set: any, get: any ) => ( {
@@ -52,13 +54,30 @@ export const useStore = create<StoreState>()( ( set: any, get: any ) => ( {
 		() => ( { paused: paused } )
 	),
 	aa: undefined,
-	setAa: ( aa: AudioAnalyser ) => set(
+	setAa: ( aa: AnalyserNode ) => set(
 		() => ( { aa: aa } )
 	),
+	audioData: new Uint8Array( 0 ),
+	updateAudioData: () => {
+
+		get().aa.getByteFrequencyData( get().audioData );
+
+	},
+	getSpeed: () => {
+
+		const data = get().audioData;
+		const volume = get().getVolume();
+		const variable = get().playlist.id === "beenTurnt" ? data ? data[ 0 ] / 255 : 0 : volume;
+
+		return variable > 0.6 ?
+			0.5 - 0.15 * variable : variable > 0.3 ?
+				1 : 1.5;
+
+	},
 	getVolume: () => {
 
-		if ( ! get().aa ) return 0;
-		const data = get().aa.getFrequencyData();
+		if ( ! get().aa || ! get().audioData ) return 0;
+		const data = get().audioData;
 		let sum = 0;
 		for ( const num of data ) {
 
@@ -67,17 +86,6 @@ export const useStore = create<StoreState>()( ( set: any, get: any ) => ( {
 		}
 
 		return sum / 100000;
-
-	},
-	getSpeed: () => {
-
-		const data = get().aa?.getFrequencyData();
-		const volume = get().getVolume();
-		const variable = get().playlist.id === "beenTurnt" ? data ? data[ 0 ] / 255 : 0 : volume;
-
-		return variable > 0.6 ?
-			0.5 - 0.15 * variable : variable > 0.3 ?
-				1 : 1.5;
 
 	},
 	hexToVec3: ( hex: string ) => {
@@ -102,7 +110,7 @@ function startPlaylist() {
 
 	};
 
-	const zeroPlaylist = playlists[ 2 ];
+	const zeroPlaylist = playlists[ 1 ];
 	const firstPlaylist = {
 		...zeroPlaylist,
 		palette: randomItem( zeroPlaylist.palettes )
