@@ -180,11 +180,12 @@ export const useParticleMaterial = (
 	shaderParams?: Partial<ShaderMaterialParameters>
 ) => {
 
-	const { playlist, aa, palette, hexToVec3 } = useStore( ( state ) => ( {
+	const { playlist, aa, palette, hexToVec3, getVolume } = useStore( ( state ) => ( {
 		playlist: state.playlist,
 		aa: state.aa,
 		palette: state.playlist.palette,
 		hexToVec3: state.hexToVec3,
+		getVolume: state.getVolume
 	} ), shallow );
 
 	return useMemo(
@@ -192,7 +193,7 @@ export const useParticleMaterial = (
 			new ShaderMaterial( {
 				uniforms: {
 					time: new Uniform( 0 ),
-					volume: new Uniform( aa?.getAverageFrequency() ),
+					volume: new Uniform( getVolume() ),
 					color: new Uniform( hexToVec3( palette[ playlist.mainColorIndex ] ) ),
 					fogColor: new Uniform( hexToVec3( palette[ playlist.backgroundColorIndex ] ) ),
 				},
