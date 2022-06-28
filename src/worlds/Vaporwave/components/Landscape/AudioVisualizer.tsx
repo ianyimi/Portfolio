@@ -8,12 +8,12 @@ import { useStore } from "utils/store";
 import shallow from "zustand/shallow";
 
 type VisualizerProps = {
-  barCount?: number,
-  barWidth?: number,
-  barHeight?: number,
-  reverse?: boolean,
-  radius?: number,
-  index: number
+	barCount?: number,
+	barWidth?: number,
+	barHeight?: number,
+	reverse?: boolean,
+	radius?: number,
+	index: number
 } & GroupProps
 
 export default function AudioVisualizer( props: VisualizerProps ) {
@@ -53,6 +53,8 @@ export default function AudioVisualizer( props: VisualizerProps ) {
 		);
 
 	}
+
+	console.log( aa );
 
 	const limiter = useLimiter( 45 );
 	useFrame( ( { clock } ) => {

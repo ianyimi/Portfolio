@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { GroupProps, useFrame, useThree } from "@react-three/fiber";
+import { Camera, GroupProps, useFrame, useThree } from "@react-three/fiber";
 import { Audio, AudioAnalyser } from "three";
 import { playlists } from "./utils/constants";
 import { useLimiter } from "spacesvr";
@@ -110,13 +110,14 @@ export default function Sound( props: SoundProps ) {
 		const url = songs.splice( urlIndex, 1 )[ 0 ];
 		setAudioSrc( url );
 
+		createAudio( url, camera, setAa );
+
 		const setupAudio = () => {
 
 			if ( ! audio.paused && ! speaker ) {
 
 				audio.src = url;
 
-				createAudio( url, setAa );
 
 				// const listener = new AudioListener();
 				// camera.add( listener );
@@ -178,23 +179,18 @@ export default function Sound( props: SoundProps ) {
 
 }
 
-const createAudio = async ( url: string, setAa: ( aa: AudioAnalyser | AnalyserNode ) => void ) => {
+const createAudio = async ( url: string, camera: Camera, setAa: ( aa: AudioAnalyser | AnalyserNode ) => void ) => {
 
 	const res = await fetch( url );
 	const buffer = await res.arrayBuffer();
 	// @ts-ignore
 	const context = new ( window.AudioContext || window.webkitAudioContext )();
-	const analyser = context.createAnalyser();
-	analyser.fftSize = 2048;
+	const analyser = new AnalyserNode( context, { fftSize: 2048 } );
 	const data = new Uint8Array( analyser.frequencyBinCount );
 	const source = context.createBufferSource();
 	source.buffer = await new Promise( ( res ) => context.decodeAudioData( buffer, res ) );
 	source.loop = false;
-	const gainNode = context.createGain();
-	gainNode.gain.value = 1;
-	gainNode.connect( context.destination );
 	source.connect( analyser );
-	analyser.connect( gainNode );
 	console.log( context );
 
 	console.log( analyser );
@@ -209,14 +205,9 @@ const createAudio = async ( url: string, setAa: ( aa: AudioAnalyser | AnalyserNo
 			analyser.getByteFrequencyData( data );
 
 		},
-		setGain( level: number ) {
-
-			gainNode.gain.setValueAtTime( ( state.gain = level ), context.currentTime );
-
-		},
 	};
 
-	return state;
+	// return state;
 
 };
 
