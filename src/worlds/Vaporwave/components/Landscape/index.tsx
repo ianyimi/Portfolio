@@ -25,7 +25,7 @@ const BALL_START_POSITIONS: [x: number, y: number, z: number][] = [
 	[ - 0.1, 0.125, - 3.25 ]
 ];
 const BALL_SPEED_FACTOR = 0.0015;
-const BALL_RESPAWN_POINT = 0.0015;
+const BALL_RESPAWN_POINT = 1.15;
 
 export default function Index() {
 
@@ -105,7 +105,7 @@ export default function Index() {
 			// 	setRender( false );
 			//
 			// }
-			console.log( terrain1Ref.current.position.z );
+			console.log( terrain2Ref.current.position.z );
 			// @ts-ignore
 			// console.log( terrain2Ref.current.position.z );
 
@@ -125,7 +125,7 @@ export default function Index() {
 	useFrame( ( { clock }, delta ) => {
 
 		if (
-			! limiter.isReady ||
+			! limiter.isReady( clock ) ||
       sleep.current ||
       ! terrain1Ref.current ||
       ! terrain2Ref.current ||
@@ -138,8 +138,8 @@ export default function Index() {
 		const speed = getSpeed();
 
 		// @ts-ignore
-		t1Pos.current += delta / ( 5 * speed );
-		t2Pos.current += delta / ( 5 * speed );
+		t1Pos.current += delta / speed;
+		t2Pos.current += delta / speed;
 
 		// console.log( terrain1Ref.current.position.z );
 
@@ -184,7 +184,7 @@ export default function Index() {
 			const ball = ballRefs[ i ];
 
 			// @ts-ignore
-			ball.current.position.z += delta / ( 5 * speed ) - BALL_SPEED_FACTOR;
+			ball.current.position.z += ( delta / speed ) - BALL_SPEED_FACTOR;
 
 			// @ts-ignore
 			if ( ball.current.position.z + BALL_START_POSITIONS[ i ][ 2 ] >= BALL_RESPAWN_POINT ) {

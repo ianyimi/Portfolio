@@ -5,22 +5,22 @@ import produce from "immer";
 import { MutableRefObject } from "react";
 
 export type StoreState = {
-	playlist: Playlist,
-	setPlaylist: ( playlist: Playlist ) => void,
-	setPalette: ( palette: string[] ) => void,
-	portal: MutableRefObject<HTMLElement> | undefined,
-	setPortal: ( portal: MutableRefObject<HTMLElement> ) => void,
-	display: number | null,
-	setDisplay: ( value: number | null ) => void,
-	audioSrc: string,
-	setAudioSrc: ( src: string ) => void,
-	paused: boolean,
-	setPaused: ( paused: boolean ) => void,
-	aa: AudioAnalyser | undefined,
-	setAa: ( aa: AudioAnalyser ) => void,
-	getSpeed: () => number,
-	getVolume: () => number,
-	hexToVec3: ( color: string ) => Vector3
+  playlist: Playlist,
+  setPlaylist: ( playlist: Playlist ) => void,
+  setPalette: ( palette: string[] ) => void,
+  portal: MutableRefObject<HTMLElement> | undefined,
+  setPortal: ( portal: MutableRefObject<HTMLElement> ) => void,
+  display: number | null,
+  setDisplay: ( value: number | null ) => void,
+  audioSrc: string,
+  setAudioSrc: ( src: string ) => void,
+  paused: boolean,
+  setPaused: ( paused: boolean ) => void,
+  aa: AudioAnalyser | undefined,
+  setAa: ( aa: AudioAnalyser ) => void,
+  getSpeed: () => number,
+  getVolume: () => number,
+  hexToVec3: ( color: string ) => Vector3
 }
 
 export const useStore = create<StoreState>()( ( set: any, get: any ) => ( {
@@ -102,7 +102,7 @@ function startPlaylist() {
 
 	};
 
-	const zeroPlaylist = playlists[ 2 ];
+	const zeroPlaylist = playlists[ 1 ];
 	const firstPlaylist = {
 		...zeroPlaylist,
 		palette: randomItem( zeroPlaylist.palettes )
