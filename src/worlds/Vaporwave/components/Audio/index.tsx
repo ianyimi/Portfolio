@@ -113,7 +113,6 @@ export default function Sound( props: SoundProps ) {
 		setEnd( false );
 		setPaused( false );
 		clicked.current = true;
-		console.log( "end" );
 
 	}, [ end ] );
 
@@ -208,7 +207,7 @@ export default function Sound( props: SoundProps ) {
 
 }
 
-const createAudio = async ( url: string, camera: Camera, setAa: ( aa: AudioAnalyser | AnalyserNode ) => void ) => {
+const createAudio = async ( url: string, setAa: ( aa: AudioAnalyser | AnalyserNode ) => void ) => {
 
 	const res = await fetch( url );
 	const buffer = await res.arrayBuffer();
