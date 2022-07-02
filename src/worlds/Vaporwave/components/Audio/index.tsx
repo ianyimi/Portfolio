@@ -125,23 +125,35 @@ export default function Sound( props: SoundProps ) {
 		setAudioSrc( url );
 
 		// createAudio( url, camera, setAa );
-		// api.load( url );
+		api.load( url );
 
-		const setupAudio = () => {
+		const setupAudio = async () => {
 
 			if ( ! audio.paused && ! speaker ) {
 
 				// audio.src = url;
 
+				const res = await fetch( url );
+				const buffer = await res.arrayBuffer();
+				// @ts-ignore
+				const context = new ( window.AudioContext || window.webkitAudioContext )();
+				const analyser = new AnalyserNode( context, { fftSize: 2048 } );
+				const data = new Uint8Array( analyser.frequencyBinCount );
+				const source = context.createBufferSource();
+				source.buffer = await new Promise( ( res ) => context.decodeAudioData( buffer, res ) );
+				source.loop = false;
 
 				const listener = new THREE.AudioListener();
 				camera.add( listener );
 
 				const speak = new Audio( listener );
-				speak.setMediaElementSource( audio );
+				speak.setNodeSource( source );
 				speak.setVolume( volume );
 
-				setAa( new AudioAnalyser( speak, fftSize ) );
+				const aa = new AudioAnalyser( speak, fftSize );
+				aa.analyser = analyser;
+
+				setAa( aa );
 
 				setSpeaker( speak );
 
@@ -196,50 +208,50 @@ export default function Sound( props: SoundProps ) {
 
 }
 
-// const createAudio = async ( url: string, camera: Camera, setAa: ( aa: AudioAnalyser | AnalyserNode ) => void ) => {
-//
-// 	const res = await fetch( url );
-// 	const buffer = await res.arrayBuffer();
-// 	// @ts-ignore
-// 	const context = new ( window.AudioContext || window.webkitAudioContext )();
-// 	const analyser = new AnalyserNode( context, { fftSize: 2048 } );
-// 	const data = new Uint8Array( analyser.frequencyBinCount );
-// 	const source = context.createBufferSource();
-// 	source.buffer = await new Promise( ( res ) => context.decodeAudioData( buffer, res ) );
-// 	source.loop = false;
-// 	const gainNode = context.createGain();
-// 	gainNode.gain.value = 1;
-// 	gainNode.connect( context.destination );
-// 	source.connect( analyser );
-// 	analyser.connect( gainNode );
-//
-// 	setAa( await source && analyser );
-//
-// 	const state = {
-// 		source,
-// 		data,
-// 		gain: 1,
-// 		volume: 0,
-// 		avg: 0,
-// 		update: () => {
-//
-// 			let value = 0;
-// 			analyser.getByteFrequencyData( data );
-// 			for ( let i = 0; i < data.length; i ++ ) value += data[ i ];
-// 			state.volume = value;
-// 			state.avg = value / data.length;
-//
-// 		},
-// 		setGain( level: number ) {
-//
-// 			gainNode.gain.setValueAtTime( ( state.gain = level ), context.currentTime );
-//
-// 		},
-// 	};
-//
-// 	// return state;
-//
-// };
+const createAudio = async ( url: string, camera: Camera, setAa: ( aa: AudioAnalyser | AnalyserNode ) => void ) => {
+
+	const res = await fetch( url );
+	const buffer = await res.arrayBuffer();
+	// @ts-ignore
+	const context = new ( window.AudioContext || window.webkitAudioContext )();
+	const analyser = new AnalyserNode( context, { fftSize: 2048 } );
+	const data = new Uint8Array( analyser.frequencyBinCount );
+	const source = context.createBufferSource();
+	source.buffer = await new Promise( ( res ) => context.decodeAudioData( buffer, res ) );
+	source.loop = false;
+	const gainNode = context.createGain();
+	gainNode.gain.value = 1;
+	gainNode.connect( context.destination );
+	source.connect( analyser );
+	analyser.connect( gainNode );
+
+	setAa( await source && analyser );
+
+	const state = {
+		source,
+		data,
+		gain: 1,
+		volume: 0,
+		avg: 0,
+		update: () => {
+
+			let value = 0;
+			analyser.getByteFrequencyData( data );
+			for ( let i = 0; i < data.length; i ++ ) value += data[ i ];
+			state.volume = value;
+			state.avg = value / data.length;
+
+		},
+		setGain( level: number ) {
+
+			gainNode.gain.setValueAtTime( ( state.gain = level ), context.currentTime );
+
+		},
+	};
+
+	// return state;
+
+};
 
 // const mockData = () => ( { signal: false, avg: 0, gain: 1, data: [] } );
 
