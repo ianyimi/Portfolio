@@ -6,7 +6,6 @@ import { playlists } from "./utils/constants";
 import { useLimiter } from "spacesvr";
 import { useStore } from "utils/store";
 import shallow from "zustand/shallow";
-import { useAudioStore } from "./utils/store";
 
 type SoundProps = {
   volume?: number;
@@ -52,7 +51,7 @@ export default function Sound( props: SoundProps ) {
 	const [ controlLock, setControlLock ] = useState( false );
 
 	// @ts-ignore
-	const api = useAudioStore( state => state.api );
+	// const api = useAudioStore( state => state.api );
 
 	const audio = useMemo( () => {
 
@@ -124,33 +123,36 @@ export default function Sound( props: SoundProps ) {
 		setAudioSrc( url );
 
 		// createAudio( url, camera, setAa );
-		api.load( url );
+		// api.load( url );
 
 		const setupAudio = async () => {
 
 			if ( ! audio.paused && ! speaker ) {
 
-				// audio.src = url;
+				audio.src = url;
 
-				const res = await fetch( url );
-				const buffer = await res.arrayBuffer();
+				// const res = await fetch( url );
+				// const buffer = await res.arrayBuffer();
 				// @ts-ignore
-				const context = new ( window.AudioContext || window.webkitAudioContext )();
-				const analyser = new AnalyserNode( context, { fftSize: 2048 } );
-				const data = new Uint8Array( analyser.frequencyBinCount );
-				const source = context.createBufferSource();
-				source.buffer = await new Promise( ( res ) => context.decodeAudioData( buffer, res ) );
-				source.loop = false;
+				// const context = new ( window.AudioContext || window.webkitAudioContext )();
+				// const source = context.createMediaElementSource( audio );
+				// const source = context.createBufferSource();
+				// source.buffer = await new Promise( ( res ) => context.decodeAudioData( buffer, res ) );
+				// const analyser = new AnalyserNode( context, { fftSize: 2048 } );
+				// const data = new Uint8Array( analyser.frequencyBinCount );
 
 				const listener = new THREE.AudioListener();
 				camera.add( listener );
 
 				const speak = new Audio( listener );
-				speak.setNodeSource( source );
+				// speak.setNodeSource( source );
+				// source.loop = false;
+				speak.setMediaElementSource( audio );
 				speak.setVolume( volume );
+				console.log( speak );
 
 				const aa = new AudioAnalyser( speak, fftSize );
-				aa.analyser = analyser;
+				// aa.analyser = analyser;
 
 				setAa( aa );
 
@@ -173,9 +175,11 @@ export default function Sound( props: SoundProps ) {
 			audio.setAttribute( "src", url );
 			audio.play().then( () => setupAudio() );
 			document.addEventListener( "click", playAudio );
+			document.addEventListener( "touchstart", playAudio );
 			return () => {
 
 				document.removeEventListener( "click", playAudio );
+				document.removeEventListener( "touchstart", playAudio );
 
 			};
 

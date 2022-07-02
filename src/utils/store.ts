@@ -60,6 +60,8 @@ export const useStore = create<StoreState>()( ( set: any, get: any ) => {
 		getSpeed: () => {
 
 			if ( ! get().aa ) return 1.5;
+			// const data = new Uint8Array( get().aa.frequencyBinCount );
+			// get().aa.getByteFrequencyData( data );
 			const data = get().aa.getFrequencyData();
 			const volume = get().getVolume();
 			const variable = get().playlist.id === "beenTurnt" ? data ? data[ 0 ] / 255 : 0 : volume;
@@ -72,6 +74,8 @@ export const useStore = create<StoreState>()( ( set: any, get: any ) => {
 		getVolume: () => {
 
 			if ( ! get().aa ) return 0;
+			// const data = new Uint8Array( get().aa.frequencyBinCount );
+			// get().aa.getByteFrequencyData( data );
 			const data = get().aa.getFrequencyData();
 			let sum = 0;
 			for ( const num of data ) {

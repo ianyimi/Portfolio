@@ -52,11 +52,20 @@ export default function AudioVisualizer( props: VisualizerProps ) {
 
 	}
 
+	// const audioData = useMemo( () => {
+	//
+	// 	if ( ! aa ) return;
+	// 	return new Uint8Array( aa?.frequencyBinCount );
+	//
+	// }, [ aa ] );
 	const limiter = useLimiter( 45 );
 	useFrame( ( { clock } ) => {
 
 		if ( ! limiter.isReady( clock ) || ! group1.current || ! group2.current || ! aa ) return;
+
+		// aa.getByteFrequencyData( audioData );
 		const audioData = aa.getFrequencyData();
+		console.log( audioData[ 0 ] );
 		const step = audioData.length / cubes.length;
 		for ( let i = 0; i < cubes.length; ++ i ) {
 
