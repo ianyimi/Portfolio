@@ -21,7 +21,7 @@ export default function Sound( props: SoundProps ) {
 		...rest
 	} = props;
 	const clicked = useRef( false );
-
+	const isMounted = useRef( false );
 	const { playlist, setPalette, setAudioSrc, setAa, paused, setPaused } = useStore( ( state: any ) => ( {
 		playlist: state.playlist,
 		setPalette: state.setPalette,
@@ -53,6 +53,8 @@ export default function Sound( props: SoundProps ) {
 
 	// @ts-ignore
 	const api = useAudioStore( state => state.api );
+
+	console.log( clicked.current );
 
 	const audio = useMemo( () => {
 
@@ -93,13 +95,14 @@ export default function Sound( props: SoundProps ) {
 
 	useEffect( () => {
 
+		if ( ! end || ! isMounted.current ) return;
+
 		if ( songs.length === 0 ) { // @ts-ignore
 
 			songs = JSON.parse( JSON.stringify( playlists[ `${playlist.id}` ] ) );
 
 		}
 
-		if ( ! end ) return;
 		setUrlIndex( newUrlIndex() );
 		setPalette( newPalette() );
 		setEnd( false );
@@ -116,7 +119,7 @@ export default function Sound( props: SoundProps ) {
 		setAudioSrc( url );
 
 		// createAudio( url, camera, setAa );
-		// api.load( url );
+		api.load( url );
 
 		const setupAudio = () => {
 
@@ -142,6 +145,7 @@ export default function Sound( props: SoundProps ) {
 
 		const playAudio = () => {
 
+			console.log( clicked.current );
 			if ( paused || clicked.current ) return;
 			audio.play().then( () => setupAudio() );
 			clicked.current = true;
