@@ -3,13 +3,13 @@ import { useFrame } from "@react-three/fiber";
 import React, { useRef } from "react";
 import Terrain from "./Terrain";
 import { usePlane } from "@react-three/cannon";
-import Audio from "../Audio";
 import * as THREE from "three";
 import Lights from "./Lights";
 import { useStore } from "utils/store";
 import shallow from "zustand/shallow";
 import Ball from "./Ball";
 import { useTexture } from "@react-three/drei";
+import Audio from "../Audio";
 
 const TEXTURES = [
 	"https://dqeczc7c9n9n1.cloudfront.net/images/marble1.jpg",
@@ -60,12 +60,12 @@ export default function Index() {
 
 		if (
 			! limiter.isReady ||
-			! terrain1Ref.current ||
-			! terrain2Ref.current ||
-			! ball.current ||
-			! ball1.current ||
-			! ball2.current ||
-			! ball3.current
+      ! terrain1Ref.current ||
+      ! terrain2Ref.current ||
+      ! ball.current ||
+      ! ball1.current ||
+      ! ball2.current ||
+      ! ball3.current
 		) return;
 
 		const speed = getSpeed();

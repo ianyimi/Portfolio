@@ -8,12 +8,12 @@ import { useStore } from "utils/store";
 import shallow from "zustand/shallow";
 
 type VisualizerProps = {
-	barCount?: number,
-	barWidth?: number,
-	barHeight?: number,
-	reverse?: boolean,
-	radius?: number,
-	index: number
+  barCount?: number,
+  barWidth?: number,
+  barHeight?: number,
+  reverse?: boolean,
+  radius?: number,
+  index: number
 } & GroupProps
 
 export default function AudioVisualizer( props: VisualizerProps ) {
@@ -30,11 +30,9 @@ export default function AudioVisualizer( props: VisualizerProps ) {
 	const group1 = useRef();
 	const group2 = useRef();
 	const cubes: ReactNode[] = [];
-	const { playlist, aa, audioData, updateAudioData } = useStore( ( state ) => ( {
+	const { playlist, aa } = useStore( ( state ) => ( {
 		playlist: state.playlist,
 		aa: state.aa,
-		audioData: state.audioData,
-		updateAudioData: state.updateAudioData
 	} ), shallow );
 
 	for ( let i = 0; i < barCount; ++ i ) {
@@ -54,14 +52,11 @@ export default function AudioVisualizer( props: VisualizerProps ) {
 
 	}
 
-	console.log( aa );
-
 	const limiter = useLimiter( 45 );
 	useFrame( ( { clock } ) => {
 
 		if ( ! limiter.isReady( clock ) || ! group1.current || ! group2.current || ! aa ) return;
-		updateAudioData();
-		// console.log( audioData[ 0 ] );
+		const audioData = aa.getFrequencyData();
 		const step = audioData.length / cubes.length;
 		for ( let i = 0; i < cubes.length; ++ i ) {
 

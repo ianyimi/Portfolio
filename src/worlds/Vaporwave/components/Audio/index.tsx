@@ -1,10 +1,12 @@
-import { useEffect, useMemo, useState } from "react";
-import { Camera, GroupProps, useFrame, useThree } from "@react-three/fiber";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { GroupProps, useFrame, useThree } from "@react-three/fiber";
+import * as THREE from "three";
 import { Audio, AudioAnalyser } from "three";
 import { playlists } from "./utils/constants";
 import { useLimiter } from "spacesvr";
 import { useStore } from "utils/store";
 import shallow from "zustand/shallow";
+import { useAudioStore } from "./utils/store";
 
 type SoundProps = {
   volume?: number;
@@ -18,6 +20,7 @@ export default function Sound( props: SoundProps ) {
 		fftSize = 128,
 		...rest
 	} = props;
+	const clicked = useRef( false );
 
 	const { playlist, setPalette, setAudioSrc, setAa, paused, setPaused } = useStore( ( state: any ) => ( {
 		playlist: state.playlist,
@@ -27,7 +30,7 @@ export default function Sound( props: SoundProps ) {
 		paused: state.paused,
 		setPaused: state.setPaused,
 	} ), shallow );
-
+	const camera = useThree( state => state.camera );
 	const newPalette = (): string[] => {
 
 		const palettes = playlist.palettes;
@@ -45,10 +48,11 @@ export default function Sound( props: SoundProps ) {
 
 	const [ speaker, setSpeaker ] = useState<Audio>();
 	const [ urlIndex, setUrlIndex ] = useState<number>( newUrlIndex );
-	const camera = useThree( ( state ) => state.camera );
 	const [ end, setEnd ] = useState( false );
 	const [ controlLock, setControlLock ] = useState( false );
 
+	// @ts-ignore
+	const api = useAudioStore( state => state.api );
 
 	const audio = useMemo( () => {
 
@@ -100,6 +104,7 @@ export default function Sound( props: SoundProps ) {
 		setPalette( newPalette() );
 		setEnd( false );
 		setPaused( false );
+		clicked.current = true;
 
 	}, [ end ] );
 
@@ -110,25 +115,26 @@ export default function Sound( props: SoundProps ) {
 		const url = songs.splice( urlIndex, 1 )[ 0 ];
 		setAudioSrc( url );
 
-		createAudio( url, camera, setAa );
+		// createAudio( url, camera, setAa );
+		// api.load( url );
 
 		const setupAudio = () => {
 
 			if ( ! audio.paused && ! speaker ) {
 
-				audio.src = url;
+				// audio.src = url;
 
 
-				// const listener = new AudioListener();
-				// camera.add( listener );
-				//
-				// const speak = new Audio( listener );
-				// speak.setMediaElementSource( audio );
-				// speak.setVolume( volume );
-				//
-				// setAa( new AudioAnalyser( speak, fftSize ) );
-				//
-				// setSpeaker( speak );
+				const listener = new THREE.AudioListener();
+				camera.add( listener );
+
+				const speak = new Audio( listener );
+				speak.setMediaElementSource( audio );
+				speak.setVolume( volume );
+
+				setAa( new AudioAnalyser( speak, fftSize ) );
+
+				setSpeaker( speak );
 
 			}
 
@@ -136,8 +142,9 @@ export default function Sound( props: SoundProps ) {
 
 		const playAudio = () => {
 
-			if ( paused ) return;
+			if ( paused || clicked.current ) return;
 			audio.play().then( () => setupAudio() );
+			clicked.current = true;
 
 		};
 
@@ -171,43 +178,115 @@ export default function Sound( props: SoundProps ) {
 
 	} );
 
+
 	return (
 		<group name="spacesvr-audio" {...rest}>
-			{speaker && <primitive object={speaker}/>}
+			{/*{speaker && <primitive object={speaker}/>}*/}
 		</group>
 	);
 
 }
 
-const createAudio = async ( url: string, camera: Camera, setAa: ( aa: AudioAnalyser | AnalyserNode ) => void ) => {
+// const createAudio = async ( url: string, camera: Camera, setAa: ( aa: AudioAnalyser | AnalyserNode ) => void ) => {
+//
+// 	const res = await fetch( url );
+// 	const buffer = await res.arrayBuffer();
+// 	// @ts-ignore
+// 	const context = new ( window.AudioContext || window.webkitAudioContext )();
+// 	const analyser = new AnalyserNode( context, { fftSize: 2048 } );
+// 	const data = new Uint8Array( analyser.frequencyBinCount );
+// 	const source = context.createBufferSource();
+// 	source.buffer = await new Promise( ( res ) => context.decodeAudioData( buffer, res ) );
+// 	source.loop = false;
+// 	const gainNode = context.createGain();
+// 	gainNode.gain.value = 1;
+// 	gainNode.connect( context.destination );
+// 	source.connect( analyser );
+// 	analyser.connect( gainNode );
+//
+// 	setAa( await source && analyser );
+//
+// 	const state = {
+// 		source,
+// 		data,
+// 		gain: 1,
+// 		volume: 0,
+// 		avg: 0,
+// 		update: () => {
+//
+// 			let value = 0;
+// 			analyser.getByteFrequencyData( data );
+// 			for ( let i = 0; i < data.length; i ++ ) value += data[ i ];
+// 			state.volume = value;
+// 			state.avg = value / data.length;
+//
+// 		},
+// 		setGain( level: number ) {
+//
+// 			gainNode.gain.setValueAtTime( ( state.gain = level ), context.currentTime );
+//
+// 		},
+// 	};
+//
+// 	// return state;
+//
+// };
 
-	const res = await fetch( url );
-	const buffer = await res.arrayBuffer();
-	// @ts-ignore
-	const context = new ( window.AudioContext || window.webkitAudioContext )();
-	const analyser = new AnalyserNode( context, { fftSize: 2048 } );
-	const data = new Uint8Array( analyser.frequencyBinCount );
-	const source = context.createBufferSource();
-	source.buffer = await new Promise( ( res ) => context.decodeAudioData( buffer, res ) );
-	source.loop = false;
-	source.connect( analyser );
-	console.log( context );
+// const mockData = () => ( { signal: false, avg: 0, gain: 1, data: [] } );
 
-	console.log( analyser );
-	setAa( analyser );
-
-	const state = {
-		source,
-		data,
-		gain: 1,
-		update: () => {
-
-			analyser.getByteFrequencyData( data );
-
-		},
-	};
-
-	// return state;
-
-};
+// const useStore = create( ( set, get ) => {
+//
+// 	const { playlist, setPalette, setAudioSrc, setAa, paused, setPaused } = useStore( ( state: any ) => ( {
+// 		playlist: state.playlist,
+// 		setPalette: state.setPalette,
+// 		setAudioSrc: state.setAudioSrc,
+// 		setAa: state.setAa,
+// 		paused: state.paused,
+// 		setPaused: state.setPaused,
+// 	} ), shallow );
+// 	const camera = useThree( ( state ) => state.camera );
+// 	const songs = useMemo( () => JSON.parse( JSON.stringify( playlists[ `${playlist.id}` ] ) ), [ playlist.id ] );
+// 	const newUrlIndex = () => {
+//
+// 		return Math.floor( Math.random() * songs.length );
+//
+// 	};
+//
+// 	const [ speaker, setSpeaker ] = useState<Audio>();
+// 	const [ urlIndex, setUrlIndex ] = useState<number>( newUrlIndex );
+// 	const url = songs.splice( urlIndex, 1 )[ 0 ];
+// 	const audio = createAudio( url, camera, setAa );
+//
+// 	return {
+// 		loaded: false,
+// 		clicked: false,
+// 		audio: mockData(),
+// 		api: {
+// 			async loaded() {
+//
+// 				set( {
+// 					loaded: true,
+// 					audio: await audio,
+// 				} );
+//
+// 			},
+// 			start() {
+//
+// 				// @ts-ignore
+// 				const audio = get().audio;
+// 				audio.source.start( 0 );
+// 				set( { clicked: true } );
+// 				addEffect( () => {
+//
+// 					audio.update();
+//
+// 				} );
+//
+// 			},
+// 		},
+// 	};
+//
+// } );
+//
+// export default useStore;
 

@@ -1,4 +1,4 @@
-import { Vector3 } from "three";
+import { AudioAnalyser, Vector3 } from "three";
 import { Playlist, playlists } from "../worlds/Vaporwave/utils/constants";
 import create from "zustand";
 import produce from "immer";
@@ -16,90 +16,86 @@ export type StoreState = {
   setAudioSrc: ( src: string ) => void,
   paused: boolean,
   setPaused: ( paused: boolean ) => void,
-  aa: AnalyserNode | undefined,
+  aa: AudioAnalyser | undefined,
   setAa: ( aa: AnalyserNode ) => void,
-  audioData: Uint8Array,
-  updateAudioData: () => void,
   getSpeed: () => number,
   getVolume: () => number,
   hexToVec3: ( color: string ) => Vector3
 }
 
-export const useStore = create<StoreState>()( ( set: any, get: any ) => ( {
-	playlist: startPlaylist(),
-	setPlaylist: ( playlist: Playlist ) => set(
-		() => ( { playlist: playlist } )
-	),
-	setPalette: ( palette: string[] ) => set(
-		produce( ( state: StoreState ) => {
+export const useStore = create<StoreState>()( ( set: any, get: any ) => {
 
-			state.playlist.palette = palette;
+	return {
+		playlist: startPlaylist(),
+		setPlaylist: ( playlist: Playlist ) => set(
+			() => ( { playlist: playlist } )
+		),
+		setPalette: ( palette: string[] ) => set(
+			produce( ( state: StoreState ) => {
 
-		} )
-	),
-	portal: undefined,
-	setPortal: ( portal: any ) => set(
-		() => ( { portal: portal } )
-	),
-	display: null,
-	setDisplay: ( id: number | null ) => set(
-		() => ( { display: id } )
-	),
-	audioSrc: "",
-	setAudioSrc: ( src: string ) => set(
-		() => ( { audioSrc: src } )
-	),
-	paused: false,
-	setPaused: ( paused: boolean ) => set(
-		() => ( { paused: paused } )
-	),
-	aa: undefined,
-	setAa: ( aa: AnalyserNode ) => set(
-		() => ( { aa: aa } )
-	),
-	audioData: new Uint8Array( 0 ),
-	updateAudioData: () => {
+				state.playlist.palette = palette;
 
-		get().aa.getByteFrequencyData( get().audioData );
+			} )
+		),
+		portal: undefined,
+		setPortal: ( portal: any ) => set(
+			() => ( { portal: portal } )
+		),
+		display: null,
+		setDisplay: ( id: number | null ) => set(
+			() => ( { display: id } )
+		),
+		audioSrc: "",
+		setAudioSrc: ( src: string ) => set(
+			() => ( { audioSrc: src } )
+		),
+		paused: false,
+		setPaused: ( paused: boolean ) => set(
+			() => ( { paused: paused } )
+		),
+		aa: undefined,
+		setAa: ( aa: AnalyserNode | AudioAnalyser ) => set(
+			() => ( { aa: aa } )
+		),
+		getSpeed: () => {
 
-	},
-	getSpeed: () => {
+			if ( ! get().aa ) return 1.5;
+			const data = get().aa.getFrequencyData();
+			const volume = get().getVolume();
+			const variable = get().playlist.id === "beenTurnt" ? data ? data[ 0 ] / 255 : 0 : volume;
 
-		const data = get().audioData;
-		const volume = get().getVolume();
-		const variable = get().playlist.id === "beenTurnt" ? data ? data[ 0 ] / 255 : 0 : volume;
+			return variable > 0.6 ?
+				0.5 - 0.15 * variable : variable > 0.3 ?
+					1 : 1.5;
 
-		return variable > 0.6 ?
-			0.5 - 0.15 * variable : variable > 0.3 ?
-				1 : 1.5;
+		},
+		getVolume: () => {
 
-	},
-	getVolume: () => {
+			if ( ! get().aa ) return 0;
+			const data = get().aa.getFrequencyData();
+			let sum = 0;
+			for ( const num of data ) {
 
-		if ( ! get().aa || ! get().audioData ) return 0;
-		const data = get().audioData;
-		let sum = 0;
-		for ( const num of data ) {
+				sum += num;
 
-			sum += num;
+			}
+
+			return sum / 100000;
+
+		},
+		hexToVec3: ( hex: string ) => {
+
+			const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec( hex );
+			return result ? new Vector3(
+				Math.floor( parseInt( result[ 1 ], 16 ) / 255 * 1000 ) / 1000,
+				Math.floor( parseInt( result[ 2 ], 16 ) / 255 * 1000 ) / 1000,
+				Math.floor( parseInt( result[ 3 ], 16 ) / 255 * 1000 ) / 1000
+			) : new Vector3( 0., 0., 0. );
 
 		}
+	};
 
-		return sum / 100000;
-
-	},
-	hexToVec3: ( hex: string ) => {
-
-		const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec( hex );
-		return result ? new Vector3(
-			Math.floor( parseInt( result[ 1 ], 16 ) / 255 * 1000 ) / 1000,
-			Math.floor( parseInt( result[ 2 ], 16 ) / 255 * 1000 ) / 1000,
-			Math.floor( parseInt( result[ 3 ], 16 ) / 255 * 1000 ) / 1000
-		) : new Vector3( 0., 0., 0. );
-
-	}
-
-} ) );
+} );
 
 
 function startPlaylist() {
