@@ -54,8 +54,6 @@ export default function Sound( props: SoundProps ) {
 	// @ts-ignore
 	const api = useAudioStore( state => state.api );
 
-	console.log( clicked.current );
-
 	const audio = useMemo( () => {
 
 		const a = document.createElement( "audio" );
@@ -88,6 +86,13 @@ export default function Sound( props: SoundProps ) {
 
 	useEffect( () => {
 
+		if ( ! isMounted.current ) {
+
+			isMounted.current = true;
+			return;
+
+		}
+
 		setEnd( true );
 		setControlLock( false );
 
@@ -95,10 +100,10 @@ export default function Sound( props: SoundProps ) {
 
 	useEffect( () => {
 
-		if ( ! end || ! isMounted.current ) return;
+		if ( ! end ) return;
+		if ( songs.length === 0 ) {
 
-		if ( songs.length === 0 ) { // @ts-ignore
-
+			// @ts-ignore
 			songs = JSON.parse( JSON.stringify( playlists[ `${playlist.id}` ] ) );
 
 		}
@@ -108,6 +113,7 @@ export default function Sound( props: SoundProps ) {
 		setEnd( false );
 		setPaused( false );
 		clicked.current = true;
+		console.log( "end" );
 
 	}, [ end ] );
 
@@ -119,7 +125,7 @@ export default function Sound( props: SoundProps ) {
 		setAudioSrc( url );
 
 		// createAudio( url, camera, setAa );
-		api.load( url );
+		// api.load( url );
 
 		const setupAudio = () => {
 
@@ -145,7 +151,6 @@ export default function Sound( props: SoundProps ) {
 
 		const playAudio = () => {
 
-			console.log( clicked.current );
 			if ( paused || clicked.current ) return;
 			audio.play().then( () => setupAudio() );
 			clicked.current = true;
