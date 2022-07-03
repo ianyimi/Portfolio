@@ -59,7 +59,7 @@ export default function Sound( props: SoundProps ) {
 
 		a.autoplay = true;
 		a.preload = "auto";
-		a.crossOrigin = "Anonymous";
+		a.crossOrigin = "anonymous";
 		a.loop = false;
 		return a;
 
