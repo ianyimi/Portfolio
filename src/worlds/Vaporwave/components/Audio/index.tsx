@@ -131,8 +131,8 @@ export default function Sound( props: SoundProps ) {
 
 				audio.src = url;
 
-				// const res = await fetch( url );
-				// const buffer = await res.arrayBuffer();
+				const res = await fetch( url );
+				const buffer = await res.arrayBuffer();
 				// @ts-ignore
 				// const context = new ( window.AudioContext || window.webkitAudioContext )();
 				// const source = context.createMediaElementSource( audio );
@@ -145,9 +145,11 @@ export default function Sound( props: SoundProps ) {
 				camera.add( listener );
 
 				const speak = new Audio( listener );
-				// speak.setNodeSource( source );
+				const source = speak.context.createBufferSource();
+				source.buffer = await new Promise( ( res ) => speak.context.decodeAudioData( buffer, res ) );
+				speak.setNodeSource( source );
 				// source.loop = false;
-				speak.setMediaElementSource( audio );
+				// speak.setMediaElementSource( audio );
 				speak.setVolume( volume );
 				console.log( speak );
 
