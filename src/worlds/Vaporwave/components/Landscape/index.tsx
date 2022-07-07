@@ -138,28 +138,31 @@ export default function Index() {
 		const speed = getSpeed();
 
 		// @ts-ignore
-		t1Pos.current += delta / speed;
-		t2Pos.current += delta / speed;
+		t1Pos.current += 0.01 / speed;
+		t2Pos.current += 0.01 / speed;
 
 		// console.log( terrain1Ref.current.position.z );
 
 		// @ts-ignore
-		terrain1Ref.current.position.set( 0, 0, t1Pos.current );
+		terrain1Ref.current.position.set( 0, 0, t1Pos.current % 8 );
 
 		// @ts-ignore
-		terrain2Ref.current.position.set( 0, 0, t2Pos.current );
+		terrain2Ref.current.position.set( 0, 0, t2Pos.current % 8 );
 
-		if ( t1Pos.current >= 3.5 ) {
+		// if ( t1Pos.current >= 3.5 ) {
+		//
+		// 	t1Pos.current = - 4.5;
+		//
+		// }
+		//
+		// if ( t2Pos.current >= 3.5 ) {
+		//
+		// 	t2Pos.current = - 4.5;
+		//
+		// }
 
-			t1Pos.current = - 4.5;
-
-		}
-
-		if ( t2Pos.current >= 3.5 ) {
-
-			t2Pos.current = - 4.5;
-
-		}
+		// @ts-ignore
+		// console.log( terrain2Ref.current.position.z );
 
 
 		// for ( const terrain of terrainRefs ) {
