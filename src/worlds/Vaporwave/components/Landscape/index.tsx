@@ -25,6 +25,10 @@ const BALL_START_POSITIONS: [x: number, y: number, z: number][] = [
 	[ - 0.1, 0.125, - 3.25 ]
 ];
 
+const BALL_SPEED_FACTOR = 0.0015;
+const BALL_RESPAWN_POINT = 1.15;
+const DELTA = 0.0333;
+
 export default function Index() {
 
 	const terrain1Ref = useRef();
@@ -46,26 +50,23 @@ export default function Index() {
 		getSpeed: state.getSpeed
 	} ), shallow );
 
-	const [ collider, api ] = usePlane( () => ( {
+	const [ collider ] = usePlane( () => ( {
 		args: [ 2, 5 ],
 		rotation: [ - Math.PI * 0.5, 0, 0 ],
 		type: "Static"
 	} ) );
 
-	const ballSpeedFactor = 0.0015;
-	const ballRespawnPoint = 1.15;
-
 	const limiter = useLimiter( 30 );
-	useFrame( ( { clock }, delta ) => {
+	useFrame( ( { clock } ) => {
 
 		if (
-			! limiter.isReady ||
-			! terrain1Ref.current ||
-			! terrain2Ref.current ||
-			! ball.current ||
-			! ball1.current ||
-			! ball2.current ||
-			! ball3.current
+			! limiter.isReady( clock ) ||
+      ! terrain1Ref.current ||
+      ! terrain2Ref.current ||
+      ! ball.current ||
+      ! ball1.current ||
+      ! ball2.current ||
+      ! ball3.current
 		) return;
 
 		const speed = getSpeed();
@@ -73,7 +74,7 @@ export default function Index() {
 		for ( const terrain of terrainRefs ) {
 
 			// @ts-ignore
-			terrain.current.position.z += delta / ( 5 * speed );
+			terrain.current.position.z += DELTA / ( 5 * speed );
 
 			// @ts-ignore
 			if ( terrain.current.position.z >= 3.5 ) {
@@ -90,13 +91,13 @@ export default function Index() {
 			const ball = ballRefs[ i ];
 
 			// @ts-ignore
-			ball.current.position.z += delta / ( 5 * speed ) - ballSpeedFactor;
+			ball.current.position.z += DELTA / ( 5 * speed ) - BALL_SPEED_FACTOR;
 
 			// @ts-ignore
-			if ( ball.current.position.z + BALL_START_POSITIONS[ i ][ 2 ] >= ballRespawnPoint ) {
+			if ( ball.current.position.z + BALL_START_POSITIONS[ i ][ 2 ] >= BALL_RESPAWN_POINT ) {
 
 				// @ts-ignore
-				ball.current.position.z = BALL_START_POSITIONS[ i ][ 2 ] + ballRespawnPoint;
+				ball.current.position.z = BALL_START_POSITIONS[ i ][ 2 ] + BALL_RESPAWN_POINT;
 
 			}
 
