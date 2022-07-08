@@ -8,12 +8,12 @@ import { useStore } from "utils/store";
 import shallow from "zustand/shallow";
 
 type VisualizerProps = {
-	barCount?: number,
-	barWidth?: number,
-	barHeight?: number,
-	reverse?: boolean,
-	radius?: number,
-	index: number
+  barCount?: number,
+  barWidth?: number,
+  barHeight?: number,
+  reverse?: boolean,
+  radius?: number,
+  index: number
 } & GroupProps
 
 export default function AudioVisualizer( props: VisualizerProps ) {
@@ -32,7 +32,7 @@ export default function AudioVisualizer( props: VisualizerProps ) {
 	const cubes: ReactNode[] = [];
 	const { playlist, aa } = useStore( ( state ) => ( {
 		playlist: state.playlist,
-		aa: state.aa
+		aa: state.aa,
 	} ), shallow );
 
 	for ( let i = 0; i < barCount; ++ i ) {
@@ -56,17 +56,18 @@ export default function AudioVisualizer( props: VisualizerProps ) {
 	useFrame( ( { clock } ) => {
 
 		if ( ! limiter.isReady( clock ) || ! group1.current || ! group2.current || ! aa ) return;
-		const data = aa.getFrequencyData();
-		const step = data.length / cubes.length;
+
+		const audioData = aa.getFrequencyData();
+		const step = audioData.length / cubes.length;
 		for ( let i = 0; i < cubes.length; ++ i ) {
 
 			// @ts-ignore
 			const cube = group1.current.getObjectByName( `cube-${index}-${i}` );
-			cube.scale.y = Math.max( data[ Math.floor( i / 2 * step ) ] / 100 + 0.25, barHeight / 2 );
+			cube.scale.y = Math.max( audioData[ Math.floor( i / 2 * step ) ] / 100 + 0.25, barHeight / 2 );
 			cube.geometry.computeBoundingBox();
 			// @ts-ignore
 			const cube2 = group2.current.getObjectByName( `cube-${index}-${i}` );
-			cube2.scale.y = Math.max( data[ Math.floor( i / 2 * step ) ] / 100 + 0.25, barHeight / 2 );
+			cube2.scale.y = Math.max( audioData[ Math.floor( i / 2 * step ) ] / 100 + 0.25, barHeight / 2 );
 			cube2.geometry.computeBoundingBox();
 
 		}

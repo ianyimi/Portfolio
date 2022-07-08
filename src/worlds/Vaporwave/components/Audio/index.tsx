@@ -1,23 +1,28 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { GroupProps, useFrame, useThree } from "@react-three/fiber";
 import { Audio, AudioAnalyser, AudioListener } from "three";
-import { playlists } from "./utils/constants";
-import { useLimiter } from "spacesvr";
 import { useStore } from "utils/store";
 import shallow from "zustand/shallow";
+import { playlists } from "./utils/constants";
+import { useLimiter } from "spacesvr";
 
-type SoundProps = {
-	volume?: number;
-	fftSize?: 64 | 128 | 256 | 512 | 1024 | 2048;
+type MusicProps = {
+  volume?: number;
+  fftSize?: 64 | 128 | 256 | 512 | 1024 | 2048;
 } & GroupProps;
 
-export default function Sound( props: SoundProps ) {
+export default function Sound( props: MusicProps ) {
 
 	const {
-		volume = 1,
+		volume = 1.25,
 		fftSize = 128,
-		...rest
+		...restProps
 	} = props;
+
+	const clicked = useRef( false );
+	const isMounted = useRef( false );
+
+	const { clock, camera } = useThree();
 
 	const { playlist, setPalette, setAudioSrc, setAa, paused, setPaused } = useStore( ( state: any ) => ( {
 		playlist: state.playlist,
@@ -28,6 +33,15 @@ export default function Sound( props: SoundProps ) {
 		setPaused: state.setPaused,
 	} ), shallow );
 
+	// @ts-ignore
+	let songs = JSON.parse( JSON.stringify( playlists[ `${playlist.id}` ] ) );
+
+	const newSongUrl = () => {
+
+		return songs.splice( Math.floor( Math.random() * songs.length ), 1 )[ 0 ];
+
+	};
+
 	const newPalette = (): string[] => {
 
 		const palettes = playlist.palettes;
@@ -35,46 +49,124 @@ export default function Sound( props: SoundProps ) {
 
 	};
 
-	// @ts-ignore
-	let songs = useMemo( () => JSON.parse( JSON.stringify( playlists[ `${playlist.id}` ] ) ), [ playlist.id ] );
-	const newUrlIndex = () => {
-
-		return Math.floor( Math.random() * songs.length );
-
-	};
-
-	const [ speaker, setSpeaker ] = useState<Audio>();
-	const [ urlIndex, setUrlIndex ] = useState<number>( newUrlIndex );
-	const camera = useThree( ( state ) => state.camera );
+	const threeAudioRef = useRef<Audio>();
+	const [ threeAudio, setThreeAudio ] = useState<Audio>();
+	const audioRef = useRef<HTMLAudioElement>();
+	const [ audio, setAudio ] = useState<HTMLAudioElement>();
+	const listenerRef = useRef<AudioListener>();
+	const [ url, setUrl ] = useState( newSongUrl() );
 	const [ end, setEnd ] = useState( false );
-	const [ controlLock, setControlLock ] = useState( false );
 
+	// mount
+	useEffect( () => {
 
-	const audio = useMemo( () => {
+		if ( threeAudio ) return;
 
-		const a = document.createElement( "audio" );
+		const createSpeaker = () => {
 
-		a.autoplay = true;
-		a.preload = "auto";
-		a.crossOrigin = "Anonymous";
-		a.loop = false;
-		return a;
+			const listener = new AudioListener();
+			camera.add( listener );
+
+			const audioElement = document.createElement( "audio" );
+			audioElement.src = url;
+			audioElement.autoplay = false;
+			audioElement.preload = "auto";
+			audioElement.crossOrigin = "Anonymous";
+			audioElement.loop = false;
+			audioElement.play().then( () => {
+
+				// sync audio in case the same audio is uploaded elsewhere
+				audioElement.currentTime =
+          clock.getElapsedTime() % audioElement.duration;
+
+			} );
+
+			const audio = new Audio( listener );
+			audio.setMediaElementSource( audioElement );
+
+			// set audio analyser
+			setAa( new AudioAnalyser( audio, fftSize ) );
+
+			setAudio( audioElement );
+			audioRef.current = audioElement;
+			setThreeAudio( audio );
+			threeAudioRef.current = audio;
+			listenerRef.current = listener;
+
+		};
+
+		document.addEventListener( "click", createSpeaker );
+		document.addEventListener( "touchstart", createSpeaker );
+		return () => {
+
+			document.removeEventListener( "click", createSpeaker );
+			document.removeEventListener( "touchstart", createSpeaker );
+
+		};
+
+	}, [ threeAudio ] );
+
+	// unmount
+	useEffect( () => {
+
+		return () => {
+
+			const _listener = listenerRef.current;
+			if ( _listener ) {
+
+				camera.remove( _listener );
+
+			}
+
+			const _audio = audioRef.current;
+			if ( _audio ) {
+
+				_audio.pause();
+				_audio.remove();
+
+			}
+
+			const _sound = threeAudioRef.current;
+			if ( _sound ) {
+
+				if ( _sound.isPlaying ) _sound.stop();
+				if ( _sound.source && ( _sound.source as any )._connected )
+					_sound.disconnect();
+
+			}
+
+		};
 
 	}, [] );
 
+	// update url param
 	useEffect( () => {
 
+		if ( ! audio || audio.src === url ) return;
+
+		audio.setAttribute( "src", url );
+		setAudioSrc( url );
+		audio.play();
+
+	}, [ audio, url ] );
+
+	useEffect( () => {
+
+		setUrl( newSongUrl() );
+		setPaused( false );
+
+	}, [ playlist.id ] );
+
+	useEffect( () => {
+
+		if ( ! audio ) return;
 		if ( paused ) {
 
 			audio.pause();
-			// speaker?.setVolume( 0 );
-			! controlLock && setControlLock( true );
 
 		} else {
 
-			// speaker?.setVolume( 1 );
 			audio.play();
-			controlLock && setControlLock( false );
 
 		}
 
@@ -82,83 +174,20 @@ export default function Sound( props: SoundProps ) {
 
 	useEffect( () => {
 
-		setEnd( true );
-		setControlLock( false );
+		if ( ! end ) return;
+		if ( songs.length === 0 ) {
 
-	}, [ playlist.id ] );
-
-	useEffect( () => {
-
-		if ( songs.length === 0 ) { // @ts-ignore
-
+			// @ts-ignore
 			songs = JSON.parse( JSON.stringify( playlists[ `${playlist.id}` ] ) );
 
 		}
 
-		if ( ! end ) return;
-		setUrlIndex( newUrlIndex() );
 		setPalette( newPalette() );
+		setUrl( newSongUrl() );
 		setEnd( false );
 		setPaused( false );
 
 	}, [ end ] );
-
-	useEffect( () => {
-
-		if ( paused || controlLock ) return;
-
-		const url = songs.splice( urlIndex, 1 )[ 0 ];
-		setAudioSrc( url );
-
-		const setupAudio = () => {
-
-			if ( ! audio.paused && ! speaker ) {
-
-				audio.src = url;
-
-				const listener = new AudioListener();
-				camera.add( listener );
-
-				const speak = new Audio( listener );
-				speak.setMediaElementSource( audio );
-				speak.setVolume( volume );
-
-				setAa( new AudioAnalyser( speak, fftSize ) );
-
-				setSpeaker( speak );
-
-			}
-
-		};
-
-		const playAudio = () => {
-
-			if ( paused ) return;
-			audio.play().then( () => setupAudio() );
-
-		};
-
-		if ( audio ) {
-
-			audio.setAttribute( "src", url );
-			audio.play().then( () => setupAudio() );
-			document.addEventListener( "click", playAudio );
-			return () => {
-
-				document.removeEventListener( "click", playAudio );
-
-			};
-
-		}
-
-	}, [ speaker, audio, urlIndex, paused ] );
-
-	useEffect( () => {
-
-		if ( ! speaker ) return;
-		speaker.setVolume( volume );
-
-	}, [ volume ] );
 
 	const limiter = useLimiter( 15 );
 	useFrame( ( { clock } ) => {
@@ -168,11 +197,15 @@ export default function Sound( props: SoundProps ) {
 
 	} );
 
+	// update audio params
+	if ( threeAudio ) {
+
+		threeAudio.setVolume( volume );
+
+	}
+
 	return (
-		<group name="spacesvr-audio" {...rest}>
-			{speaker && <primitive object={speaker}/>}
-		</group>
+		<group {...restProps}>{threeAudio && <primitive object={threeAudio}/>}</group>
 	);
 
 }
-
