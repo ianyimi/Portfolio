@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { GroupProps, useThree } from "@react-three/fiber";
+import { useEffect, useRef, useState } from "react";
+import { GroupProps, useFrame, useThree } from "@react-three/fiber";
 import { Audio, AudioAnalyser, AudioListener } from "three";
 import { useStore } from "utils/store";
 import shallow from "zustand/shallow";
 import { playlists } from "./utils/constants";
+import { useLimiter } from "spacesvr";
 
 type MusicProps = {
   volume?: number;
@@ -32,6 +33,15 @@ export default function Sound( props: MusicProps ) {
 		setPaused: state.setPaused,
 	} ), shallow );
 
+	// @ts-ignore
+	let songs = JSON.parse( JSON.stringify( playlists[ `${playlist.id}` ] ) );
+
+	const newSongUrl = () => {
+
+		return songs.splice( Math.floor( Math.random() * songs.length ), 1 )[ 0 ];
+
+	};
+
 	const newPalette = (): string[] => {
 
 		const palettes = playlist.palettes;
@@ -39,20 +49,13 @@ export default function Sound( props: MusicProps ) {
 
 	};
 
-	// @ts-ignore
-	let songs = JSON.parse( JSON.stringify( playlists[ `${playlist.id}` ] ) );
-	const newSongUrl = useCallback( () => {
-
-		return songs.splice( Math.floor( Math.random() * songs.length ), 1 )[ 0 ];
-
-	}, [ playlist.id ] );
-
 	const threeAudioRef = useRef<Audio>();
 	const [ threeAudio, setThreeAudio ] = useState<Audio>();
 	const audioRef = useRef<HTMLAudioElement>();
 	const [ audio, setAudio ] = useState<HTMLAudioElement>();
 	const listenerRef = useRef<AudioListener>();
 	const [ url, setUrl ] = useState( newSongUrl() );
+	const [ end, setEnd ] = useState( false );
 
 	// mount
 	useEffect( () => {
@@ -70,22 +73,6 @@ export default function Sound( props: MusicProps ) {
 			audioElement.preload = "auto";
 			audioElement.crossOrigin = "Anonymous";
 			audioElement.loop = false;
-			audioElement.onended = () => {
-
-				if ( songs.length === 0 ) {
-
-					// @ts-ignore
-					songs = JSON.parse( JSON.stringify( playlists[ `${playlist.id}` ] ) );
-
-				}
-
-				setPalette( newPalette() );
-				setUrl( newSongUrl() );
-				setPaused( false );
-				clicked.current = true;
-
-			};
-
 			audioElement.play().then( () => {
 
 				// sync audio in case the same audio is uploaded elsewhere
@@ -158,18 +145,15 @@ export default function Sound( props: MusicProps ) {
 		if ( ! audio || audio.src === url ) return;
 
 		audio.setAttribute( "src", url );
-		audio.play().then( () => {
-
-			// sync audio in case the same audio is uploaded elsewhere
-			audio.currentTime = clock.getElapsedTime() % audio.duration;
-
-		} );
+		setAudioSrc( url );
+		audio.play();
 
 	}, [ audio, url ] );
 
 	useEffect( () => {
 
 		setUrl( newSongUrl() );
+		setPaused( false );
 
 	}, [ playlist.id ] );
 
@@ -179,20 +163,41 @@ export default function Sound( props: MusicProps ) {
 		if ( paused ) {
 
 			audio.pause();
-			// speaker?.setVolume( 0 );
-			// ! controlLock && setControlLock( true );
 
 		} else {
 
-			// speaker?.setVolume( 1 );
 			audio.play();
-			// controlLock && setControlLock( false );
 
 		}
 
 	}, [ paused ] );
 
-	// update positional params
+	useEffect( () => {
+
+		if ( ! end ) return;
+		if ( songs.length === 0 ) {
+
+			// @ts-ignore
+			songs = JSON.parse( JSON.stringify( playlists[ `${playlist.id}` ] ) );
+
+		}
+
+		setPalette( newPalette() );
+		setUrl( newSongUrl() );
+		setEnd( false );
+		setPaused( false );
+
+	}, [ end ] );
+
+	const limiter = useLimiter( 15 );
+	useFrame( ( { clock } ) => {
+
+		if ( ! limiter.isReady( clock ) || ! audio ) return;
+		if ( ! end && audio.ended ) setEnd( true );
+
+	} );
+
+	// update audio params
 	if ( threeAudio ) {
 
 		threeAudio.setVolume( volume );
