@@ -9,10 +9,12 @@ import { useStore } from "utils/store";
 import shallow from "zustand/shallow";
 
 type BallProps = {
-	pos?: [x: number, y: number, z: number],
-	texture: THREE.Texture,
-	index: number,
+  pos?: [x: number, y: number, z: number],
+  texture: THREE.Texture,
+  index: number,
 }
+
+const RADIUS = 0.025;
 
 const Ball = React.forwardRef( ( props: BallProps, ref ) => {
 
@@ -27,7 +29,7 @@ const Ball = React.forwardRef( ( props: BallProps, ref ) => {
 		NO_ACTIVE_DISPLAY = display === null;
 
 	const [ collider, api ] = useSphere( () => ( {
-		args: 0.015,
+		args: RADIUS,
 		mass: 1,
 		position: [ pos[ 0 ], pos[ 1 ], pos[ 2 ] ],
 		linearFactor: [ 0, 1, 1 ],
@@ -76,11 +78,11 @@ const Ball = React.forwardRef( ( props: BallProps, ref ) => {
 			{/* @ts-ignore */}
 			<group ref={ref} onClick={toggleDisplay}>
 				<mesh ref={collider}>
-					<sphereBufferGeometry args={[ 0.015, 32, 32 ]}/>
+					<sphereBufferGeometry args={[ RADIUS, 32, 32 ]}/>
 					<meshBasicMaterial map={texture} visible={false}/>
 				</mesh>
 				<mesh ref={mesh}>
-					<sphereBufferGeometry args={[ 0.015, 32, 32 ]}/>
+					<sphereBufferGeometry args={[ RADIUS, 32, 32 ]}/>
 					<meshBasicMaterial map={texture}/>
 				</mesh>
 			</group>
