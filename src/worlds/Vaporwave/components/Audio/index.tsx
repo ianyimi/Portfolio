@@ -77,13 +77,13 @@ export default function Sound( props: MusicProps ) {
 			audioElement.preload = "auto";
 			audioElement.crossOrigin = "Anonymous";
 			audioElement.loop = false;
-			audioElement.play().then( () => {
-
-				// sync audio in case the same audio is uploaded elsewhere
-				audioElement.currentTime =
-          clock.getElapsedTime() % audioElement.duration;
-
-			} );
+			// audioElement.play().then( () => {
+			//
+			// 	// sync audio in case the same audio is uploaded elsewhere
+			// 	audioElement.currentTime =
+			//     clock.getElapsedTime() % audioElement.duration;
+			//
+			// } );
 
 			const audio = new Audio( listener );
 			audio.setMediaElementSource( audioElement );
