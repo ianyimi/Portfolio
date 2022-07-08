@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { GroupProps, useFrame, useThree } from "@react-three/fiber";
 import { Audio, AudioAnalyser, AudioListener } from "three";
 import { useStore } from "utils/store";
@@ -33,8 +33,12 @@ export default function Sound( props: MusicProps ) {
 		setPaused: state.setPaused,
 	} ), shallow );
 
-	// @ts-ignore
-	let songs = JSON.parse( JSON.stringify( playlists[ `${playlist.id}` ] ) );
+	let songs = useMemo( () => {
+
+		// @ts-ignore
+		return JSON.parse( JSON.stringify( playlists[ `${playlist.id}` ] ) );
+
+	}, [ playlist.id ] );
 
 	const newSongUrl = () => {
 
