@@ -10,8 +10,8 @@ export default function PostProcessing() {
 
 	useEffect( () => {
 
-		// @ts-ignore
-		composerRef?.current.setSize( size.width, size.height );
+    // @ts-ignore
+    composerRef?.current.setSize( size.width, size.height );
 
 	}, [ size ] );
 
@@ -20,7 +20,7 @@ export default function PostProcessing() {
 		if ( rgbShiftRef.current ) {
 
 			// @ts-ignore
-			rgbShiftRef.current.uniforms[ "amount" ].value = 0.0012;
+			rgbShiftRef.current.uniforms[ "amount" ].value = 0.0001;
 
 		}
 
@@ -39,8 +39,8 @@ export default function PostProcessing() {
 			/>
 			<shaderPass attachArray="passes" args={[ GammaCorrectionShader ]}/>
 			{/*<unrealBloomPass*/}
-			{/*  attachArray="passes"*/}
-			{/*  args={[size.width / size.height, 0.2, 0.8, 0]}*/}
+			{/*	attachArray="passes"*/}
+			{/*	args={[ size.width / size.height, 0.2, 0.8, 0 ]}*/}
 			{/*/>*/}
 		</effectComposer>
 	);
