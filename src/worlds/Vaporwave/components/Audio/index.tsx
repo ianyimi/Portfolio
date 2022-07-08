@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { GroupProps, useFrame, useThree } from "@react-three/fiber";
 import { Audio, AudioAnalyser, AudioListener } from "three";
 import { useStore } from "utils/store";
@@ -33,12 +33,8 @@ export default function Sound( props: MusicProps ) {
 		setPaused: state.setPaused,
 	} ), shallow );
 
-	let songs = useMemo( () => {
-
-		// @ts-ignore
-		return JSON.parse( JSON.stringify( playlists[ `${playlist.id}` ] ) );
-
-	}, [ playlist.id ] );
+	// @ts-ignore
+	let songs = JSON.parse( JSON.stringify( playlists[ `${playlist.id}` ] ) );
 
 	const newSongUrl = () => {
 
@@ -77,13 +73,6 @@ export default function Sound( props: MusicProps ) {
 			audioElement.preload = "auto";
 			audioElement.crossOrigin = "Anonymous";
 			audioElement.loop = false;
-			// audioElement.play().then( () => {
-			//
-			// 	// sync audio in case the same audio is uploaded elsewhere
-			// 	audioElement.currentTime =
-			//     clock.getElapsedTime() % audioElement.duration;
-			//
-			// } );
 
 			const audio = new Audio( listener );
 			audio.setMediaElementSource( audioElement );
