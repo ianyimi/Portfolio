@@ -26,61 +26,81 @@ const Container = styled.div`
 `;
 
 const Content = styled.div<{ color: string, bgColor: string, opacity: number }>`
-  width: 50%;
+  width: 70%;
   height: 50%;
   border-radius: 15px;
+  position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   background-color: ${props => props.bgColor};
   color: ${props => props.color};
   font-family: Thunderstorm;
   opacity: ${props => props.opacity};
-  transition: opacity 2s;
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+  @media ( max-width: 500px ) {
+    width: 90%;
+  }
 `;
 
 const Exit = styled.div`
-  position: relative;
-  top: 10px;
-  left: 45%;
+  position: absolute;
+  top: 0px;
+  right: 20px;
   font-weight: bold;
+  font-size: 30px;
   cursor: pointer;
   padding: 10px;
+  //border: 2px dashed blue;
 `;
 
 const Header = styled.h4`
   text-align: center;
-  font-size: 3em;
-  margin-top: 25px;
+  font-size: clamp(30px, 5vw, 70px);
+  margin-top: 0;
   //border: 2px dashed blue;
 `;
 
 const Description = styled.p`
   margin-top: -25px;
   text-align: center;
-  font-family: Times;
   width: 70%;
+  font-family: Times;
+  font-size: clamp(16px, 2vw, 20px);
   //border: 2px dashed green;
 `;
 
 const Links = styled.div`
-  width: 100%;
+  width: 50%;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
+  @media (max-width: 700px) {
+    width: 100%;
+  }
 `;
 
 const Visit = styled.button<{ color: string, bgColor: string }>`
   border-radius: 15px;
-  border: none;
-  position: relative;
-  bottom: -25px;
-  padding: 0.5em 2em 0.5em 2em;
+  border: 2px solid ${props => props.bgColor};
+  //position: relative;
+  //bottom: -25px;
+  width: 100px;
+  padding: 0.25em 0 0.75em 0;
   background-color: ${props => props.bgColor};
   color: ${props => props.color};
   font-family: Thunderstorm;
-  font-size: 1em;
+  font-size: 20px;
   cursor: pointer;
-  margin: 0 5px 0 5px;
+  margin: 5px 0;
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+
+  :hover {
+    background-color: ${props => props.color};
+    color: ${props => props.bgColor};
+  }
 `;
 
 export default function Display() {
@@ -100,13 +120,16 @@ export default function Display() {
 
 	if ( display === null ) return <></>;
 
+	const color = playlist.backgroundColorIndex,
+		bgColor = playlist.mainColorIndex;
+
 	return (
 		<Container>
 			<ClickToClose onClick={() => setDisplay( null )}/>
 			<Content
 				opacity={display === null ? 0 : 1}
-				color={playlist.palette[ playlist.mainColorIndex ]}
-				bgColor={playlist.palette[ playlist.backgroundColorIndex ]}
+				color={playlist.palette[ color ]}
+				bgColor={playlist.palette[ bgColor ]}
 			>
 				<Exit onClick={() => ( setDisplay( null ) )}>X</Exit>
 				<Header>{Works[ display ].header}</Header>
@@ -114,15 +137,15 @@ export default function Display() {
 				<Links>
 					{Works[ display ].url !== "" && <Visit
 						onClick={visit}
-						color={playlist.palette[ playlist.backgroundColorIndex ]}
-						bgColor={playlist.palette[ playlist.mainColorIndex ]}
+						color={playlist.palette[ bgColor ]}
+						bgColor={playlist.palette[ color ]}
 					>
             Visit
 					</Visit>}
 					{Works[ display ].os !== "" && <Visit
 						onClick={visit}
-						color={playlist.palette[ playlist.backgroundColorIndex ]}
-						bgColor={playlist.palette[ playlist.mainColorIndex ]}
+						color={playlist.palette[ bgColor ]}
+						bgColor={playlist.palette[ color ]}
 					>
             Opensea
 					</Visit>}

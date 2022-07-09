@@ -14,6 +14,9 @@ const Container = styled.div<{ open?: boolean }>`
   flex-direction: column;
   align-items: center;
   transition: left 0.5s;
+  @media (max-width: 600px) {
+    width: 100%;
+  }
 `;
 
 const ClickContainer = styled.div<{ open: boolean }>`
