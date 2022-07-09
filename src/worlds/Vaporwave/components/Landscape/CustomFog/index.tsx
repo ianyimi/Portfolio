@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useStore } from "utils/store";
 import { useLimiter } from "spacesvr";
-import { useSpring } from "react-spring/three";
+import { useEffect, useRef } from "react";
 
 const _NOISE_GLSL = `
 //
@@ -111,11 +111,11 @@ export default function Fog() {
       // float fogDepth = distance(vWorldPosition, fogOrigin);
       float fogDepth = gl_FragCoord.z / gl_FragCoord.w;
       // f(p) = fbm( p + fbm( p ) )
-      vec3 noiseSampleCoord = vWorldPosition * 0.00025 + vec3(
-          0.0, 0.0, fogTime * 0.025);
-      float noiseSample = FBM(noiseSampleCoord + FBM(noiseSampleCoord)) * 0.5 + 0.5;
-      fogDepth *= mix(noiseSample, 1.0, saturate((fogDepth - 5000.0) / 5000.0));
-      fogDepth *= fogDepth;
+      // vec3 noiseSampleCoord = vWorldPosition * 0.00025 + vec3(
+      //     0.0, 0.0, fogTime * 0.025);
+      // float noiseSample = FBM(noiseSampleCoord + FBM(noiseSampleCoord)) * 0.5 + 0.5;
+      // fogDepth *= mix(noiseSample, 1.0, saturate((fogDepth - 5000.0) / 5000.0));
+      // fogDepth *= fogDepth;
       // float fogFactor = exp(-fogOrigin.y * fogDensity) * (
       //     1.0 - exp(-fogDepth * fogDirection.y * fogDensity)) / fogDirection.y;
       // fogFactor = saturate(fogFactor);
@@ -152,44 +152,43 @@ export default function Fog() {
     #endif`;
 
 	const { scene } = useThree();
-	const { playlist, hexToVec3, shaders, getProgress } = useStore( ( state ) => ( {
+	const { playlist, shaders, getProgress, resetShaders } = useStore( ( state ) => ( {
 		playlist: state.playlist,
 		audioData: state.audioData,
-		hexToVec3: state.hexToVec3,
 		shaders: state.shaders,
 		getProgress: state.getProgress,
+		resetShaders: state.resetShaders,
 	} ) );
 
-	const { fogColor } = useSpring( {
-		fogColor: hexToVec3( playlist.palette[ playlist.backgroundColorIndex ] )
-			.lerp( hexToVec3( playlist.palettes[ ( playlist.palettes.indexOf( playlist.palette ) + 1 ) % playlist.palettes.length ][ playlist.backgroundColorIndex ] ), getProgress() ),
-		config: {
-			mass: 1,
-			precision: 0.0001
-		}
-	} );
-
 	scene.fog = new THREE.Fog( playlist.palette[ playlist.backgroundColorIndex ], 1, 2.5 );
-	// scene.fog = new THREE.FogExp2( 0xFFFFFF, 1 );
+
+	const currentPlaylistId = useRef( playlist.id );
+	useEffect( () => {
+
+		resetShaders();
+
+	}, [ playlist.id ] );
+
 
 	const limiter = useLimiter( 45 );
 	useFrame( ( { clock } ) => {
 
 		if ( ! limiter.isReady( clock ) || shaders.length < 1 ) return;
-		// console.log( shaders );
+
+
 		for ( const shader of shaders ) {
 
-			shader.uniforms.fogTime.value = clock.getElapsedTime() / 10;
-			shader.uniforms.progress.value = getProgress();
+			if ( playlist.id !== currentPlaylistId.current ) {
 
-			// const color = hexToVec3( playlist.palette[ playlist.backgroundColorIndex ] )
-			// 	.lerp(
-			// 		hexToVec3( playlist.palettes[ ( playlist.palettes.indexOf( playlist.palette ) + 1 ) % playlist.palettes.length ][ playlist.backgroundColorIndex ] ),
-			// 		getProgress()
-			// 	);
-			// console.log( shader.uniforms.gl_FragColor.value );
-			// shader.uniforms.fogColor.value = new THREE.Color( color.x, color.y, color.z );
-			// shader.needsUpdate = true;
+				shader.needsUpdate = true;
+				currentPlaylistId.current = playlist.id;
+
+			} else {
+
+				shader.uniforms.fogTime.value = clock.getElapsedTime() / 10;
+				shader.uniforms.progress.value = getProgress();
+
+			}
 
 		}
 

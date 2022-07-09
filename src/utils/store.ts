@@ -20,7 +20,7 @@ export type StoreState = {
   setAa: ( aa: AnalyserNode ) => void,
   shaders: ShaderMaterial[],
   addShader: ( s: ShaderMaterial ) => void,
-  // modifyShader: ( s: ShaderMaterial ) => void,
+  resetShaders: () => void,
   getSpeed: () => number,
   getVolume: () => number,
   getProgress: () => number,
@@ -71,10 +71,12 @@ export const useStore = create<StoreState>()( ( set: any, get: any ) => {
 
 			const newShaders = get().shaders;
 			newShaders.push( s );
-			// console.log( newShaders );
 			set( () => ( { shaders: newShaders } ) );
 
 		},
+		resetShaders: () => set(
+			() => ( { shaders: [] } )
+		),
 		getSpeed: () => {
 
 			if ( ! get().aa ) return 1.5;
@@ -134,7 +136,7 @@ function startPlaylist() {
 
 	};
 
-	const zeroPlaylist = playlists[ 2 ];
+	const zeroPlaylist = playlists[ 1 ];
 	const firstPlaylist = {
 		...zeroPlaylist,
 		palette: randomItem( zeroPlaylist.palettes )
