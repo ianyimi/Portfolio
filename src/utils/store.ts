@@ -1,4 +1,4 @@
-import { AudioAnalyser, Vector3 } from "three";
+import { AudioAnalyser, ShaderMaterial, Vector3 } from "three";
 import { Playlist, playlists } from "../worlds/Vaporwave/utils/constants";
 import create from "zustand";
 import produce from "immer";
@@ -11,10 +11,14 @@ export type StoreState = {
   setDisplay: ( value: number | null ) => void,
   audioSrc: string,
   setAudioSrc: ( src: string ) => void,
+  audioData: HTMLAudioElement | undefined,
+  setAudioData: ( data: HTMLAudioElement ) => void,
   paused: boolean,
   setPaused: ( paused: boolean ) => void,
   aa: AudioAnalyser | undefined,
   setAa: ( aa: AnalyserNode ) => void,
+  shaders: ShaderMaterial[],
+  addShader: ( s: ShaderMaterial ) => void,
   getSpeed: () => number,
   getVolume: () => number,
   hexToVec3: ( color: string ) => Vector3
@@ -42,6 +46,10 @@ export const useStore = create<StoreState>()( ( set: any, get: any ) => {
 		setAudioSrc: ( src: string ) => set(
 			() => ( { audioSrc: src } )
 		),
+		audioData: undefined,
+		setAudioData: ( data: HTMLAudioElement ) => set(
+			() => ( { audioData: data } )
+		),
 		paused: false,
 		setPaused: ( paused: boolean ) => set(
 			() => ( { paused: paused } )
@@ -50,6 +58,13 @@ export const useStore = create<StoreState>()( ( set: any, get: any ) => {
 		setAa: ( aa: AnalyserNode | AudioAnalyser ) => set(
 			() => ( { aa: aa } )
 		),
+		shaders: [],
+		addShader: ( s: ShaderMaterial ) => {
+
+			const newShaders = [ ...get().shaders ].push( s );
+			set( () => ( { shaders: newShaders } ) );
+
+		},
 		getSpeed: () => {
 
 			if ( ! get().aa ) return 1.5;

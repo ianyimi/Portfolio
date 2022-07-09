@@ -8,10 +8,11 @@ import shallow from "zustand/shallow";
 
 export const useMatrixMat = (): ShaderMaterial => {
 
-	const { playlist, palette, hexToVec3 } = useStore( ( state ) => ( {
+	const { playlist, palette, hexToVec3, audioData } = useStore( ( state ) => ( {
 		playlist: state.playlist,
 		palette: state.playlist.palette,
 		hexToVec3: state.hexToVec3,
+		audioData: state.audioData,
 	} ), shallow );
 
 	const mat = useMemo(
@@ -20,6 +21,9 @@ export const useMatrixMat = (): ShaderMaterial => {
 				uniforms: {
 					color: new Uniform( hexToVec3( palette[ playlist.mainColorIndex ] ) ),
 					fogColor: new Uniform( hexToVec3( palette[ playlist.backgroundColorIndex ] ) ),
+					nextColor: new Uniform( hexToVec3( playlist.palettes[ ( playlist.palettes.indexOf( playlist.palette ) + 1 ) % playlist.palettes.length ][ playlist.mainColorIndex ] ) ),
+					nextFogColor: new Uniform( hexToVec3( playlist.palettes[ ( playlist.palettes.indexOf( playlist.palette ) + 1 ) % playlist.palettes.length ][ playlist.backgroundColorIndex ] ) ),
+					songProgress: new Uniform( 0 ),
 					time: new Uniform( 0 ),
 					resolution: new Uniform( new THREE.Vector2( window.innerWidth, window.innerHeight ) ),
 					intensity: new Uniform( 1.0 )
@@ -38,10 +42,19 @@ export const useMatrixMat = (): ShaderMaterial => {
 
 			mat.uniforms.time.value = clock.getElapsedTime() / 2;
 			// mat.uniforms.intensity.value = 0.5*Math.cos(clock.getElapsedTime()*(2*Math.PI/(100/60))) + 0.5
+			if ( audioData ) {
+
+				const progress = Math.floor( 10000 * audioData.currentTime / audioData.duration ) / 10000;
+				// console.log( progress );
+				mat.uniforms.songProgress.value = progress;
+
+			}
 
 		}
 
 	} );
+
+	// console.log( audioData.currentTime );
 
 	return mat;
 
@@ -66,8 +79,12 @@ const frag = `
   uniform sampler2D tex2;
   uniform vec2 resolution;
   uniform vec3 color;
-  uniform mediump float intensity;
+  uniform vec3 nextColor;
   uniform vec3 fogColor;
+  uniform vec3 nextFogColor;
+  uniform mediump float songProgress;
+  uniform mediump float intensity;
+  
   
   varying vec2 vUv;
   precision mediump float;
@@ -103,6 +120,9 @@ const frag = `
              : mod(floor(symbol / pow(2., sm.x + sm.y * smS.x)), 2.) == 1.;
 
     vec3 curRGB = color;
+    curRGB = mix(color, nextColor, songProgress);
+    vec3 mixedFogColor = fogColor;
+    mixedFogColor = mix(fogColor, nextFogColor, songProgress);
     if( s )
     {
         if( u > 0.9 )
@@ -113,19 +133,19 @@ const frag = `
             }
         else if( u > 0. )
         		{
-            curRGB = mix(fogColor, curRGB, u);
+            curRGB = mix(mixedFogColor, curRGB, u);
 						}
 				else
-						curRGB = fogColor;
+						curRGB = mixedFogColor;
     }
     else
-        curRGB = fogColor;
+        curRGB = mixedFogColor;
 
     gl_FragColor = vec4(curRGB.x, curRGB.y, curRGB.z, 1.0);
     
     // account for fog
     float depth = gl_FragCoord.z / gl_FragCoord.w;
     float fogFactor = smoothstep( fogNear, fogFar, depth );
-    gl_FragColor.rgb = mix( gl_FragColor.rgb, fogColor, fogFactor );
+    gl_FragColor.rgb = mix( gl_FragColor.rgb, mixedFogColor, fogFactor );
   }
 `;

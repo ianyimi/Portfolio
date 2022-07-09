@@ -1,4 +1,4 @@
-import { Fog, useLimiter } from "spacesvr";
+import { useLimiter } from "spacesvr";
 import { useFrame } from "@react-three/fiber";
 import React, { useRef } from "react";
 import Terrain from "./Terrain";
@@ -10,6 +10,7 @@ import { useStore } from "utils/store";
 import shallow from "zustand/shallow";
 import Ball from "./Ball";
 import { useTexture } from "@react-three/drei";
+import CustomFog from "./CustomFog";
 
 const TEXTURES = [
 	"https://dqeczc7c9n9n1.cloudfront.net/images/marble1.jpg",
@@ -106,9 +107,10 @@ export default function Index() {
 	} );
 
 	return (
-		<group>
+		<group>+
 			<Audio fftSize={2048}/>
-			<Fog color={new THREE.Color( playlist.palette[ playlist.backgroundColorIndex ] )} near={1} far={2}/>
+			{/*<Fog color={new THREE.Color( playlist.palette[ playlist.backgroundColorIndex ] )} near={1} far={2}/>*/}
+			<CustomFog/>
 			<Lights/>
 			{/*<Title position={[0, 0.5, -0.5]} />*/}
 			<Terrain ref={terrain1Ref}/>

@@ -24,10 +24,11 @@ export default function Sound( props: MusicProps ) {
 
 	const { clock, camera } = useThree();
 
-	const { playlist, setPalette, setAudioSrc, setAa, paused, setPaused } = useStore( ( state: any ) => ( {
+	const { playlist, setPalette, setAudioSrc, setAudioData, setAa, paused, setPaused } = useStore( ( state: any ) => ( {
 		playlist: state.playlist,
 		setPalette: state.setPalette,
 		setAudioSrc: state.setAudioSrc,
+		setAudioData: state.setAudioData,
 		setAa: state.setAa,
 		paused: state.paused,
 		setPaused: state.setPaused,
@@ -81,6 +82,7 @@ export default function Sound( props: MusicProps ) {
 			setAa( new AudioAnalyser( audio, fftSize ) );
 
 			setAudio( audioElement );
+			setAudioData( audioElement );
 			audioRef.current = audioElement;
 			setThreeAudio( audio );
 			threeAudioRef.current = audio;

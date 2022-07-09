@@ -1,10 +1,10 @@
-import { PerspectiveCamera } from "@react-three/drei";
+import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 
 export default function Camera() {
 
 	return (
 		<group>
-			{/*<OrbitControls/>*/}
+			<OrbitControls/>
 			<PerspectiveCamera
 				makeDefault
 				position={[ 0, 0.15, 1.1 ]}
