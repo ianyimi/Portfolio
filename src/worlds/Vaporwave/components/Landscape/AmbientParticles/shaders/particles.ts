@@ -2,6 +2,8 @@ import { useMemo } from "react";
 import { ShaderMaterial, ShaderMaterialParameters, Uniform } from "three";
 import { useStore } from "utils/store";
 import shallow from "zustand/shallow";
+import { useLimiter } from "spacesvr";
+import { useFrame } from "@react-three/fiber";
 
 export const vert = `
   precision highp float;
@@ -161,18 +163,23 @@ export const frag = `
   
   uniform vec3 color;
   uniform vec3 fogColor;
+  uniform vec3 nextColor;
+  uniform vec3 nextFogColor;
+  uniform mediump float songProgress;
   
   #define fogNear 1.
   #define fogFar 2.5
   
 
   void main() {
-    gl_FragColor = vec4(color, 1);
+  	vec3 curRGB = mix(color, nextColor, songProgress);
+  	vec3 mixedFogColor = mix(fogColor, nextFogColor, songProgress);
+    gl_FragColor = vec4(curRGB, 1);
     
     // account for fog
     float depth = gl_FragCoord.z / gl_FragCoord.w;
     float fogFactor = smoothstep( fogNear, fogFar, depth );
-    gl_FragColor.rgb = mix( gl_FragColor.rgb, fogColor, fogFactor );
+    gl_FragColor.rgb = mix( gl_FragColor.rgb, mixedFogColor, fogFactor );
   }
 `;
 
@@ -180,15 +187,15 @@ export const useParticleMaterial = (
 	shaderParams?: Partial<ShaderMaterialParameters>
 ) => {
 
-	const { playlist, aa, palette, hexToVec3, getVolume } = useStore( ( state ) => ( {
+	const { playlist, palette, hexToVec3, getVolume, getProgress } = useStore( ( state ) => ( {
 		playlist: state.playlist,
-		aa: state.aa,
 		palette: state.playlist.palette,
 		hexToVec3: state.hexToVec3,
-		getVolume: state.getVolume
+		getVolume: state.getVolume,
+		getProgress: state.getProgress,
 	} ), shallow );
 
-	return useMemo(
+	const mat = useMemo(
 		() =>
 			new ShaderMaterial( {
 				uniforms: {
@@ -196,6 +203,9 @@ export const useParticleMaterial = (
 					volume: new Uniform( getVolume() ),
 					color: new Uniform( hexToVec3( palette[ playlist.mainColorIndex ] ) ),
 					fogColor: new Uniform( hexToVec3( palette[ playlist.backgroundColorIndex ] ) ),
+					nextColor: new Uniform( hexToVec3( playlist.palettes[ ( playlist.palettes.indexOf( playlist.palette ) + 1 ) % playlist.palettes.length ][ playlist.mainColorIndex ] ) ),
+					nextFogColor: new Uniform( hexToVec3( playlist.palettes[ ( playlist.palettes.indexOf( playlist.palette ) + 1 ) % playlist.palettes.length ][ playlist.backgroundColorIndex ] ) ),
+					songProgress: new Uniform( 0 ),
 				},
 				vertexShader: vert,
 				fragmentShader: frag,
@@ -203,5 +213,23 @@ export const useParticleMaterial = (
 			} ),
 		[ frag, vert, palette, playlist.id ]
 	);
+
+	const limiter = useLimiter( 30 );
+	useFrame( ( { clock } ) => {
+
+		if ( mat && limiter.isReady( clock ) ) {
+
+			mat.uniforms.time.value = clock.getElapsedTime() / 2;
+			// mat.uniforms.intensity.value = 0.5*Math.cos(clock.getElapsedTime()*(2*Math.PI/(100/60))) + 0.5
+
+			// console.log( getProgress() );
+			mat.uniforms.songProgress.value = getProgress();
+
+
+		}
+
+	} );
+
+	return mat;
 
 };

@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import { ShaderMaterial, Uniform } from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useStore } from "utils/store";
 import { useLimiter } from "spacesvr";
@@ -119,7 +118,9 @@ export default function Fog() {
       float fogFactor = exp(-fogOrigin.y * fogDensity) * (
           1.0 - exp(-fogDepth * fogDirection.y * fogDensity)) / fogDirection.y;
       fogFactor = saturate(fogFactor);
-      gl_FragColor.rgb = mix( gl_FragColor.rgb, fogColor, fogFactor );
+      // vec3 mixedFogColor = fogColor;
+      vec3 mixedFogColor = mix(fogColor, nextFogColor, progress);
+      gl_FragColor.rgb = mix( gl_FragColor.rgb, mixedFogColor, fogFactor );
     #endif`;
 
 	THREE.ShaderChunk.fog_pars_fragment = _NOISE_GLSL + `
@@ -129,6 +130,8 @@ export default function Fog() {
       varying vec3 vWorldPosition;
       #ifdef FOG_EXP2
         uniform float fogDensity;
+        uniform vec3 nextFogColor;
+        uniform float progress;
       #else
         uniform float fogNear;
         uniform float fogFar;
@@ -146,24 +149,17 @@ export default function Fog() {
     #endif`;
 
 	const { scene } = useThree();
-	const { playlist, audioData, hexToVec3, shaders, addShader } = useStore( ( state ) => ( {
+	const { playlist, hexToVec3, shaders, getProgress } = useStore( ( state ) => ( {
 		playlist: state.playlist,
 		audioData: state.audioData,
 		hexToVec3: state.hexToVec3,
 		shaders: state.shaders,
-		addShader: state.addShader,
+		getProgress: state.getProgress,
 	} ) );
-	console.log( scene );
-
-	const modifyShaders = ( s: ShaderMaterial ) => {
-
-		addShader( s );
-		s.uniforms.fogTime = new Uniform( 0 );
-
-	};
 
 	const { fogColor } = useSpring( {
-		fogColor: 0xFFFFFF,
+		fogColor: hexToVec3( playlist.palette[ playlist.backgroundColorIndex ] )
+			.lerp( hexToVec3( playlist.palettes[ ( playlist.palettes.indexOf( playlist.palette ) + 1 ) % playlist.palettes.length ][ playlist.backgroundColorIndex ] ), getProgress() ),
 		config: {
 			mass: 1,
 			precision: 0.0001
@@ -177,9 +173,20 @@ export default function Fog() {
 	useFrame( ( { clock } ) => {
 
 		if ( ! limiter.isReady( clock ) || shaders.length < 1 ) return;
+		// console.log( shaders );
 		for ( const shader of shaders ) {
 
-			shader.uniforms.fogTime.value = clock.getElapsedTime() * 10;
+			shader.uniforms.fogTime.value = clock.getElapsedTime() / 10;
+			shader.uniforms.progress.value = getProgress();
+
+			// const color = hexToVec3( playlist.palette[ playlist.backgroundColorIndex ] )
+			// 	.lerp(
+			// 		hexToVec3( playlist.palettes[ ( playlist.palettes.indexOf( playlist.palette ) + 1 ) % playlist.palettes.length ][ playlist.backgroundColorIndex ] ),
+			// 		getProgress()
+			// 	);
+			// console.log( shader.uniforms.gl_FragColor.value );
+			// shader.uniforms.fogColor.value = new THREE.Color( color.x, color.y, color.z );
+			// shader.needsUpdate = true;
 
 		}
 

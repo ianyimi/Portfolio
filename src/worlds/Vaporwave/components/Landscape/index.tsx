@@ -46,9 +46,10 @@ export default function Index() {
 	const tex3 = useTexture( TEXTURES[ 2 ] );
 	const tex4 = useTexture( TEXTURES[ 3 ] );
 
-	const { playlist, getSpeed } = useStore( ( state: any ) => ( {
+	const { playlist, getSpeed, addShader } = useStore( ( state: any ) => ( {
 		playlist: state.playlist,
-		getSpeed: state.getSpeed
+		getSpeed: state.getSpeed,
+		addShader: state.addShader,
 	} ), shallow );
 
 	const [ collider ] = usePlane( () => ( {
@@ -144,6 +145,7 @@ export default function Index() {
 				<meshStandardMaterial
 					color={new THREE.Color( playlist.palette[ playlist.mainColorIndex ] )}
 					side={THREE.DoubleSide}
+					onBeforeCompile={addShader}
 				/>
 			</mesh>
 			<mesh name="ground" ref={collider}>

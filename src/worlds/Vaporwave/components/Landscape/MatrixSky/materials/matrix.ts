@@ -8,11 +8,12 @@ import shallow from "zustand/shallow";
 
 export const useMatrixMat = (): ShaderMaterial => {
 
-	const { playlist, palette, hexToVec3, audioData } = useStore( ( state ) => ( {
+	const { playlist, palette, hexToVec3, audioData, getProgress } = useStore( ( state ) => ( {
 		playlist: state.playlist,
 		palette: state.playlist.palette,
 		hexToVec3: state.hexToVec3,
 		audioData: state.audioData,
+		getProgress: state.getProgress,
 	} ), shallow );
 
 	const mat = useMemo(
@@ -44,9 +45,8 @@ export const useMatrixMat = (): ShaderMaterial => {
 			// mat.uniforms.intensity.value = 0.5*Math.cos(clock.getElapsedTime()*(2*Math.PI/(100/60))) + 0.5
 			if ( audioData ) {
 
-				const progress = Math.floor( 10000 * audioData.currentTime / audioData.duration ) / 10000;
-				// console.log( progress );
-				mat.uniforms.songProgress.value = progress;
+				// console.log( getProgress() );
+				mat.uniforms.songProgress.value = getProgress();
 
 			}
 

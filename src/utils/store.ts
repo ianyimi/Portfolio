@@ -1,3 +1,4 @@
+import * as THREE from "three";
 import { AudioAnalyser, ShaderMaterial, Vector3 } from "three";
 import { Playlist, playlists } from "../worlds/Vaporwave/utils/constants";
 import create from "zustand";
@@ -19,8 +20,10 @@ export type StoreState = {
   setAa: ( aa: AnalyserNode ) => void,
   shaders: ShaderMaterial[],
   addShader: ( s: ShaderMaterial ) => void,
+  // modifyShader: ( s: ShaderMaterial ) => void,
   getSpeed: () => number,
   getVolume: () => number,
+  getProgress: () => number,
   hexToVec3: ( color: string ) => Vector3
 }
 
@@ -61,7 +64,14 @@ export const useStore = create<StoreState>()( ( set: any, get: any ) => {
 		shaders: [],
 		addShader: ( s: ShaderMaterial ) => {
 
-			const newShaders = [ ...get().shaders ].push( s );
+			const nextFogColor = get().playlist.palettes[ ( get().playlist.palettes.indexOf( get().playlist.palette ) + 1 ) % get().playlist.palettes.length ][ get().playlist.backgroundColorIndex ];
+			s.uniforms.nextFogColor = { value: new THREE.Color( nextFogColor ) };
+			s.uniforms.fogTime = { value: 0 };
+			s.uniforms.progress = { value: 0 };
+
+			const newShaders = get().shaders;
+			newShaders.push( s );
+			// console.log( newShaders );
 			set( () => ( { shaders: newShaders } ) );
 
 		},
@@ -95,6 +105,12 @@ export const useStore = create<StoreState>()( ( set: any, get: any ) => {
 			return sum / 100000;
 
 		},
+		getProgress: () => {
+
+			if ( ! get().audioData ) return 0;
+			return Math.floor( 10000 * get().audioData.currentTime / get().audioData.duration ) / 10000;
+
+		},
 		hexToVec3: ( hex: string ) => {
 
 			const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec( hex );
@@ -118,7 +134,7 @@ function startPlaylist() {
 
 	};
 
-	const zeroPlaylist = playlists[ 2 ];
+	const zeroPlaylist = playlists[ 1 ];
 	const firstPlaylist = {
 		...zeroPlaylist,
 		palette: randomItem( zeroPlaylist.palettes )

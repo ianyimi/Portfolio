@@ -11,8 +11,10 @@ import shallow from "zustand/shallow";
 const Terrain = React.forwardRef( ( props: { z?: number }, ref ) => {
 
 	const { z = 0 } = props;
-	const { playlist } = useStore( ( state ) => ( {
+	const { playlist, addShader } = useStore( ( state ) => ( {
 		playlist: state.playlist,
+		addShader: state.addShader,
+		// modifyShader: state.modifyShader,
 	} ), shallow );
 
 	const [ heightTexture, metalnessTexture ] = useTexture( [
@@ -30,7 +32,7 @@ const Terrain = React.forwardRef( ( props: { z?: number }, ref ) => {
 	} );
 
 	return (
-		// @ts-ignore
+	// @ts-ignore
 		<group ref={ref} position={[ 0, 0, z ]}>
 			<MatrixSky/>
 			<AmbientParticles/>
@@ -57,6 +59,7 @@ const Terrain = React.forwardRef( ( props: { z?: number }, ref ) => {
 						metalnessMap={metalnessTexture}
 						metalness={0.9}
 						roughness={0.5}
+						onBeforeCompile={addShader}
 						wireframe
 					/>
 					<planeBufferGeometry attach="geometry" args={[ 1, 4, 24, 24 ]}/>
@@ -69,6 +72,7 @@ const Terrain = React.forwardRef( ( props: { z?: number }, ref ) => {
 						metalnessMap={metalnessTexture}
 						metalness={0.9}
 						roughness={0.5}
+						onBeforeCompile={addShader}
 					/>
 					<planeBufferGeometry attach="geometry" args={[ 1, 4, 24, 24 ]}/>
 				</mesh>
@@ -78,6 +82,7 @@ const Terrain = React.forwardRef( ( props: { z?: number }, ref ) => {
 						metalnessMap={metalnessTexture}
 						metalness={0.9}
 						roughness={0.5}
+						onBeforeCompile={addShader}
 					/>
 					<planeBufferGeometry attach="geometry" args={[ 1, 4, 24, 24 ]}/>
 				</mesh>

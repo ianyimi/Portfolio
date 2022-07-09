@@ -19,9 +19,10 @@ const RADIUS = 0.025;
 const Ball = React.forwardRef( ( props: BallProps, ref ) => {
 
 	const { pos = [ 0, 0, 0 ], texture, index } = props;
-	const { display, setDisplay } = useStore( state => ( {
+	const { display, setDisplay, addShader } = useStore( state => ( {
 		display: state.display,
-		setDisplay: state.setDisplay
+		setDisplay: state.setDisplay,
+		addShader: state.addShader,
 	} ), shallow );
 	const mesh = useRef( new THREE.Mesh() );
 	const cPos = useRef( new Vector3() );
@@ -79,11 +80,11 @@ const Ball = React.forwardRef( ( props: BallProps, ref ) => {
 			<group ref={ref} onClick={toggleDisplay}>
 				<mesh ref={collider}>
 					<sphereBufferGeometry args={[ RADIUS, 32, 32 ]}/>
-					<meshBasicMaterial map={texture} visible={false}/>
+					<meshBasicMaterial visible={false}/>
 				</mesh>
 				<mesh ref={mesh}>
 					<sphereBufferGeometry args={[ RADIUS, 32, 32 ]}/>
-					<meshBasicMaterial map={texture}/>
+					<meshBasicMaterial map={texture} onBeforeCompile={addShader}/>
 				</mesh>
 			</group>
 		</group>

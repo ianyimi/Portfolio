@@ -1,11 +1,10 @@
-import * as THREE from 'three';
 import { Vector3 } from 'three';
 import { ReactNode, useRef } from "react";
 import { GroupProps, useFrame } from "@react-three/fiber";
 import { useLimiter } from "spacesvr";
-import { animated } from "react-spring/three";
 import { useStore } from "utils/store";
 import shallow from "zustand/shallow";
+import { useCubeMaterial } from "./shaders/cubes";
 
 type VisualizerProps = {
   barCount?: number,
@@ -30,23 +29,25 @@ export default function AudioVisualizer( props: VisualizerProps ) {
 	const group1 = useRef();
 	const group2 = useRef();
 	const cubes: ReactNode[] = [];
-	const { playlist, aa } = useStore( ( state ) => ( {
+	const { playlist, aa, hexToVec3 } = useStore( ( state ) => ( {
 		playlist: state.playlist,
 		aa: state.aa,
+		hexToVec3: state.hexToVec3,
 	} ), shallow );
 
 	for ( let i = 0; i < barCount; ++ i ) {
 
-		const color = new THREE.Color( playlist.palette[ Math.floor( Math.random() * playlist.palette.length ) ] );
+		const color = playlist.palette[ Math.floor( Math.random() * playlist.palette.length ) ];
+		const hexColor = hexToVec3( playlist.palette[ Math.floor( Math.random() * playlist.palette.length ) ] );
+		const nextPalette = playlist.palettes[ ( playlist.palettes.indexOf( playlist.palette ) + 1 ) % playlist.palettes.length ];
+		const nextColor = hexToVec3( nextPalette[ playlist.palette.indexOf( color ) % nextPalette.length ] );
+		// eslint-disable-next-line react-hooks/rules-of-hooks
+		const fogMat = useCubeMaterial( hexColor, nextColor );
 
 		cubes.push(
-			<mesh name={`cube-${index}-${i}`} position={new Vector3( 0, 0, i * barWidth + i / 50 )} key={`cube-${index}-${i}`}>
+			<mesh name={`cube-${index}-${i}`} material={fogMat} position={new Vector3( 0, 0, i * barWidth + i / 50 )}
+				key={`cube-${index}-${i}`}>
 				<boxBufferGeometry args={[ barWidth, barHeight, barWidth, 1, 15 ]}/>
-				<animated.meshStandardMaterial
-					color={color}
-					metalness={0.9}
-					roughness={0.5}
-				/>
 			</mesh>
 		);
 
