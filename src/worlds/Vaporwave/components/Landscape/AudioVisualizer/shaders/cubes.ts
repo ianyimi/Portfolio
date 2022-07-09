@@ -59,13 +59,12 @@ export const useCubeMaterial = (
 		() =>
 			new ShaderMaterial( {
 				uniforms: {
-					time: new Uniform( 0 ),
+					...THREE.UniformsUtils.clone( standard.uniforms ),
 					color: new Uniform( color ),
 					fogColor: new Uniform( hexToVec3( palette[ playlist.backgroundColorIndex ] ) ),
 					nextColor: new Uniform( nextColor ),
 					nextFogColor: new Uniform( hexToVec3( playlist.palettes[ ( playlist.palettes.indexOf( playlist.palette ) + 1 ) % playlist.palettes.length ][ playlist.backgroundColorIndex ] ) ),
 					songProgress: new Uniform( 0 ),
-					...THREE.UniformsUtils.clone( standard.uniforms )
 				},
 				vertexShader: vert,
 				fragmentShader: frag,
@@ -91,12 +90,7 @@ export const useCubeMaterial = (
 
 		if ( mat && limiter.isReady( clock ) ) {
 
-			mat.uniforms.time.value = clock.getElapsedTime() / 2;
-			// mat.uniforms.intensity.value = 0.5*Math.cos(clock.getElapsedTime()*(2*Math.PI/(100/60))) + 0.5
-
-			// console.log( getProgress() );
 			mat.uniforms.songProgress.value = getProgress();
-
 
 		}
 

@@ -108,7 +108,8 @@ export default function Fog() {
     #ifdef USE_FOG
       vec3 fogOrigin = cameraPosition;
       vec3 fogDirection = normalize(vWorldPosition - fogOrigin);
-      float fogDepth = distance(vWorldPosition, fogOrigin);
+      // float fogDepth = distance(vWorldPosition, fogOrigin);
+      float fogDepth = gl_FragCoord.z / gl_FragCoord.w;
       // f(p) = fbm( p + fbm( p ) )
       vec3 noiseSampleCoord = vWorldPosition * 0.00025 + vec3(
           0.0, 0.0, fogTime * 0.025);

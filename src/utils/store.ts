@@ -134,7 +134,7 @@ function startPlaylist() {
 
 	};
 
-	const zeroPlaylist = playlists[ 1 ];
+	const zeroPlaylist = playlists[ 2 ];
 	const firstPlaylist = {
 		...zeroPlaylist,
 		palette: randomItem( zeroPlaylist.palettes )
