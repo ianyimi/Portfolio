@@ -115,10 +115,10 @@ export default function Fog() {
       float noiseSample = FBM(noiseSampleCoord + FBM(noiseSampleCoord)) * 0.5 + 0.5;
       fogDepth *= mix(noiseSample, 1.0, saturate((fogDepth - 5000.0) / 5000.0));
       fogDepth *= fogDepth;
-      float fogFactor = exp(-fogOrigin.y * fogDensity) * (
-          1.0 - exp(-fogDepth * fogDirection.y * fogDensity)) / fogDirection.y;
-      fogFactor = saturate(fogFactor);
-      // vec3 mixedFogColor = fogColor;
+      // float fogFactor = exp(-fogOrigin.y * fogDensity) * (
+      //     1.0 - exp(-fogDepth * fogDirection.y * fogDensity)) / fogDirection.y;
+      // fogFactor = saturate(fogFactor);
+      float fogFactor = smoothstep( fogNear, fogFar, fogDepth );
       vec3 mixedFogColor = mix(fogColor, nextFogColor, progress);
       gl_FragColor.rgb = mix( gl_FragColor.rgb, mixedFogColor, fogFactor );
     #endif`;
@@ -135,6 +135,8 @@ export default function Fog() {
       #else
         uniform float fogNear;
         uniform float fogFar;
+        uniform vec3 nextFogColor;
+        uniform float progress;
       #endif
     #endif`;
 
@@ -166,7 +168,7 @@ export default function Fog() {
 		}
 	} );
 
-	scene.fog = new THREE.FogExp2( playlist.palette[ playlist.backgroundColorIndex ], 1 );
+	scene.fog = new THREE.Fog( playlist.palette[ playlist.backgroundColorIndex ], 1, 2.5 );
 	// scene.fog = new THREE.FogExp2( 0xFFFFFF, 1 );
 
 	const limiter = useLimiter( 45 );
