@@ -9,9 +9,9 @@ import { useStore } from "utils/store";
 import shallow from "zustand/shallow";
 
 type BallProps = {
-  pos?: [x: number, y: number, z: number],
-  texture: THREE.Texture,
-  index: number,
+	pos?: [x: number, y: number, z: number],
+	texture: THREE.Texture,
+	index: number,
 }
 
 const RADIUS = 0.025;
@@ -73,10 +73,24 @@ const Ball = React.forwardRef( ( props: BallProps, ref ) => {
 
 	}
 
+	function togglePointer() {
+
+		if ( document.body.style.cursor === "pointer" ) {
+
+			document.body.style.cursor = "default";
+
+		} else {
+
+			document.body.style.cursor = "pointer";
+
+		}
+
+	}
+
 	return (
 		<group>
 			{/* @ts-ignore */}
-			<group ref={ref} onClick={toggleDisplay}>
+			<group ref={ref} onClick={toggleDisplay} onPointerOver={togglePointer} onPointerOut={togglePointer}>
 				<mesh ref={collider}>
 					<sphereBufferGeometry args={[ RADIUS, 32, 32 ]}/>
 					<meshBasicMaterial map={texture} visible={false}/>
