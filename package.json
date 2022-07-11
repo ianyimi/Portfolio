@@ -26,6 +26,7 @@
     "spacesvr": "latest",
     "three": "^0.127.0",
     "three-custom-shader-material": "^3.3.6",
+    "vanta": "^0.5.22",
     "zustand": "^4.0.0-rc.1"
   },
   "devDependencies": {
