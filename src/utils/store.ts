@@ -15,6 +15,11 @@ export type StoreState = {
   setPaused: ( paused: boolean ) => void,
   aa: AudioAnalyser | undefined,
   setAa: ( aa: AnalyserNode ) => void,
+  loaded: string[],
+  progress: number,
+  objectRendered: ( id: string ) => void,
+  loadTotal: string[],
+  objectQueued: ( id: string ) => void,
   getSpeed: () => number,
   getVolume: () => number,
   hexToVec3: ( color: string ) => Vector3
@@ -50,6 +55,34 @@ export const useStore = create<StoreState>()( ( set: any, get: any ) => {
 		setAa: ( aa: AnalyserNode | AudioAnalyser ) => set(
 			() => ( { aa: aa } )
 		),
+		loaded: [],
+		progress: 0,
+		objectRendered: ( id: string ) => {
+
+			if ( get().progress === 100 || get().loaded.includes( id ) || id === "" ) return;
+			console.log( "loaded: " + ( get().loaded.length + 1 ) + "/" + get().loadTotal.length );
+			const newLoaded = get().loaded;
+			newLoaded.push( id );
+			set(
+				() => ( {
+					loaded: newLoaded,
+					progress: Math.floor( 100 * get().loaded.length / get().loadTotal.length ),
+				} )
+			);
+
+		},
+		loadTotal: [],
+		objectQueued: ( id: string ) => {
+
+			if ( get().progress === 100 || get().loadTotal.includes( id ) || id === "" ) return;
+			console.log( "loading: " + ( get().loadTotal.length + 1 ) + " items" );
+			const newLoadTotal = get().loadTotal;
+			newLoadTotal.push( id );
+			set(
+				() => ( { loadTotal: newLoadTotal } )
+			);
+
+		},
 		getSpeed: () => {
 
 			if ( ! get().aa ) return 1.5;

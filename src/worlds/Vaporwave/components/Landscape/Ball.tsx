@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSphere } from "@react-three/cannon";
 import { useFrame } from "@react-three/fiber";
 import { useLimiter } from "spacesvr";
@@ -7,6 +7,7 @@ import * as THREE from "three";
 import { Vector3 } from "three";
 import { useStore } from "utils/store";
 import shallow from "zustand/shallow";
+import { v4 as uuidv4 } from "uuid";
 
 type BallProps = {
 	pos?: [x: number, y: number, z: number],
@@ -15,16 +16,21 @@ type BallProps = {
 }
 
 const RADIUS = 0.025;
+const TOTAL_MESHES = 2;
 
 const Ball = React.forwardRef( ( props: BallProps, ref ) => {
 
 	const { pos = [ 0, 0, 0 ], texture, index } = props;
-	const { display, setDisplay } = useStore( state => ( {
+	const { display, setDisplay, objectQueued, objectRendered } = useStore( state => ( {
 		display: state.display,
-		setDisplay: state.setDisplay
+		setDisplay: state.setDisplay,
+		objectQueued: state.objectQueued,
+		objectRendered: state.objectRendered,
 	} ), shallow );
 	const mesh = useRef( new THREE.Mesh() );
 	const cPos = useRef( new Vector3() );
+	const [ mountedMesh1, setM1 ] = useState( "" );
+	const [ mountedMesh2, setM2 ] = useState( "" );
 	const ACTIVE_DISPLAY = display === index,
 		NO_ACTIVE_DISPLAY = display === null;
 
@@ -43,6 +49,13 @@ const Ball = React.forwardRef( ( props: BallProps, ref ) => {
 		api.applyImpulse( [ 0, pos[ 1 ], 0 ], [ 0, - 1, 0 ] );
 
 	}
+
+	useEffect( () => {
+
+		setM1( uuidv4() );
+		setM2( uuidv4() );
+
+	}, [] );
 
 	// Update currentPos Ref
 	useEffect( () => {
@@ -87,15 +100,25 @@ const Ball = React.forwardRef( ( props: BallProps, ref ) => {
 
 	}
 
+	console.log( mountedMesh1 );
+	console.log( mountedMesh2 );
+
 	return (
 		<group>
-			{/* @ts-ignore */}
-			<group ref={ref} onClick={toggleDisplay} onPointerOver={togglePointer} onPointerOut={togglePointer}>
-				<mesh ref={collider}>
+			<group
+				// @ts-ignore
+				ref={ref}
+				onClick={toggleDisplay}
+				onPointerOver={togglePointer}
+				onPointerOut={togglePointer}
+			>
+				<mesh ref={collider} onBeforeRender={() => objectQueued( mountedMesh1 )}
+					onAfterRender={() => objectRendered( mountedMesh1 )}>
 					<sphereBufferGeometry args={[ RADIUS, 32, 32 ]}/>
 					<meshBasicMaterial map={texture} visible={false}/>
 				</mesh>
-				<mesh ref={mesh}>
+				<mesh ref={mesh} onBeforeRender={() => objectQueued( mountedMesh2 )}
+					onAfterRender={() => objectRendered( mountedMesh2 )}>
 					<sphereBufferGeometry args={[ RADIUS, 32, 32 ]}/>
 					<meshBasicMaterial map={texture}/>
 				</mesh>

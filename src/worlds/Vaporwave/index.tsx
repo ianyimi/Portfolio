@@ -1,10 +1,9 @@
 import { Canvas } from "@react-three/fiber";
 import { Physics } from "@react-three/cannon";
-import { Loader } from "@react-three/drei";
 import Camera from "../components/Camera";
 import Overlay from "./components/Overlay";
 import { Suspense } from "react";
-import { Landscape } from "./components";
+import { Landscape, Loader } from "./components";
 
 export default function Vaporwave() {
 

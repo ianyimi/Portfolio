@@ -44,23 +44,19 @@ const SubText = styled.div`
   font-size: 1em;
 `;
 
-const Enter = styled.button<{ color: string }>`
+const Enter = styled.button<{ color: string, loaded: boolean }>`
   color: white;
   box-shadow: rgba(255, 255, 255, 0.5) 0px 0px 29px 7px;
-  //border: 2px solid white;
-  //margin: 5% 0;
-  //padding: 0.5em 2em 0.5em 2em;
   width: 100px;
   height: 50px;
   margin: 0 auto;
   position: relative;
   border: none;
   overflow: hidden;
-
   font-family: Bitmap;
   font-size: 1.25em;
   position: absolute;
-  cursor: pointer;
+  cursor: ${props => props.loaded ? "pointer" : "default"};
   bottom: -100%;
   background-color: rgba(255, 255, 255, 0.25);
 
@@ -96,13 +92,13 @@ const Enter = styled.button<{ color: string }>`
     transition: all 0.25s linear;
 
     :hover {
-      background-color: ${props => props.color}
+      background-color: ${props => props.loaded ? props.color : "none"}
     }
   }
 
   @keyframes shine {
     to {
-      background-position: 400% center;
+      background-position: ${props => props.loaded ? "400%" : 0} center;
     }
   }
 `;
@@ -111,9 +107,9 @@ export default function Landing() {
 
 	const [ vantaEffect, setVantaEffect ] = useState<any>( undefined );
 	const vantaRef = useRef( null );
-	const { playlist, hexToVec3 } = useStore( state => ( {
+	const { playlist, progress2 } = useStore( state => ( {
 		playlist: state.playlist,
-		hexToVec3: state.hexToVec3,
+		progress2: state.progress,
 	} ) );
 	const { progress, loaded } = useProgress();
 
@@ -151,9 +147,9 @@ export default function Landing() {
 				<SubText>
 					{isMobile ? "Tap" : "Click"} the <i>Bouncing Spheres</i> to learn more.
 				</SubText>
-				<Enter color={playlist.palette[ playlist.mainColorIndex ]}>
+				<Enter color={playlist.palette[ playlist.mainColorIndex ]} loaded={progress === 100}>
 					<div className="border"/>
-					<div className="main-element">{loaded ? "Enter" : progress}</div>
+					<div className="main-element">{progress === 100 ? "Enter" : progress + "%"}</div>
 				</Enter>
 			</Content>
 		</Container>
