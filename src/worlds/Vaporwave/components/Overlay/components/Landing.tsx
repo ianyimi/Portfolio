@@ -110,7 +110,6 @@ export default function Landing() {
 
 	const [ vantaEffect, setVantaEffect ] = useState<any>( undefined );
 	const vantaRef = useRef( null );
-	const [ percentage, setPercentage ] = useState( 0 );
 	const { playlist, progress } = useStore( state => ( {
 		playlist: state.playlist,
 		progress: state.progress,
@@ -143,14 +142,7 @@ export default function Landing() {
 
 	}, [ vantaEffect ] );
 
-	useEffect( () => {
-
-		// console.log( progress );
-		setPercentage( progress );
-
-	}, [ progress ] );
-
-	console.log( percentage );
+	console.log( progress );
 
 	return (
 		<Container ref={vantaRef}>
