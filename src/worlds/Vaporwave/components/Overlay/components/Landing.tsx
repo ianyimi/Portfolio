@@ -155,7 +155,7 @@ export default function Landing() {
 				<Enter color={playlist.palette[ playlist.mainColorIndex ]} loaded={progress === 100}>
 					<div className="border"/>
 					<div className="main-element">
-						{progress === 100 ? "Enter" : progress + "%"}
+						{progress === 100 ? "Enter" : "Loading..."}
 					</div>
 				</Enter>
 			</Content>

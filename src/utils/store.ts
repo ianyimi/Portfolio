@@ -77,7 +77,7 @@ export const useStore = create<StoreState>()( ( set: any, get: any ) => {
 
 			// console.log( id );
 			if ( get().loadTotal.includes( id ) || id === "" ) return;
-			console.log( "loading: " + ( get().loadTotal.length + 1 ) + " items" );
+			console.log( "queueing: " + ( get().loadTotal.length + 1 ) + " items" );
 			const newLoadTotal = get().loadTotal;
 			newLoadTotal.push( id );
 			set(
