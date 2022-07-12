@@ -7,7 +7,7 @@ import { useStore } from "utils/store";
 import { isMobile } from "react-device-detect";
 import shallow from "zustand/shallow";
 
-const Container = styled.div`
+const Container = styled.div<{ entered?: boolean }>`
   background-color: black;
   position: absolute;
   width: 100vw;
@@ -18,6 +18,45 @@ const Container = styled.div`
   align-items: center;
   color: white;
   font-family: Thunderstorm;
+  animation: ${props => props.entered ? "disappear" : "none"} 1s forwards;
+  webkit-animation: ${props => props.entered ? "disappear" : "none"} 1s forwards;
+
+  @keyframes disappear {
+    0% {
+      opacity: 1;
+    }
+    10% {
+      opacity: 0.9
+    }
+    20% {
+      opacity: 0.8
+    }
+    30% {
+      opacity: 0.7
+    }
+    40% {
+      opacity: 0.6;
+    }
+    50% {
+      opacity: 0.5
+    }
+    60% {
+      opacity: 0.4
+    }
+    70% {
+      opacity: 0.3
+    }
+    80% {
+      opacity: 0.2
+    }
+    90% {
+      opacity: 0.1
+    }
+    100% {
+      opacity: 0;
+      display: none;
+    }
+  }
 `;
 
 const Content = styled.div`
@@ -108,13 +147,13 @@ const Enter = styled.button<{ color: string, loaded: boolean }>`
 
 export default function Landing() {
 
+	const [ enter, setEnter ] = useState( false );
 	const [ vantaEffect, setVantaEffect ] = useState<any>( undefined );
 	const vantaRef = useRef( null );
 	const { playlist, progress } = useStore( state => ( {
 		playlist: state.playlist,
 		progress: state.progress,
 	} ), shallow );
-	// const { progress, loaded } = useProgress();
 
 	useEffect( () => {
 
@@ -142,17 +181,26 @@ export default function Landing() {
 
 	}, [ vantaEffect ] );
 
-	console.log( progress );
+	function start() {
+
+		if ( progress !== 100 || enter ) return;
+		setEnter( true );
+
+	}
 
 	return (
-		<Container ref={vantaRef}>
+		<Container ref={vantaRef} entered={enter}>
 			<Content>
 				<SubText>Portfolio and Music Player created by</SubText>
 				<Title>Isaiah Anyimi</Title>
 				<SubText>
 					{isMobile ? "Tap" : "Click"} the <i>Bouncing Spheres</i> to learn more.
 				</SubText>
-				<Enter color={playlist.palette[ playlist.mainColorIndex ]} loaded={progress === 100}>
+				<Enter
+					color={playlist.palette[ playlist.mainColorIndex ]}
+					loaded={progress === 100}
+					onClick={start}
+				>
 					<div className="border"/>
 					<div className="main-element">
 						{progress === 100 ? "Enter" : "Loading..."}
