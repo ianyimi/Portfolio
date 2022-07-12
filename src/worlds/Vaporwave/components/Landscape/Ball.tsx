@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { useSphere } from "@react-three/cannon";
 import { useFrame } from "@react-three/fiber";
 import { useLimiter } from "spacesvr";
@@ -10,9 +10,9 @@ import shallow from "zustand/shallow";
 import { v4 as uuidv4 } from "uuid";
 
 type BallProps = {
-	pos?: [x: number, y: number, z: number],
-	texture: THREE.Texture,
-	index: number,
+  pos?: [x: number, y: number, z: number],
+  texture: THREE.Texture,
+  index: number,
 }
 
 const RADIUS = 0.025;
@@ -29,8 +29,7 @@ const Ball = React.forwardRef( ( props: BallProps, ref ) => {
 	} ), shallow );
 	const mesh = useRef( new THREE.Mesh() );
 	const cPos = useRef( new Vector3() );
-	const [ mountedMesh1, setM1 ] = useState( "" );
-	const [ mountedMesh2, setM2 ] = useState( "" );
+	const uuid = useRef( uuidv4() );
 	const ACTIVE_DISPLAY = display === index,
 		NO_ACTIVE_DISPLAY = display === null;
 
@@ -52,8 +51,7 @@ const Ball = React.forwardRef( ( props: BallProps, ref ) => {
 
 	useEffect( () => {
 
-		setM1( uuidv4() );
-		setM2( uuidv4() );
+		objectQueued( uuid.current );
 
 	}, [] );
 
@@ -100,9 +98,6 @@ const Ball = React.forwardRef( ( props: BallProps, ref ) => {
 
 	}
 
-	console.log( mountedMesh1 );
-	console.log( mountedMesh2 );
-
 	return (
 		<group>
 			<group
@@ -112,13 +107,11 @@ const Ball = React.forwardRef( ( props: BallProps, ref ) => {
 				onPointerOver={togglePointer}
 				onPointerOut={togglePointer}
 			>
-				<mesh ref={collider} onBeforeRender={() => objectQueued( mountedMesh1 )}
-					onAfterRender={() => objectRendered( mountedMesh1 )}>
+				<mesh ref={collider}>
 					<sphereBufferGeometry args={[ RADIUS, 32, 32 ]}/>
 					<meshBasicMaterial map={texture} visible={false}/>
 				</mesh>
-				<mesh ref={mesh} onBeforeRender={() => objectQueued( mountedMesh2 )}
-					onAfterRender={() => objectRendered( mountedMesh2 )}>
+				<mesh ref={mesh} onAfterRender={() => objectRendered( uuid.current )}>
 					<sphereBufferGeometry args={[ RADIUS, 32, 32 ]}/>
 					<meshBasicMaterial map={texture}/>
 				</mesh>

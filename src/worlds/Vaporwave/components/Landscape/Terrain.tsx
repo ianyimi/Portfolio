@@ -1,5 +1,5 @@
 import { useTexture } from "@react-three/drei";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { animated, useSpring } from "react-spring/three";
 import MatrixSky from "./MatrixSky";
 import * as THREE from "three";
@@ -7,13 +7,19 @@ import AmbientParticles from "./AmbientParticles";
 import AudioVisualizer from "./AudioVisualizer";
 import { useStore } from "utils/store";
 import shallow from "zustand/shallow";
+import { v4 as uuidv4 } from "uuid";
 
 const Terrain = React.forwardRef( ( props: { z?: number }, ref ) => {
 
 	const { z = 0 } = props;
-	const { playlist } = useStore( ( state ) => ( {
+	const { playlist, objectQueued, objectRendered } = useStore( ( state ) => ( {
 		playlist: state.playlist,
+		objectQueued: state.objectQueued,
+		objectRendered: state.objectRendered
 	} ), shallow );
+	const uuid1 = useRef( uuidv4() );
+	const uuid2 = useRef( uuidv4() );
+	const uuid3 = useRef( uuidv4() );
 
 	const [ heightTexture, metalnessTexture ] = useTexture( [
 		"displacement-7.png",
@@ -29,8 +35,16 @@ const Terrain = React.forwardRef( ( props: { z?: number }, ref ) => {
 		}
 	} );
 
+	useEffect( () => {
+
+		objectQueued( uuid1.current );
+		objectQueued( uuid2.current );
+		objectQueued( uuid3.current );
+
+	}, [] );
+
 	return (
-		// @ts-ignore
+	// @ts-ignore
 		<group ref={ref} position={[ 0, 0, z ]}>
 			<MatrixSky/>
 			<AmbientParticles/>
@@ -38,7 +52,7 @@ const Terrain = React.forwardRef( ( props: { z?: number }, ref ) => {
 				position={[ 0, 0, 0 ]}
 				radius={0.5}
 				barCount={45}
-				index={1}
+				index={0}
 			/>
 			<AudioVisualizer
 				position={[ 0, 0, - 2 ]}
@@ -48,7 +62,7 @@ const Terrain = React.forwardRef( ( props: { z?: number }, ref ) => {
 				reverse
 			/>
 			<group rotation={[ - Math.PI * 0.5, 0, 0 ]}>
-				<mesh>
+				<mesh onAfterRender={() => objectRendered( uuid1.current )}>
 					<animated.meshStandardMaterial
 						color={lineColor}
 						emissive={lineColor}
@@ -61,7 +75,7 @@ const Terrain = React.forwardRef( ( props: { z?: number }, ref ) => {
 					/>
 					<planeBufferGeometry attach="geometry" args={[ 1, 4, 24, 24 ]}/>
 				</mesh>
-				<mesh>
+				<mesh onAfterRender={() => objectRendered( uuid2.current )}>
 					<animated.meshStandardMaterial
 						color="black"
 						displacementMap={heightTexture}
@@ -72,7 +86,7 @@ const Terrain = React.forwardRef( ( props: { z?: number }, ref ) => {
 					/>
 					<planeBufferGeometry attach="geometry" args={[ 1, 4, 24, 24 ]}/>
 				</mesh>
-				<mesh position-y={- 0.1}>
+				<mesh position-y={- 0.1} onAfterRender={() => objectRendered( uuid3.current )}>
 					<animated.meshStandardMaterial
 						color="black"
 						metalnessMap={metalnessTexture}

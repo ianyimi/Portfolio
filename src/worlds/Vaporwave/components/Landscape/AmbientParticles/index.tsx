@@ -5,6 +5,7 @@ import { GroupProps, useFrame } from "@react-three/fiber";
 import { positions } from "./utils/constants";
 import { useStore } from "utils/store";
 import shallow from "zustand/shallow";
+import { v4 as uuidv4 } from "uuid";
 
 const COUNT = 500;
 const X_RANGE = 10;
@@ -17,16 +18,25 @@ const SCALE = 30;
 export default function AmbientParticles( props: GroupProps ) {
 
 	const mesh = useRef<InstancedMesh>();
-	const { playlist, aa, getVolume } = useStore( ( state ) => ( {
+	const uuid = useRef( uuidv4() );
+	const { playlist, aa, getVolume, objectQueued, objectRendered } = useStore( ( state ) => ( {
 		playlist: state.playlist,
 		aa: state.aa,
 		getVolume: state.getVolume,
+		objectQueued: state.objectQueued,
+		objectRendered: state.objectRendered,
 	} ), shallow );
 
 	const particleMaterial = useParticleMaterial();
 
 	const dummy = useMemo( () => new Object3D(), [] );
 	const generate = false;
+
+	useEffect( () => {
+
+		objectQueued( uuid.current );
+
+	}, [] );
 
 	useEffect( () => {
 
@@ -89,6 +99,7 @@ export default function AmbientParticles( props: GroupProps ) {
 				// @ts-ignore
 				args={[ null, null, COUNT ]}
 				material={particleMaterial}
+				onAfterRender={() => objectRendered( uuid.current )}
 			>
 				<sphereBufferGeometry args={[ ! aa ? 0 : 0.015 * SCALE, 16, 20 ]}/>
 			</instancedMesh>

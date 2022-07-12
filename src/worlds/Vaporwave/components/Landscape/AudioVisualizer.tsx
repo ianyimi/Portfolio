@@ -6,6 +6,7 @@ import { useLimiter } from "spacesvr";
 import { animated } from "react-spring/three";
 import { useStore } from "utils/store";
 import shallow from "zustand/shallow";
+import { v4 as uuidv4 } from "uuid";
 
 type VisualizerProps = {
   barCount?: number,
@@ -29,18 +30,36 @@ export default function AudioVisualizer( props: VisualizerProps ) {
 	} = props;
 	const group1 = useRef();
 	const group2 = useRef();
+	const uuid = useRef( uuidv4() );
 	const cubes: ReactNode[] = [];
-	const { playlist, aa } = useStore( ( state ) => ( {
+	const { playlist, aa, objectQueued, objectRendered } = useStore( ( state ) => ( {
 		playlist: state.playlist,
 		aa: state.aa,
+		objectQueued: state.objectQueued,
+		objectRendered: state.objectRendered,
 	} ), shallow );
+
+	// useEffect( () => {
+	//
+	// 	objectQueued( uuid.current );
+	//
+	// }, [] );
 
 	for ( let i = 0; i < barCount; ++ i ) {
 
 		const color = new THREE.Color( playlist.palette[ Math.floor( Math.random() * playlist.palette.length ) ] );
 
 		cubes.push(
-			<mesh name={`cube-${index}-${i}`} position={new Vector3( 0, 0, i * barWidth + i / 50 )} key={`cube-${index}-${i}`}>
+			<mesh
+				name={`cube-${index}-${i}`}
+				position={new Vector3( 0, 0, i * barWidth + i / 50 )} key={`cube-${index}-${i}`}
+				onAfterRender={() => {
+
+					// objectRendered( uuid.current );
+					// objectRendered( uuidv4() );
+
+				}}
+			>
 				<boxBufferGeometry args={[ barWidth, barHeight, barWidth, 1, 15 ]}/>
 				<animated.meshStandardMaterial
 					color={color}
@@ -57,6 +76,7 @@ export default function AudioVisualizer( props: VisualizerProps ) {
 
 		if ( ! limiter.isReady( clock ) || ! group1.current || ! group2.current || ! aa ) return;
 
+		// objectRendered( uuid.current );
 		const audioData = aa.getFrequencyData();
 		const step = audioData.length / cubes.length;
 		for ( let i = 0; i < cubes.length; ++ i ) {

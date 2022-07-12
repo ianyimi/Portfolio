@@ -1,6 +1,6 @@
 import { Fog, useLimiter } from "spacesvr";
 import { useFrame } from "@react-three/fiber";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import Terrain from "./Terrain";
 import { usePlane } from "@react-three/cannon";
 import Audio from "../Audio";
@@ -10,6 +10,7 @@ import { useStore } from "utils/store";
 import shallow from "zustand/shallow";
 import Ball from "./Ball";
 import { useTexture } from "@react-three/drei";
+import { v4 as uuidv4 } from "uuid";
 
 const TEXTURES = [
 	"https://dqeczc7c9n9n1.cloudfront.net/images/marble1.jpg",
@@ -39,15 +40,18 @@ export default function Index() {
 	const ball2 = useRef();
 	const ball3 = useRef();
 	const ballRefs = [ ball, ball1, ball2, ball3 ];
+	const uuid = useRef( uuidv4() );
 
 	const tex = useTexture( TEXTURES[ 0 ] );
 	const tex2 = useTexture( TEXTURES[ 1 ] );
 	const tex3 = useTexture( TEXTURES[ 2 ] );
 	const tex4 = useTexture( TEXTURES[ 3 ] );
 
-	const { playlist, getSpeed } = useStore( ( state: any ) => ( {
+	const { playlist, getSpeed, objectQueued, objectRendered } = useStore( ( state: any ) => ( {
 		playlist: state.playlist,
-		getSpeed: state.getSpeed
+		getSpeed: state.getSpeed,
+		objectQueued: state.objectQueued,
+		objectRendered: state.objectRendered,
 	} ), shallow );
 
 	const [ collider ] = usePlane( () => ( {
@@ -55,6 +59,12 @@ export default function Index() {
 		rotation: [ - Math.PI * 0.5, 0, 0 ],
 		type: "Static"
 	} ) );
+
+	useEffect( () => {
+
+		objectQueued( uuid.current );
+
+	}, [] );
 
 	const limiter = useLimiter( 30 );
 	useFrame( ( { clock } ) => {
@@ -137,7 +147,7 @@ export default function Index() {
 				texture={tex4}
 				index={3}
 			/>
-			<mesh name="skybox">
+			<mesh name="skybox" onAfterRender={() => objectRendered( uuid.current )}>
 				<boxBufferGeometry args={[ 10, 10, 10 ]}/>
 				<meshStandardMaterial
 					color={new THREE.Color( playlist.palette[ playlist.mainColorIndex ] )}

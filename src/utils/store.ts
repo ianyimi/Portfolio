@@ -59,7 +59,8 @@ export const useStore = create<StoreState>()( ( set: any, get: any ) => {
 		progress: 0,
 		objectRendered: ( id: string ) => {
 
-			if ( get().progress === 100 || get().loaded.includes( id ) || id === "" ) return;
+			// console.log( id );
+			if ( get().loaded.includes( id ) || id === "" ) return;
 			console.log( "loaded: " + ( get().loaded.length + 1 ) + "/" + get().loadTotal.length );
 			const newLoaded = get().loaded;
 			newLoaded.push( id );
@@ -74,7 +75,8 @@ export const useStore = create<StoreState>()( ( set: any, get: any ) => {
 		loadTotal: [],
 		objectQueued: ( id: string ) => {
 
-			if ( get().progress === 100 || get().loadTotal.includes( id ) || id === "" ) return;
+			// console.log( id );
+			if ( get().loadTotal.includes( id ) || id === "" ) return;
 			console.log( "loading: " + ( get().loadTotal.length + 1 ) + " items" );
 			const newLoadTotal = get().loadTotal;
 			newLoadTotal.push( id );

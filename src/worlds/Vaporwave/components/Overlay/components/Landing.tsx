@@ -5,7 +5,6 @@ import styled from "@emotion/styled";
 import FOG from "vanta/dist/vanta.fog.min";
 import { useStore } from "utils/store";
 import { isMobile } from "react-device-detect";
-import { useProgress } from "@react-three/drei";
 
 const Container = styled.div`
   background-color: black;
@@ -110,11 +109,12 @@ export default function Landing() {
 
 	const [ vantaEffect, setVantaEffect ] = useState<any>( undefined );
 	const vantaRef = useRef( null );
-	const { playlist, progress2 } = useStore( state => ( {
+	const [ percentage, setPercentage ] = useState( 0 );
+	const { playlist, progress } = useStore( state => ( {
 		playlist: state.playlist,
-		progress2: state.progress,
+		progress: state.progress,
 	} ) );
-	const { progress, loaded } = useProgress();
+	// const { progress, loaded } = useProgress();
 
 	useEffect( () => {
 
@@ -142,6 +142,13 @@ export default function Landing() {
 
 	}, [ vantaEffect ] );
 
+	useEffect( () => {
+
+		// console.log( progress );
+		setPercentage( progress );
+
+	}, [ progress ] );
+
 	return (
 		<Container ref={vantaRef}>
 			<Content>
@@ -152,7 +159,7 @@ export default function Landing() {
 				</SubText>
 				<Enter color={playlist.palette[ playlist.mainColorIndex ]} loaded={progress === 100}>
 					<div className="border"/>
-					<div className="main-element">{progress === 100 ? "ENTER" : progress + "%"}</div>
+					<div className="main-element">{progress === 100 ? "Enter" : progress + "%"}</div>
 				</Enter>
 			</Content>
 		</Container>

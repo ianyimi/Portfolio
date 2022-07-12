@@ -8,7 +8,7 @@ export default function Lights() {
 
 	const spotlight1Ref = useRef();
 	const spotlight2Ref = useRef();
-	const playlist = useStore( ( state ) => state.playlist );
+	const playlist = useStore( state => state.playlist );
 
 	const dummy1 = new Object3D(),
 		dummy2 = new Object3D();
