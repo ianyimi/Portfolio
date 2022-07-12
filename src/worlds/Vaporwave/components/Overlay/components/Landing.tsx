@@ -70,10 +70,12 @@ const Enter = styled.button<{ color: string, loaded: boolean }>`
     height: 400%;
     width: 400%;
     transform: rotate(-45deg);
+    webkit-transform: rotate(-45deg);
     overflow: hidden;
     background: linear-gradient(to right, rgba(0, 0, 0, 0.25) 20%, rgba(0, 0, 0, 0.25) 40%, ${props => props.color} 50%, ${props => props.color} 55%, rgba(0, 0, 0, 0.25) 70%, rgba(0, 0, 0, 0.25) 100%);
     background-size: 400% auto;
     animation: shine 12s linear infinite;
+    webkit-animation: shine 12s linear infinite;
   }
 
   .main-element {
@@ -90,6 +92,7 @@ const Enter = styled.button<{ color: string, loaded: boolean }>`
     justify-content: center;
     align-items: center;
     transition: all 0.25s linear;
+    webkit-transition: all 0.25s linear;
 
     :hover {
       background-color: ${props => props.loaded ? props.color : "none"}
@@ -149,7 +152,7 @@ export default function Landing() {
 				</SubText>
 				<Enter color={playlist.palette[ playlist.mainColorIndex ]} loaded={progress === 100}>
 					<div className="border"/>
-					<div className="main-element">{progress === 100 ? "Enter" : progress + "%"}</div>
+					<div className="main-element">{progress === 100 ? "ENTER" : progress + "%"}</div>
 				</Enter>
 			</Content>
 		</Container>
