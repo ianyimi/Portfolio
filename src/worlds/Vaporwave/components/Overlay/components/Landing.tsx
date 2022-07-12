@@ -5,6 +5,7 @@ import styled from "@emotion/styled";
 import FOG from "vanta/dist/vanta.fog.min";
 import { useStore } from "utils/store";
 import { isMobile } from "react-device-detect";
+import { useProgress } from "@react-three/drei";
 
 const Container = styled.div`
   background-color: black;
@@ -43,11 +44,78 @@ const SubText = styled.div`
   font-size: 1em;
 `;
 
+const Enter = styled.button<{ color: string }>`
+  color: white;
+  box-shadow: rgba(255, 255, 255, 0.5) 0px 0px 29px 7px;
+  //border: 2px solid white;
+  //margin: 5% 0;
+  //padding: 0.5em 2em 0.5em 2em;
+  width: 100px;
+  height: 50px;
+  margin: 0 auto;
+  position: relative;
+  border: none;
+  overflow: hidden;
+
+  font-family: Bitmap;
+  font-size: 1.25em;
+  position: absolute;
+  cursor: pointer;
+  bottom: -100%;
+  background-color: rgba(255, 255, 255, 0.25);
+
+  .border {
+    position: absolute;
+    display: block;
+    top: 0;
+    left: -175%;
+    z-index: 6;
+    display: block;
+    height: 400%;
+    width: 400%;
+    transform: rotate(-45deg);
+    overflow: hidden;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.25) 20%, rgba(0, 0, 0, 0.25) 40%, ${props => props.color} 50%, ${props => props.color} 55%, rgba(0, 0, 0, 0.25) 70%, rgba(0, 0, 0, 0.25) 100%);
+    background-size: 400% auto;
+    animation: shine 12s linear infinite;
+  }
+
+  .main-element {
+    position: absolute;
+    top: 2%;
+    left: 1%;
+    display: block;
+    height: 97%;
+    width: 98%;
+    align-self: center;
+    background-color: rgba(255, 255, 255, 0.25);
+    z-index: 7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.25s linear;
+
+    :hover {
+      background-color: ${props => props.color}
+    }
+  }
+
+  @keyframes shine {
+    to {
+      background-position: 400% center;
+    }
+  }
+`;
+
 export default function Landing() {
 
 	const [ vantaEffect, setVantaEffect ] = useState<any>( undefined );
 	const vantaRef = useRef( null );
-	const playlist = useStore( state => state.playlist );
+	const { playlist, hexToVec3 } = useStore( state => ( {
+		playlist: state.playlist,
+		hexToVec3: state.hexToVec3,
+	} ) );
+	const { progress, loaded } = useProgress();
 
 	useEffect( () => {
 
@@ -83,6 +151,10 @@ export default function Landing() {
 				<SubText>
 					{isMobile ? "Tap" : "Click"} the <i>Bouncing Spheres</i> to learn more.
 				</SubText>
+				<Enter color={playlist.palette[ playlist.mainColorIndex ]}>
+					<div className="border"/>
+					<div className="main-element">{loaded ? "Enter" : progress}</div>
+				</Enter>
 			</Content>
 		</Container>
 	);

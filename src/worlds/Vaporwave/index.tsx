@@ -4,6 +4,7 @@ import { Loader } from "@react-three/drei";
 import Camera from "../components/Camera";
 import Overlay from "./components/Overlay";
 import { Suspense } from "react";
+import { Landscape } from "./components";
 
 export default function Vaporwave() {
 
@@ -15,7 +16,7 @@ export default function Vaporwave() {
 					{/*<Debug scale={1} color="red">*/}
 					<Suspense fallback={null}>
 						<Camera/>
-						{/*<Landscape/>*/}
+						<Landscape/>
 						{/*<PostProcessing/>*/}
 					</Suspense>
 					{/*</Debug>*/}
