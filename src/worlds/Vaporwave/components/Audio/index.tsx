@@ -88,14 +88,14 @@ export default function Sound( props: MusicProps ) {
 
 		};
 
-		document.addEventListener( "click", createSpeaker );
-		document.addEventListener( "touchstart", createSpeaker );
-		return () => {
+    document.getElementById( "enter" )?.addEventListener( "click", createSpeaker );
+    document.getElementById( "enter" )?.addEventListener( "touchstart", createSpeaker );
+    return () => {
 
-			document.removeEventListener( "click", createSpeaker );
-			document.removeEventListener( "touchstart", createSpeaker );
+      document.getElementById( "enter" )?.removeEventListener( "click", createSpeaker );
+      document.getElementById( "enter" )?.removeEventListener( "touchstart", createSpeaker );
 
-		};
+    };
 
 	}, [ threeAudio ] );
 

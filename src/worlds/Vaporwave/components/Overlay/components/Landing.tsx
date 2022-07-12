@@ -54,7 +54,7 @@ const Container = styled.div<{ entered?: boolean }>`
     }
     100% {
       opacity: 0;
-      display: none;
+      visibility: hidden;
     }
   }
 `;
@@ -122,7 +122,7 @@ const Enter = styled.button<{ color: string, loaded: boolean }>`
     top: 2%;
     left: 1%;
     display: block;
-    height: 97%;
+    height: 96%;
     width: 98%;
     align-self: center;
     background-color: rgba(255, 255, 255, 0.25);
@@ -197,6 +197,7 @@ export default function Landing() {
 					{isMobile ? "Tap" : "Click"} the <i>Bouncing Spheres</i> to learn more.
 				</SubText>
 				<Enter
+					id="enter"
 					color={playlist.palette[ playlist.mainColorIndex ]}
 					loaded={progress === 100}
 					onClick={start}
