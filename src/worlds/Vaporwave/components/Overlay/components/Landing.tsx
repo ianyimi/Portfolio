@@ -96,7 +96,7 @@ const Enter = styled.button<{ color: string, loaded: boolean }>`
   font-size: 1.25em;
   position: absolute;
   cursor: ${props => props.loaded ? "pointer" : "default"};
-  bottom: -100%;
+  bottom: -75%;
   background-color: rgba(255, 255, 255, 0.25);
 
   .border {
