@@ -24,26 +24,35 @@ const Button = styled.button`
     height: auto;
     display: block;
     filter: drop-shadow(5px 5px hsl(0, 0%, 20%));
+    webkit-filter: drop-shadow(5px 5px hsl(0, 0%, 20%));
   }
 
   & .translate {
     transition: transform 0.25s ease-in-out;
     transition-delay: 0.25s;
+    webkit-transition: transform 0.25s ease-in-out;
+    webkit-transition-delay: 0.25s;
   }
 
   & .rotate {
     transition: transform 0.25s ease-in-out;
     transition-delay: 0s;
+    webkit-transition: transform 0.25s ease-in-out;
+    webkit-transition-delay: 0s;
   }
 
   & .open.translate {
     transform: translateY(0);
     transition-delay: 0s;
+    webkit-transform: translateY(0);
+    webkit-transition-delay: 0s;
   }
 
   & .open.rotate {
     transform: rotate(0);
     transition-delay: 0.25s;
+    webkit-transform: rotate(0);
+    webkit-transform-delay: 0.25s;
   }
 `;
 
