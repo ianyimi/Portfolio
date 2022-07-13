@@ -27,28 +27,28 @@ const Button = styled.button`
     webkit-filter: drop-shadow(5px 5px hsl(0, 0%, 20%));
   }
 
-  & .translate {
+  & .translate .webkit-translate {
     transition: transform 0.25s ease-in-out;
     transition-delay: 0.25s;
     webkit-transition: transform 0.25s ease-in-out;
     webkit-transition-delay: 0.25s;
   }
 
-  & .rotate {
+  & .rotate .webkit-rotate {
     transition: transform 0.25s ease-in-out;
     transition-delay: 0s;
     webkit-transition: transform 0.25s ease-in-out;
     webkit-transition-delay: 0s;
   }
 
-  & .open.translate {
+  & .open.translate .open.webkit-translate {
     transform: translateY(0);
     transition-delay: 0s;
     webkit-transform: translateY(0);
     webkit-transition-delay: 0s;
   }
 
-  & .open.rotate {
+  & .open.rotate open.webkit-rotate {
     transform: rotate(0);
     transition-delay: 0.25s;
     webkit-transform: rotate(0);
