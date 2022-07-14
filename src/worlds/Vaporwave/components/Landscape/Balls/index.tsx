@@ -15,7 +15,7 @@ const TEXTURES = [
 
 const BALL_START_POSITIONS: [x: number, y: number, z: number][] = [
 	[ 0.075, 0.05, - 1.15 ],
-	[ 0.025, 0.1, - 3 ],
+	// [ 0.025, 0.1, - 3 ],
 	[ - 0.025, 0.1, - 1.75 ],
 	[ - 0.05, 0.075, - 2.5 ],
 	[ - 0.1, 0.125, - 3.25 ],
@@ -31,14 +31,14 @@ export default function Balls() {
 	const ball1 = useRef();
 	const ball2 = useRef();
 	const ball3 = useRef();
-	const ball4 = useRef();
-	const ballRefs = [ ball, ball1, ball2, ball3, ball4 ];
+	// const ball4 = useRef();
+	const ballRefs = [ ball, ball1, ball2, ball3 ];
 	// const {refs} = props;
 	const tex = useTexture( TEXTURES[ 0 ] );
 	const tex2 = useTexture( TEXTURES[ 1 ] );
 	const tex3 = useTexture( TEXTURES[ 2 ] );
 	const tex4 = useTexture( TEXTURES[ 3 ] );
-	const textures = [ tex, tex2, tex3, tex4, tex ];
+	const textures = [ tex, tex2, tex3, tex4 ];
 
 	const { getSpeed } = useStore( ( state: any ) => ( {
 		getSpeed: state.getSpeed,
@@ -66,8 +66,7 @@ export default function Balls() {
 			! ball.current ||
 			! ball1.current ||
 			! ball2.current ||
-			! ball3.current ||
-			! ball4.current
+			! ball3.current
 		) return;
 
 		const speed = getSpeed();

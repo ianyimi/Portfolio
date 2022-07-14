@@ -29,16 +29,16 @@ export const Works = [
 	},
 	{
 		id: 4,
+		header: "Creature World",
+		desc: "Creature World is an orignal NFT collection from artist Danny Cole. I helped build this site with Muse for the release of a new functionality of the Creatures",
+		url: "https://creature.world",
+		os: ""
+	},
+	{
+		id: 5,
 		header: "Winter Temple",
 		desc: "The Winter Temple is the second Realm in the EtherRealms Genesis Collection: The Divine Realms. This 1 of 1 Realm was created in collaboration with voxel artist @swansnaker on Instagram. Visit the experience and check out the Opensea!",
 		url: "https://etherrealms.org/wintertemple",
 		os: ""
 	},
-	{
-		id: 5,
-		header: "Creature World",
-		desc: "Creature World is an orignal NFT collection from artist Danny Cole. I helped build this site with Muse for the release of a new functionality of the Creatures",
-		url: "https://creature.world",
-		os: ""
-	}
 ];

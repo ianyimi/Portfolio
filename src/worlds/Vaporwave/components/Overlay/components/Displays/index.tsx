@@ -69,6 +69,12 @@ const Description = styled.p`
   width: 70%;
   font-family: Times;
   font-size: clamp(16px, 2vw, 20px);
+  @media (min-width: 550px) {
+    margin-top: -45px;
+  }
+  @media (min-width: 1200px) {
+    margin-top: -75px;
+  }
   //border: 2px dashed green;
 `;
 
