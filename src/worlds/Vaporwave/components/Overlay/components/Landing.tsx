@@ -64,7 +64,7 @@ const Content = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  //justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   text-align: center;
   //border: 2px dashed red;
@@ -73,7 +73,7 @@ const Content = styled.div`
 const Title = styled.h1`
   font-size: 5em;
   //border: 2px dashed blue;
-  margin: 5px 0 45px 0;
+  //margin: 5px 0 45px 0;
   //margin: -1px 0 0 0;
 `;
 
@@ -89,14 +89,13 @@ const Enter = styled.button<{ color: string, loaded: boolean }>`
   width: 100px;
   height: 50px;
   margin: 0 auto;
-  position: relative;
   border: none;
   overflow: hidden;
   font-family: Bitmap;
   font-size: 1.25em;
   position: absolute;
   cursor: ${props => props.loaded ? "pointer" : "default"};
-  bottom: -75%;
+  bottom: -50%;
   background-color: rgba(255, 255, 255, 0.25);
 
   .border {
