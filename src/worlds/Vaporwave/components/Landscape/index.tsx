@@ -1,6 +1,6 @@
-import { Fog, useLimiter } from "spacesvr";
+import { useLimiter } from "spacesvr";
 import { useFrame } from "@react-three/fiber";
-import React, { useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import Terrain from "./Terrain";
 import { usePlane } from "@react-three/cannon";
 import Audio from "../Audio";
@@ -27,6 +27,7 @@ const BALL_START_POSITIONS: [x: number, y: number, z: number][] = [
 
 export default function Index() {
 
+	const sleep = useRef( "wake" );
 	const terrain1Ref = useRef();
 	const terrain2Ref = useRef();
 	const terrainRefs = [ terrain1Ref, terrain2Ref ];
@@ -52,6 +53,42 @@ export default function Index() {
 		type: "Static"
 	} ) );
 
+	const onChange = useCallback( () => {
+
+		if ( ! terrain1Ref.current || ! terrain2Ref.current ) return;
+
+		console.log( terrain1Ref.current );
+		if ( document.hidden ) {
+
+			// console.log( terrain1Ref.current );
+			sleep.current = "sleep";
+			console.log( "sleep" );
+
+		} else {
+
+			// @ts-ignore
+			// terrain1Ref.current.position.set( 0, 0, 0 );
+			// @ts-ignore
+			// terrain2Ref.current.position.set( 0, 0, - 4 );
+			sleep.current = "wake";
+			console.log( "wake" );
+
+		}
+
+	}, [ terrain1Ref.current, terrain2Ref.current ] );
+
+	useEffect( () => {
+
+		document.addEventListener( "visibilitychange", onChange );
+
+		return () => {
+
+			document.removeEventListener( "visibilitychange", onChange );
+
+		};
+
+	}, [] );
+
 	const ballSpeedFactor = 0.0015;
 	const ballRespawnPoint = 1.15;
 
@@ -68,29 +105,61 @@ export default function Index() {
 			! ball3.current
 		) return;
 
+		// @ts-ignore
+		// if ( sleep.current ) console.log( terrain2Ref.current.position.z );
+
 		const speed = getSpeed();
 
-		for ( const terrain of terrainRefs ) {
+		// @ts-ignore
+		terrain1Ref.current.position.z += delta / ( 5 * speed );
+		// @ts-ignore
+		terrain2Ref.current.position.z += delta / ( 5 * speed );
+
+		// @ts-ignore
+		if ( terrain1Ref.current.position.z >= 3.5 ) {
 
 			// @ts-ignore
-			terrain.current.position.z += delta / ( 5 * speed );
-
-			// @ts-ignore
-			if ( terrain.current.position.z >= 3.5 ) {
-
-				// @ts-ignore
-				terrain.current.position.z = - 4.5;
-
-			}
+			terrain1Ref.current.position.z = sleep.current === "sleep" ? 0.5 : - 4.5;
 
 		}
+
+		// @ts-ignore
+		if ( terrain2Ref.current.position.z >= 3.5 ) {
+
+			// @ts-ignore
+			terrain2Ref.current.position.z = - 4.5;
+
+		}
+
+		// for ( const terrain of terrainRefs ) {
+		//
+		// 	if ( ! sleep.current ) {
+		//
+		// 		// @ts-ignore
+		// 		terrain.current.position.z += delta / ( 5 * speed );
+		//
+		// 	}
+		//
+		// 	// @ts-ignore
+		// 	if ( terrain.current.position.z >= 3.5 ) {
+		//
+		// 		// @ts-ignore
+		// 		terrain.current.position.z = - 4.5;
+		//
+		// 	}
+		//
+		// }
 
 		for ( let i = 0; i < ballRefs.length; i ++ ) {
 
 			const ball = ballRefs[ i ];
 
-			// @ts-ignore
-			ball.current.position.z += delta / ( 5 * speed ) - ballSpeedFactor;
+			if ( ! sleep.current ) {
+
+				// @ts-ignore
+				ball.current.position.z += delta / ( 5 * speed ) - ballSpeedFactor;
+
+			}
 
 			// @ts-ignore
 			if ( ball.current.position.z + BALL_START_POSITIONS[ i ][ 2 ] >= ballRespawnPoint ) {
@@ -107,7 +176,7 @@ export default function Index() {
 	return (
 		<group>
 			<Audio fftSize={2048}/>
-			<Fog color={new THREE.Color( playlist.palette[ playlist.backgroundColorIndex ] )} near={1} far={2}/>
+			{/*<Fog color={new THREE.Color( playlist.palette[ playlist.backgroundColorIndex ] )} near={1} far={2}/>*/}
 			<Lights/>
 			{/*<Title position={[0, 0.5, -0.5]} />*/}
 			<Terrain ref={terrain1Ref}/>
