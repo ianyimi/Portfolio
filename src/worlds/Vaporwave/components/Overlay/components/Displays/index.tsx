@@ -82,12 +82,11 @@ const Links = styled.div`
 `;
 
 const Visit = styled.button<{ color: string, bgColor: string }>`
-  border-radius: 15px;
+  border-radius: 25px;
   border: 2px solid ${props => props.bgColor};
   //position: relative;
-  //bottom: -25px;
   width: 100px;
-  padding: 0.25em 0 0.75em 0;
+  padding: 0.275em 0 0.275em 0;
   background-color: ${props => props.bgColor};
   color: ${props => props.color};
   font-family: Thunderstorm;

@@ -8,26 +8,9 @@ import * as THREE from "three";
 import Lights from "./Lights";
 import { useStore } from "utils/store";
 import shallow from "zustand/shallow";
-import Ball from "./Ball";
-import { useTexture } from "@react-three/drei";
+import Balls from "./Balls";
 import { v4 as uuidv4 } from "uuid";
 
-const TEXTURES = [
-	"https://dqeczc7c9n9n1.cloudfront.net/images/marble1.jpg",
-	"https://dqeczc7c9n9n1.cloudfront.net/images/marble2.jpg",
-	"https://dqeczc7c9n9n1.cloudfront.net/images/marble3.jpg",
-	"https://dqeczc7c9n9n1.cloudfront.net/images/marble4.jpg",
-];
-
-const BALL_START_POSITIONS: [x: number, y: number, z: number][] = [
-	[ 0.075, 0.05, - 1.15 ],
-	[ - 0.025, 0.1, - 1.75 ],
-	[ - 0.05, 0.075, - 2.5 ],
-	[ - 0.1, 0.125, - 3.25 ]
-];
-
-const BALL_SPEED_FACTOR = 0.0015;
-const BALL_RESPAWN_POINT = 1.15;
 const DELTA = 0.0333;
 
 export default function Index() {
@@ -35,17 +18,7 @@ export default function Index() {
 	const terrain1Ref = useRef();
 	const terrain2Ref = useRef();
 	const terrainRefs = [ terrain1Ref, terrain2Ref ];
-	const ball = useRef();
-	const ball1 = useRef();
-	const ball2 = useRef();
-	const ball3 = useRef();
-	const ballRefs = [ ball, ball1, ball2, ball3 ];
 	const uuid = useRef( uuidv4() );
-
-	const tex = useTexture( TEXTURES[ 0 ] );
-	const tex2 = useTexture( TEXTURES[ 1 ] );
-	const tex3 = useTexture( TEXTURES[ 2 ] );
-	const tex4 = useTexture( TEXTURES[ 3 ] );
 
 	const { playlist, getSpeed, objectQueued, objectRendered } = useStore( ( state: any ) => ( {
 		playlist: state.playlist,
@@ -71,12 +44,8 @@ export default function Index() {
 
 		if (
 			! limiter.isReady( clock ) ||
-      ! terrain1Ref.current ||
-      ! terrain2Ref.current ||
-      ! ball.current ||
-      ! ball1.current ||
-      ! ball2.current ||
-      ! ball3.current
+			! terrain1Ref.current ||
+			! terrain2Ref.current
 		) return;
 
 		const speed = getSpeed();
@@ -96,23 +65,6 @@ export default function Index() {
 
 		}
 
-		for ( let i = 0; i < ballRefs.length; i ++ ) {
-
-			const ball = ballRefs[ i ];
-
-			// @ts-ignore
-			ball.current.position.z += DELTA / ( 5 * speed ) - BALL_SPEED_FACTOR;
-
-			// @ts-ignore
-			if ( ball.current.position.z + BALL_START_POSITIONS[ i ][ 2 ] >= BALL_RESPAWN_POINT ) {
-
-				// @ts-ignore
-				ball.current.position.z = BALL_START_POSITIONS[ i ][ 2 ] + BALL_RESPAWN_POINT;
-
-			}
-
-		}
-
 	} );
 
 	return (
@@ -123,30 +75,7 @@ export default function Index() {
 			{/*<Title position={[0, 0.5, -0.5]} />*/}
 			<Terrain ref={terrain1Ref}/>
 			<Terrain z={- 4} ref={terrain2Ref}/>
-			<Ball
-				ref={ball}
-				pos={BALL_START_POSITIONS[ 0 ]}
-				texture={tex}
-				index={0}
-			/>
-			<Ball
-				ref={ball1}
-				pos={BALL_START_POSITIONS[ 1 ]}
-				texture={tex2}
-				index={1}
-			/>
-			<Ball
-				ref={ball2}
-				pos={BALL_START_POSITIONS[ 2 ]}
-				texture={tex3}
-				index={2}
-			/>
-			<Ball
-				ref={ball3}
-				pos={BALL_START_POSITIONS[ 3 ]}
-				texture={tex4}
-				index={3}
-			/>
+			<Balls/>
 			<mesh name="skybox" onAfterRender={() => objectRendered( uuid.current )}>
 				<boxBufferGeometry args={[ 10, 10, 10 ]}/>
 				<meshStandardMaterial

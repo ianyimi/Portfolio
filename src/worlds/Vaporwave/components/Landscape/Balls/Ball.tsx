@@ -10,13 +10,12 @@ import shallow from "zustand/shallow";
 import { v4 as uuidv4 } from "uuid";
 
 type BallProps = {
-  pos?: [x: number, y: number, z: number],
-  texture: THREE.Texture,
-  index: number,
+	pos?: [x: number, y: number, z: number],
+	texture: THREE.Texture,
+	index: number,
 }
 
 const RADIUS = 0.025;
-const TOTAL_MESHES = 2;
 
 const Ball = React.forwardRef( ( props: BallProps, ref ) => {
 
@@ -59,7 +58,6 @@ const Ball = React.forwardRef( ( props: BallProps, ref ) => {
 	useEffect( () => {
 
 		if ( ! collider.current || ! api ) return;
-		// api.applyForce( [ 0, 0, 10 ], [ 0, 0, 1 ] );
 		api.position.subscribe( ( p ) => cPos.current.set( p[ 0 ], p[ 1 ], p[ 2 ] ) );
 
 	}, [ collider ] );

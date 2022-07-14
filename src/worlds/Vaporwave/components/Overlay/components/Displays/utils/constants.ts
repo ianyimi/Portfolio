@@ -34,4 +34,11 @@ export const Works = [
 		url: "https://etherrealms.org/wintertemple",
 		os: ""
 	},
+	{
+		id: 5,
+		header: "Creature World",
+		desc: "Creature World is an orignal NFT collection from artist Danny Cole. I helped build this site with Muse for the release of a new functionality of the Creatures",
+		url: "https://creature.world",
+		os: ""
+	}
 ];
