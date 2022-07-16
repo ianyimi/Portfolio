@@ -26,31 +26,31 @@ const Container = styled.div<{ entered?: boolean }>`
       opacity: 1;
     }
     10% {
-      opacity: 0.9
+      opacity: 0.9;
     }
     20% {
-      opacity: 0.8
+      opacity: 0.8;
     }
     30% {
-      opacity: 0.7
+      opacity: 0.7;
     }
     40% {
       opacity: 0.6;
     }
     50% {
-      opacity: 0.5
+      opacity: 0.5;
     }
     60% {
-      opacity: 0.4
+      opacity: 0.4;
     }
     70% {
-      opacity: 0.3
+      opacity: 0.3;
     }
     80% {
-      opacity: 0.2
+      opacity: 0.2;
     }
     90% {
-      opacity: 0.1
+      opacity: 0.1;
     }
     100% {
       opacity: 0;
@@ -72,7 +72,7 @@ const Content = styled.div`
 
 const Title = styled.h1`
   font-size: 5em;
-  //border: 2px dashed blue;
+  border: 2px dashed blue;
   //margin: 5px 0 45px 0;
   //margin: -1px 0 0 0;
 `;
