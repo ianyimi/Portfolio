@@ -5,14 +5,8 @@ const Button = styled.div`
   position: absolute;
   top: 1rem;
   left: 2.5rem;
-  //width: 4rem;
-  //height: 4rem;
   background: none;
-  //border: none;
-  //color: white;
-  //padding: 0.5rem;
   z-index: 3;
-  //border: 2px dashed blue;
 
   .hamburger {
     margin: 30px auto;
@@ -65,7 +59,6 @@ const Button = styled.div`
 
   .checkbox2:checked + label > .hamburger2 > .bar1 {
     transform: translateX(40px);
-    webkit-transform: translateX(40px);
     background-color: transparent;
   }
 
@@ -81,47 +74,6 @@ const Button = styled.div`
     transform: translateX(-40px);
     background-color: transparent;
   }
-
-
-  //& :focus {
-  //  outline-color: currentColor;
-  //}
-
-  //& svg {
-  //  width: 100%;
-  //  height: auto;
-  //  display: block;
-  //  filter: drop-shadow(5px 5px hsl(0, 0%, 20%));
-  //  webkit-filter: drop-shadow(5px 5px hsl(0, 0%, 20%));
-  //}
-  //
-  //& .translate {
-  //  transition: transform 0.25s ease-in-out;
-  //  transition-delay: 0.25s;
-  //  webkit-transition: transform 0.25s ease-in-out;
-  //  webkit-transition-delay: 0.25s;
-  //}
-  //
-  //& .rotate {
-  //  transition: transform 0.25s ease-in-out;
-  //  transition-delay: 0s;
-  //  webkit-transition: transform 0.25s ease-in-out;
-  //  webkit-transition-delay: 0s;
-  //}
-  //
-  //& .open.translate {
-  //  transform: translateY(0);
-  //  transition-delay: 0s;
-  //  webkit-transform: translateY(0);
-  //  webkit-transition-delay: 0s;
-  //}
-  //
-  //& .open.rotate0 {
-  //  transform: rotate(0);
-  //  transition-delay: 0.25s;
-  //  webkit-transform: rotate(0);
-  //  webkit-transform-delay: 0.25s;
-  //}
 `;
 
 export default function NavButton( props: { open: boolean, setOpen: Dispatch<SetStateAction<boolean>> } ) {
@@ -155,22 +107,6 @@ export default function NavButton( props: { open: boolean, setOpen: Dispatch<Set
 
 	}, [ open ] );
 
-	const input: HTMLInputElement = document.getElementById( "checkbox2" ) as HTMLInputElement;
-	// useEffect( () => {
-	//
-	// 	if ( ! input ) return;
-	// 	if ( input.checked ) {
-	//
-	// 		setOpen( true );
-	//
-	// 	} else {
-	//
-	// 		setOpen( false );
-	//
-	// 	}
-	//
-	// }, [ input, input?.checked ] );
-
 	return (
 		<Button>
 			<input type="checkbox" id="checkbox2" className="checkbox2 visuallyHidden"/>
@@ -182,29 +118,6 @@ export default function NavButton( props: { open: boolean, setOpen: Dispatch<Set
 					<span className="bar bar4"></span>
 				</div>
 			</label>
-			{/*<svg viewBox="-50 -40 100 80" width="50" height="40">*/}
-			{/*	<defs>*/}
-			{/*		<path id="line" fill="none" stroke="currentColor" strokeWidth="15" strokeLinecap="round"*/}
-			{/*			d="M -40 0 h 80"/>*/}
-			{/*	</defs>*/}
-			{/*	<g>*/}
-			{/*		<g className="translate" transform="translate(0 -30)">*/}
-			{/*			<g className="rotate" transform="rotate(-45)">*/}
-			{/*				<use transform="rotate(45)" href="#line"/>*/}
-			{/*			</g>*/}
-			{/*		</g>*/}
-
-			{/*		<g className="rotate" transform="rotate(45)">*/}
-			{/*			<use transform="rotate(-45)" href="#line"/>*/}
-			{/*		</g>*/}
-
-			{/*		<g className="translate" transform="translate(0 30)">*/}
-			{/*			<g className="rotate" transform="rotate(-45)">*/}
-			{/*				<use transform="rotate(45)" href="#line"/>*/}
-			{/*			</g>*/}
-			{/*		</g>*/}
-			{/*	</g>*/}
-			{/*</svg>*/}
 		</Button>
 	);
 
