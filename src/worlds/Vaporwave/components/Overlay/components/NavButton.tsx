@@ -57,20 +57,20 @@ const Button = styled.div`
     border: 0;
   }
 
-  .checkbox2:checked + label > .hamburger2 > .bar1 {
+  .checkbox:checked + label > .hamburger2 > .bar1 {
     transform: translateX(40px);
     background-color: transparent;
   }
 
-  .checkbox2:checked + label > .hamburger2 > .bar2 {
+  .checkbox:checked + label > .hamburger2 > .bar2 {
     transform: rotate(45deg);
   }
 
-  .checkbox2:checked + label > .hamburger2 > .bar3 {
+  .checkbox:checked + label > .hamburger2 > .bar3 {
     transform: rotate(-45deg);
   }
 
-  .checkbox2:checked + label > .hamburger2 > .bar4 {
+  .checkbox:checked + label > .hamburger2 > .bar4 {
     transform: translateX(-40px);
     background-color: transparent;
   }
@@ -80,25 +80,20 @@ export default function NavButton( props: { open: boolean, setOpen: Dispatch<Set
 
 	const { open, setOpen } = props;
 	const isMounted = useRef( false );
+	const checkbox = useRef( null );
 
 	useEffect( () => {
 
-		if ( isMounted.current ) {
+		if ( isMounted.current || ! checkbox.current ) {
 
-			const rotations = document.querySelectorAll( ".rotate" );
-			const translations = document.querySelectorAll( ".translate" );
-			translations.forEach( translate => {
+			if ( ! open ) {
 
-				translate.classList.toggle( "open" );
+				// @ts-ignore
+				checkbox.current.checked = false;
 
-			} );
-			rotations.forEach( rotate => {
+			}
 
-				rotate.classList.toggle( "open" );
-
-			} );
-
-		} else {
+		} else if ( isMounted.current === false ) {
 
 			isMounted.current = true;
 			return;
@@ -109,8 +104,8 @@ export default function NavButton( props: { open: boolean, setOpen: Dispatch<Set
 
 	return (
 		<Button>
-			<input type="checkbox" id="checkbox2" className="checkbox2 visuallyHidden"/>
-			<label htmlFor="checkbox2">
+			<input ref={checkbox} type="checkbox" id="checkbox" className="checkbox visuallyHidden"/>
+			<label htmlFor="checkbox">
 				<div className="hamburger hamburger2" onClick={() => setOpen( ! open )}>
 					<span className="bar bar1"></span>
 					<span className="bar bar2"></span>
