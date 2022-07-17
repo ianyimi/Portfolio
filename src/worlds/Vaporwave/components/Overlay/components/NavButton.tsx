@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Dispatch, SetStateAction, useEffect, useRef } from "react";
+import { Dispatch, SetStateAction, useRef } from "react";
 
 const Button = styled.div`
   position: absolute;
@@ -79,32 +79,11 @@ const Button = styled.div`
 export default function NavButton( props: { open: boolean, setOpen: Dispatch<SetStateAction<boolean>> } ) {
 
 	const { open, setOpen } = props;
-	const isMounted = useRef( false );
 	const checkbox = useRef( null );
-
-	useEffect( () => {
-
-		if ( isMounted.current || ! checkbox.current ) {
-
-			if ( ! open ) {
-
-				// @ts-ignore
-				checkbox.current.checked = false;
-
-			}
-
-		} else if ( isMounted.current === false ) {
-
-			isMounted.current = true;
-			return;
-
-		}
-
-	}, [ open ] );
 
 	return (
 		<Button>
-			<input ref={checkbox} type="checkbox" id="checkbox" className="checkbox visuallyHidden"/>
+			<input ref={checkbox} type="checkbox" id="checkbox" className="checkbox visuallyHidden" checked={open}/>
 			<label htmlFor="checkbox">
 				<div className="hamburger hamburger2" onClick={() => setOpen( ! open )}>
 					<span className="bar bar1"></span>
