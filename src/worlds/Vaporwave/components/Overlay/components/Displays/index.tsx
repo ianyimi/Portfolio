@@ -12,8 +12,9 @@ const ClickToClose = styled.div`
   z-index: -1;
 `;
 
-const Container = styled.div`
-  background-color: rgba(0, 0, 0, 0.5);
+const Container = styled.div<{ open: boolean }>`
+  visibility: ${props => props.open ? "visible" : "hidden"};
+  background-color: ${props => props.open ? "rgba(0, 0, 0, 0.5)" : "rgba(0, 0, 0, 0)"};
   position: absolute;
   top: 0;
   left: 0;
@@ -22,10 +23,12 @@ const Container = styled.div`
   height: 100vh;
   justify-content: center;
   align-items: center;
+  transition: background-color 0.5s linear;
+  webkit-transition: background-color 0.5s linear;
   z-index: 5;
 `;
 
-const Content = styled.div<{ color: string, bgColor: string, opacity: number }>`
+const Content = styled.div<{ color: string, bgColor: string, open: boolean }>`
   width: 70%;
   height: 50%;
   border-radius: 15px;
@@ -37,9 +40,10 @@ const Content = styled.div<{ color: string, bgColor: string, opacity: number }>`
   background-color: ${props => props.bgColor};
   color: ${props => props.color};
   font-family: Thunderstorm;
-  opacity: ${props => props.opacity};
+  margin-bottom: ${props => props.open ? 0 : "200%"};
   transition: all 0.5s;
   -webkit-transition: all 0.5s;
+
   @media ( max-width: 500px ) {
     width: 90%;
   }
@@ -118,31 +122,30 @@ export default function Display() {
 		os: state.os,
 	} ), shallow );
 
+	const color = playlist.backgroundColorIndex,
+		bgColor = playlist.mainColorIndex;
+	const currentWork = Works[ display ? display : 0 ];
+
 	const visit = () => {
 
 		if ( display === null ) return;
-		window.open( Works[ display ].url, "_blank" );
+		window.open( currentWork.url, "_blank" );
 
 	};
 
-	if ( display === null ) return <></>;
-
-	const color = playlist.backgroundColorIndex,
-		bgColor = playlist.mainColorIndex;
-
 	return (
-		<Container>
+		<Container open={display === null ? false : true}>
 			<ClickToClose onClick={() => setDisplay( null )}/>
 			<Content
-				opacity={display === null ? 0 : 1}
+				open={display === null ? false : true}
 				color={playlist.palette[ color ]}
 				bgColor={playlist.palette[ bgColor ]}
 			>
 				<Exit onClick={() => ( setDisplay( null ) )}>X</Exit>
-				<Header os={os}>{Works[ display ].header}</Header>
-				<Description>{Works[ display ].desc}</Description>
+				<Header os={os}>{currentWork.header}</Header>
+				<Description>{currentWork.desc}</Description>
 				<Links>
-					{Works[ display ].url !== "" && <Visit
+					{currentWork.url !== "" && <Visit
 						onClick={visit}
 						color={playlist.palette[ bgColor ]}
 						bgColor={playlist.palette[ color ]}
@@ -150,7 +153,7 @@ export default function Display() {
 					>
             Visit
 					</Visit>}
-					{Works[ display ].os !== "" && <Visit
+					{currentWork.os !== "" && <Visit
 						onClick={visit}
 						color={playlist.palette[ bgColor ]}
 						bgColor={playlist.palette[ color ]}
