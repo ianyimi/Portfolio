@@ -23,6 +23,18 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 5;
+
+  :hover .flap::after {
+    transform: translatex(300px);
+  }
+
+  :hover .flap::before {
+    transform: translatex(-300px);
+  }
+
+  Content {
+
+  }
 `;
 
 const Content = styled.div<{ color: string, bgColor: string, opacity: number }>`
@@ -109,6 +121,38 @@ const Visit = styled.button<{ color: string, bgColor: string, os?: string }>`
   }
 `;
 
+const Flap = styled.div<{ bgColor: string }>`
+  width: 100%;
+  height: 100%;
+
+  ::before {
+    position: absolute;
+    content: "";
+    height: 100%;
+    width: 50%;
+    //background: url("https://pbs.twimg.com/profile_images/1347260174176710658/2GfSZ1i__400x400.jpg") white;
+    background-position: 100px;
+    background-color: ${props => props.bgColor};
+    background-repeat: no-repeat;
+    transition: 1s;
+  }
+
+  ::after {
+    position: absolute;
+    content: "";
+    height: 100%;
+    width: 50%;
+    right: 0;
+    //background: url("https://pbs.twimg.com/profile_images/1347260174176710658/2GfSZ1i__400x400.jpg") white;
+    background-position: -200px;
+    background-color: ${props => props.bgColor};
+    background-repeat: no-repeat;
+    transition: 1s;
+  }
+
+
+`;
+
 export default function Display() {
 
 	const { display, setDisplay, playlist, os } = useStore( state => ( {
@@ -159,7 +203,9 @@ export default function Display() {
             Opensea
 					</Visit>}
 				</Links>
+				<Flap bgColor={playlist.palette[ bgColor ]} className="flap"/>
 			</Content>
+
 		</Container>
 	);
 
