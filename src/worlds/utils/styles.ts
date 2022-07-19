@@ -25,7 +25,7 @@ export const globalStyles = css`
   //  //border: 0;
   //  //font-size: 100%;
   //  //font: inherit;
-  //  vertical-align: baseline;
+  //  //vertical-align: baseline;
   //}
 
   /* HTML5 display-role reset for older browsers */
@@ -37,11 +37,15 @@ export const globalStyles = css`
 
   @font-face {
     font-family: "Thunderstorm";
-    src: url("https://dqeczc7c9n9n1.cloudfront.net/fonts/Thunderstorm.otf") format("opentype");
+    src: url("https://dqeczc7c9n9n1.cloudfront.net/fonts/thunderstorm.woff") format("woff");
+    src: url("https://dqeczc7c9n9n1.cloudfront.net/fonts/thunderstorm.otf") format("opentype");
+    src: url("https://dqeczc7c9n9n1.cloudfront.net/fonts/thunderstorm.ttf") format("truetype");
   }
   @font-face {
     font-family: "Bitmap";
-    src: url("https://dqeczc7c9n9n1.cloudfront.net/fonts/bitmap.otf") format("opentype");
+    src: url("https://dqeczc7c9n9n1.cloudfront.net/fonts/bitmap1.woff") format("woff");
+    src: url("https://dqeczc7c9n9n1.cloudfront.net/fonts/bitmap1.otf") format("opentype");
+    src: url("https://dqeczc7c9n9n1.cloudfront.net/fonts/bitmap1.ttf") format("truetype");
   }
 
   html,
@@ -61,7 +65,16 @@ export const globalStyles = css`
 
   body {
     line-height: 1;
-    vertical-align: baseline;
+    //vertical-align: baseline;
+    vertical-align: center;
+  }
+
+  input, button, textarea, select {
+    font: inherit;
+  }
+
+  p, h1, h2, h3, h4, h5, h6 {
+    overflow-wrap: break-word;
   }
 
   canvas {

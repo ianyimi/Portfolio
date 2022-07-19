@@ -83,7 +83,7 @@ export default function NavButton( props: { open: boolean, setOpen: Dispatch<Set
 
 	return (
 		<Button>
-			<input ref={checkbox} type="checkbox" id="checkbox" className="checkbox visuallyHidden" checked={open}/>
+			<input ref={checkbox} type="checkbox" id="checkbox" className="checkbox visuallyHidden" checked={open} readOnly/>
 			<label htmlFor="checkbox">
 				<div className="hamburger hamburger2" onClick={() => setOpen( ! open )}>
 					<span className="bar bar1"></span>

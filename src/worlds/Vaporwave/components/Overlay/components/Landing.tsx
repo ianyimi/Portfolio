@@ -73,6 +73,7 @@ const Content = styled.div`
 const Title = styled.h1`
   font-size: 5em;
   //border: 2px dashed blue;
+  text-rendering: optimizeLegibility;
   //margin: 5px 0 45px 0;
   //margin: -1px 0 0 0;
 `;
