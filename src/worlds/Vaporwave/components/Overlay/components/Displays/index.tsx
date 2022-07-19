@@ -56,10 +56,11 @@ const Exit = styled.div`
   //border: 2px dashed blue;
 `;
 
-const Header = styled.h4`
+const Header = styled.h4<{ os?: string }>`
   text-align: center;
   font-size: clamp(30px, 5vw, 70px);
-  margin-top: 0;
+  margin-top: ${props => props.os === "Win" ? "-25px" : 0};
+  padding-bottom: ${props => props.os === "Win" ? "10px" : 0}
   //border: 2px dashed blue;
 `;
 
@@ -87,12 +88,12 @@ const Links = styled.div`
   }
 `;
 
-const Visit = styled.button<{ color: string, bgColor: string }>`
+const Visit = styled.button<{ color: string, bgColor: string, os?: string }>`
   border-radius: 25px;
   border: 2px solid ${props => props.bgColor};
   //position: relative;
   width: 100px;
-  padding: 0.275em 0 0.275em 0;
+  padding: 0.275em 0 ${props => props.os === "Win" ? "0.75em" : "0.275em"} 0;
   background-color: ${props => props.bgColor};
   color: ${props => props.color};
   font-family: Thunderstorm;
@@ -110,10 +111,11 @@ const Visit = styled.button<{ color: string, bgColor: string }>`
 
 export default function Display() {
 
-	const { display, setDisplay, playlist } = useStore( state => ( {
+	const { display, setDisplay, playlist, os } = useStore( state => ( {
 		display: state.display,
 		setDisplay: state.setDisplay,
-		playlist: state.playlist
+		playlist: state.playlist,
+		os: state.os,
 	} ), shallow );
 
 	const visit = () => {
@@ -137,13 +139,14 @@ export default function Display() {
 				bgColor={playlist.palette[ bgColor ]}
 			>
 				<Exit onClick={() => ( setDisplay( null ) )}>X</Exit>
-				<Header>{Works[ display ].header}</Header>
+				<Header os={os}>{Works[ display ].header}</Header>
 				<Description>{Works[ display ].desc}</Description>
 				<Links>
 					{Works[ display ].url !== "" && <Visit
 						onClick={visit}
 						color={playlist.palette[ bgColor ]}
 						bgColor={playlist.palette[ color ]}
+						os={os}
 					>
             Visit
 					</Visit>}
@@ -151,6 +154,7 @@ export default function Display() {
 						onClick={visit}
 						color={playlist.palette[ bgColor ]}
 						bgColor={playlist.palette[ color ]}
+						os={os}
 					>
             Opensea
 					</Visit>}
