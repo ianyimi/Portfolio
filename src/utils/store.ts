@@ -4,26 +4,26 @@ import create from "zustand";
 import produce from "immer";
 
 export type StoreState = {
-	os: string | undefined,
-	playlist: Playlist,
-	setPlaylist: ( playlist: Playlist ) => void,
-	setPalette: ( palette: string[] ) => void,
-	display: number | null,
-	setDisplay: ( value: number | null ) => void,
-	audioSrc: string,
-	setAudioSrc: ( src: string ) => void,
-	paused: boolean,
-	setPaused: ( paused: boolean ) => void,
-	aa: AudioAnalyser | undefined,
-	setAa: ( aa: AnalyserNode ) => void,
-	loaded: string[],
-	progress: number,
-	objectRendered: ( id: string ) => void,
-	loadTotal: string[],
-	objectQueued: ( id: string ) => void,
-	getSpeed: () => number,
-	getVolume: () => number,
-	hexToVec3: ( color: string ) => Vector3
+  os: string | undefined,
+  playlist: Playlist,
+  setPlaylist: ( playlist: Playlist ) => void,
+  setPalette: ( palette: string[] ) => void,
+  display: number | null,
+  setDisplay: ( value: number | null ) => void,
+  audioSrc: string,
+  setAudioSrc: ( src: string ) => void,
+  paused: boolean,
+  setPaused: ( paused: boolean ) => void,
+  aa: AudioAnalyser | undefined,
+  setAa: ( aa: AnalyserNode ) => void,
+  loaded: string[],
+  progress: number,
+  objectRendered: ( id: string ) => void,
+  loadTotal: string[],
+  objectQueued: ( id: string ) => void,
+  getSpeed: () => number,
+  getVolume: () => number,
+  hexToVec3: ( color: string ) => Vector3
 }
 
 let os: string | undefined = undefined;
@@ -73,9 +73,8 @@ export const useStore = create<StoreState>()( ( set: any, get: any ) => {
 		progress: 0,
 		objectRendered: ( id: string ) => {
 
-			// console.log( id );
 			if ( get().loaded.includes( id ) || id === "" ) return;
-			console.log( "loaded: " + ( get().loaded.length + 1 ) + "/" + get().loadTotal.length );
+			// console.log( "loaded: " + ( get().loaded.length + 1 ) + "/" + get().loadTotal.length );
 			const newLoaded = get().loaded;
 			newLoaded.push( id );
 			set(
@@ -89,9 +88,8 @@ export const useStore = create<StoreState>()( ( set: any, get: any ) => {
 		loadTotal: [],
 		objectQueued: ( id: string ) => {
 
-			// console.log( id );
 			if ( get().loadTotal.includes( id ) || id === "" ) return;
-			console.log( "queueing: " + ( get().loadTotal.length + 1 ) + " items" );
+			// console.log( "queueing: " + ( get().loadTotal.length + 1 ) + " items" );
 			const newLoadTotal = get().loadTotal;
 			newLoadTotal.push( id );
 			set(
@@ -102,8 +100,6 @@ export const useStore = create<StoreState>()( ( set: any, get: any ) => {
 		getSpeed: () => {
 
 			if ( ! get().aa ) return 1.5;
-			// const data = new Uint8Array( get().aa.frequencyBinCount );
-			// get().aa.getByteFrequencyData( data );
 			const data = get().aa.getFrequencyData();
 			const volume = get().getVolume();
 			const variable = get().playlist.id === "beenTurnt" ? data ? data[ 0 ] / 255 : 0 : volume;
