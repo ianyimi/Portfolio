@@ -23,8 +23,14 @@ const Container = styled.div<{ open: boolean }>`
   height: 100vh;
   justify-content: center;
   align-items: center;
-  transition: background-color 0.5s linear;
-  webkit-transition: background-color 0.5s linear;
+  transition-property: background-color, visible;
+  transition-duration: 0.5s, 0.5s;
+  transition-timing-function: ease-in-out, linear;
+  transition-delay: 0.75s, 0s;
+  -webkit-transition-property: background-color, visible;
+  -webkit-transition-duration: 0.5s, 0.5s;
+  -webkit-transition-timing-function: ease-in-out, linear;
+  -webkit-transition-delay: 0.75s, 0s;
   z-index: 5;
 `;
 
@@ -104,8 +110,10 @@ const Visit = styled.button<{ color: string, bgColor: string, os?: string }>`
   font-size: 20px;
   cursor: pointer;
   margin: 5px 0;
-  transition: all 0.5s;
-  -webkit-transition: all 0.5s;
+  transition: color 0.5s;
+  transition: background-color 0.5s;
+  -webkit-transition: color 0.5s;
+  -webkit-transition: background-color 0.5s;
 
   :hover {
     background-color: ${props => props.color};
