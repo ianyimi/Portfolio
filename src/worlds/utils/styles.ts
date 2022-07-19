@@ -2,50 +2,17 @@ import { css } from '@emotion/react';
 
 export const globalStyles = css`
 
-  /* http://meyerweb.com/eric/tools/css/reset/ 
-	 v2.0 | 20110126
-	 License: none (public domain)
-*/
-
-  //html, body, div, span, applet, object, iframe,
-  //h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-  //a, abbr, acronym, address, big, cite, code,
-  //del, dfn, em, img, ins, kbd, q, s, samp,
-  //small, strike, strong, sub, sup, tt, var,
-  //b, u, i, center,
-  //dl, dt, dd, ol, ul, li,
-  //fieldset, form, label, legend,
-  //table, caption, tbody, tfoot, thead, tr, th, td,
-  //article, aside, canvas, details, embed,
-  //figure, figcaption, footer, header, hgroup,
-  //menu, nav, output, ruby, section, summary,
-  //time, mark, audio, video {
-  //  //margin: 0;
-  //  //padding: 0;
-  //  //border: 0;
-  //  //font-size: 100%;
-  //  //font: inherit;
-  //  //vertical-align: baseline;
-  //}
-
-  /* HTML5 display-role reset for older browsers */
-
-  //article, aside, details, figcaption, figure,
-  //footer, header, hgroup, menu, nav, section {
-  //  display: block;
-  //}
-
   @font-face {
     font-family: "Thunderstorm";
-    src: url("https://dqeczc7c9n9n1.cloudfront.net/fonts/thunderstorm.woff") format("woff");
-    src: url("https://dqeczc7c9n9n1.cloudfront.net/fonts/thunderstorm.otf") format("opentype");
-    src: url("https://dqeczc7c9n9n1.cloudfront.net/fonts/thunderstorm.ttf") format("truetype");
+    src: url("https://dqeczc7c9n9n1.cloudfront.net/fonts/thunderstorm.eot?") format("embedded-opentype"),
+    url("https://dqeczc7c9n9n1.cloudfront.net/fonts/thunderstorm.woff") format("woff"),
+    url("https://dqeczc7c9n9n1.cloudfront.net/fonts/thunderstorm.ttf") format("truetype");
   }
   @font-face {
     font-family: "Bitmap";
-    src: url("https://dqeczc7c9n9n1.cloudfront.net/fonts/bitmap1.woff") format("woff");
-    src: url("https://dqeczc7c9n9n1.cloudfront.net/fonts/bitmap1.otf") format("opentype");
-    src: url("https://dqeczc7c9n9n1.cloudfront.net/fonts/bitmap1.ttf") format("truetype");
+    src: url("https://dqeczc7c9n9n1.cloudfront.net/fonts/bitmap1.eot?") format("embedded-opentype"),
+    url("https://dqeczc7c9n9n1.cloudfront.net/fonts/bitmap1.woff") format("woff"),
+    url("https://dqeczc7c9n9n1.cloudfront.net/fonts/bitmap1.ttf") format("truetype");
   }
 
   html,
@@ -65,8 +32,7 @@ export const globalStyles = css`
 
   body {
     line-height: 1;
-    //vertical-align: baseline;
-    vertical-align: center;
+    vertical-align: baseline;
   }
 
   input, button, textarea, select {
