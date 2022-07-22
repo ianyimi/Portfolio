@@ -4,6 +4,7 @@ import shallow from "zustand/shallow";
 import { Works } from "./utils/constants";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
+import styles from "./index.module.css";
 
 const ClickToClose = styled.div`
   position: absolute;
@@ -12,24 +13,6 @@ const ClickToClose = styled.div`
   width: 100vw;
   height: 100vh;
   z-index: -1;
-`;
-
-const Container = styled.div`
-  #container-div {
-    visibility: hidden;
-    background-color: rgba(0, 0, 0, 0.5);
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: flex;
-    width: 100vw;
-    height: 100vh;
-    justify-content: center;
-    align-items: center;
-    transition: background-color 0.5s linear;
-    webkit-transition: background-color 0.5s linear;
-    z-index: 5;
-  }
 `;
 
 const Content = styled.div<{ color: string, bgColor: string, open: boolean }>`
@@ -183,40 +166,32 @@ export default function Display() {
 	}, [ display ] );
 
 	return (
-		<Container>
-			<div id="container-div" ref={container}>
-				<ClickToClose onClick={() => setDisplay( null )}/>
-				<Content
-					open={display === null ? false : true}
-					color={playlist.palette[ color ]}
-					bgColor={playlist.palette[ bgColor ]}
-				>
-					<div id="content-div" ref={content}>
-						<Exit onClick={() => ( setDisplay( null ) )}>X</Exit>
-						<Header os={os}>{currentWork.header}</Header>
-						<Description>{currentWork.desc}</Description>
-						<Links>
-							{currentWork.url !== "" && <Visit
-								onClick={visit}
-								color={playlist.palette[ bgColor ]}
-								bgColor={playlist.palette[ color ]}
-								os={os}
-							>
-                Visit
-							</Visit>}
-							{currentWork.os !== "" && <Visit
-								onClick={visit}
-								color={playlist.palette[ bgColor ]}
-								bgColor={playlist.palette[ color ]}
-								os={os}
-							>
-                Opensea
-							</Visit>}
-						</Links>
-					</div>
-				</Content>
+		<div id={styles.container} ref={container}>
+			<ClickToClose onClick={() => setDisplay( null )}/>
+			<div id={styles.content} ref={content}>
+				<Exit onClick={() => ( setDisplay( null ) )}>X</Exit>
+				<Header os={os}>{currentWork.header}</Header>
+				<Description>{currentWork.desc}</Description>
+				<Links>
+					{currentWork.url !== "" && <Visit
+						onClick={visit}
+						color={playlist.palette[ bgColor ]}
+						bgColor={playlist.palette[ color ]}
+						os={os}
+					>
+            Visit
+					</Visit>}
+					{currentWork.os !== "" && <Visit
+						onClick={visit}
+						color={playlist.palette[ bgColor ]}
+						bgColor={playlist.palette[ color ]}
+						os={os}
+					>
+            Opensea
+					</Visit>}
+				</Links>
 			</div>
-		</Container>
+		</div>
 	);
 
 
