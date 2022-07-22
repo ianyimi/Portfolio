@@ -2,6 +2,8 @@ import styled from "@emotion/styled";
 import { useStore } from "utils/store";
 import shallow from "zustand/shallow";
 import { Works } from "./utils/constants";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
 
 const ClickToClose = styled.div`
   position: absolute;
@@ -12,40 +14,44 @@ const ClickToClose = styled.div`
   z-index: -1;
 `;
 
-const Container = styled.div<{ open: boolean }>`
-  visibility: ${props => props.open ? "visible" : "hidden"};
-  background-color: ${props => props.open ? "rgba(0, 0, 0, 0.5)" : "rgba(0, 0, 0, 0)"};
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: flex;
-  width: 100vw;
-  height: 100vh;
-  justify-content: center;
-  align-items: center;
-  transition: background-color 0.5s linear;
-  webkit-transition: background-color 0.5s linear;
-  z-index: 5;
+const Container = styled.div`
+  #container-div {
+    visibility: hidden;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.5s linear;
+    webkit-transition: background-color 0.5s linear;
+    z-index: 5;
+  }
 `;
 
 const Content = styled.div<{ color: string, bgColor: string, open: boolean }>`
-  width: 70%;
-  height: 50%;
-  border-radius: 15px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: ${props => props.bgColor};
-  color: ${props => props.color};
-  font-family: Thunderstorm;
-  margin-bottom: ${props => props.open ? 0 : "200%"};
-  transition: all 0.5s;
-  -webkit-transition: all 0.5s;
+  #content-div {
+    width: 70%;
+    height: 50%;
+    border-radius: 15px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: ${props => props.bgColor};
+    color: ${props => props.color};
+    font-family: Thunderstorm;
+    margin-bottom: 200%;
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
 
-  @media ( max-width: 500px ) {
-    width: 90%;
+    @media ( max-width: 500px ) {
+      width: 90%;
+    }
   }
 `;
 
@@ -133,36 +139,83 @@ export default function Display() {
 
 	};
 
+	const isMounted = useRef( false );
+	const container = useRef( null );
+	const content = useRef( null );
+	// const tl = useRef( gsap.timeline( { defaults: { paused: true, duration: 0.5 } } ) );
+
+	// useEffect( () => {
+
+	// tl.current && tl.current.progress( 0 ).kill();
+	// tl.current = gsap.timeline( { defaults: { paused: true, duration: 0.5 } } )
+	// 	.to( container.current, { visibility: "visible" } )
+	// 	.to( container.current, { marginBottom: 0 } )
+	// 	.to( content.current, { backgroundColor: "rgba(0, 0, 0, 0.5)" } );
+
+	// }, [] );
+
+	const duration = 0.5;
+
+	useEffect( () => {
+
+		if ( ! isMounted.current ) {
+
+			isMounted.current = true;
+
+		} else {
+
+			if ( display === null ) {
+
+				console.log( "animate out" );
+				gsap.to( content.current, { marginBottom: "200px", duration: duration, delay: duration } );
+				gsap.to( container.current, { duration: duration, autoAlpha: 0, delay: 2 * duration } );
+
+			} else {
+
+				console.log( "animate in" );
+				gsap.to( container.current, { duration: duration, autoAlpha: 1 } );
+				gsap.to( content.current, { marginBottom: 0, duration: duration, delay: duration } );
+
+			}
+
+		}
+
+	}, [ display ] );
+
 	return (
-		<Container open={display === null ? false : true}>
-			<ClickToClose onClick={() => setDisplay( null )}/>
-			<Content
-				open={display === null ? false : true}
-				color={playlist.palette[ color ]}
-				bgColor={playlist.palette[ bgColor ]}
-			>
-				<Exit onClick={() => ( setDisplay( null ) )}>X</Exit>
-				<Header os={os}>{currentWork.header}</Header>
-				<Description>{currentWork.desc}</Description>
-				<Links>
-					{currentWork.url !== "" && <Visit
-						onClick={visit}
-						color={playlist.palette[ bgColor ]}
-						bgColor={playlist.palette[ color ]}
-						os={os}
-					>
-            Visit
-					</Visit>}
-					{currentWork.os !== "" && <Visit
-						onClick={visit}
-						color={playlist.palette[ bgColor ]}
-						bgColor={playlist.palette[ color ]}
-						os={os}
-					>
-            Opensea
-					</Visit>}
-				</Links>
-			</Content>
+		<Container>
+			<div id="container-div" ref={container}>
+				<ClickToClose onClick={() => setDisplay( null )}/>
+				<Content
+					open={display === null ? false : true}
+					color={playlist.palette[ color ]}
+					bgColor={playlist.palette[ bgColor ]}
+				>
+					<div id="content-div" ref={content}>
+						<Exit onClick={() => ( setDisplay( null ) )}>X</Exit>
+						<Header os={os}>{currentWork.header}</Header>
+						<Description>{currentWork.desc}</Description>
+						<Links>
+							{currentWork.url !== "" && <Visit
+								onClick={visit}
+								color={playlist.palette[ bgColor ]}
+								bgColor={playlist.palette[ color ]}
+								os={os}
+							>
+                Visit
+							</Visit>}
+							{currentWork.os !== "" && <Visit
+								onClick={visit}
+								color={playlist.palette[ bgColor ]}
+								bgColor={playlist.palette[ color ]}
+								os={os}
+							>
+                Opensea
+							</Visit>}
+						</Links>
+					</div>
+				</Content>
+			</div>
 		</Container>
 	);
 
