@@ -19,6 +19,7 @@ export const globalStyles = css`
   body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
   }
 
   canvas,
