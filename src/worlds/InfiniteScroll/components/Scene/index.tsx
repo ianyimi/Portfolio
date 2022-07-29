@@ -1,29 +1,25 @@
-import { useStore } from "utils/store";
-import shallow from "zustand/shallow";
-import { useEffect, useRef } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { Suspense } from "react";
+import { Scroll, ScrollControls } from "@react-three/drei";
+import Environment from "./components/Environment";
 
 export default function Scene() {
 
-	const mesh = useRef( null );
-	const uuid = useRef( uuidv4() );
-	const { objectQueued, objectRendered } = useStore( state => ( {
-		objectQueued: state.objectQueued,
-		objectRendered: state.objectRendered,
-	} ), shallow );
-
-	useEffect( () => {
-
-		objectQueued( uuid.current );
-
-	}, [] );
 
 	return (
 		<group>
-			<mesh onAfterRender={() => objectRendered( uuid.current )}>
-				<boxBufferGeometry args={[ 1, 1, 1 ]}/>
-				<meshBasicMaterial color="green"/>
-			</mesh>
+			<Suspense fallback={null}>
+				<ScrollControls pages={3} damping={2}>
+					<Environment/>
+					<Scroll>
+
+					</Scroll>
+					<Scroll html>
+						<div style={{ height: "100vh" }}>1</div>
+						<div style={{ top: "100vh", height: "100vh" }}>2</div>
+						<div style={{ top: "200vh", height: "100vh" }}>3</div>
+					</Scroll>
+				</ScrollControls>
+			</Suspense>
 		</group>
 	);
 

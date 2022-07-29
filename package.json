@@ -13,7 +13,7 @@
     "@barba/core": "^2.9.7",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
-    "@react-three/drei": "7.0.6",
+    "@react-three/drei": "7.27.5",
     "@react-three/fiber": "6.0.14",
     "@react-three/postprocessing": "^2.3.2",
     "glsl-noise-simplex": "^0.0.2",
