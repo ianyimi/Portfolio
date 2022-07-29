@@ -74,13 +74,13 @@ export const useStore = create<StoreState>()( ( set: any, get: any ) => {
 		objectRendered: ( id: string ) => {
 
 			if ( get().loaded.includes( id ) || id === "" ) return;
-			// console.log( "loaded: " + ( get().loaded.length + 1 ) + "/" + get().loadTotal.length );
+			console.log( "loaded: " + ( get().loaded.length + 1 ) + "/" + get().loadTotal.length );
 			const newLoaded = get().loaded;
 			newLoaded.push( id );
 			set(
 				() => ( {
 					loaded: newLoaded,
-					progress: Math.floor( 100 * get().loaded.length / get().loadTotal.length ),
+					progress: get().loaded.length >= get().loadTotal ? 100 : Math.floor( 100 * get().loaded.length / get().loadTotal.length ),
 				} )
 			);
 

@@ -7,12 +7,12 @@ export default function Camera() {
 			{/*<OrbitControls/>*/}
 			<PerspectiveCamera
 				makeDefault
-				position={[ 0, 0.2, 0.55 ]}
-				rotation={[ - Math.PI / 12, 0, 0 ]}
+				position={[ 0, 0.1, 0.35 ]}
+				rotation={[ 0, 0, 0 ]}
 				fov={75}
 				near={0.01}
 				far={20}
-				zoom={2}
+				// zoom={0.5}
 			/>
 		</group>
 	);
