@@ -25,7 +25,7 @@ export default function Environment() {
 		<group position-z={- 0.5}>
 			<mesh onAfterRender={() => objectRendered( uuid.current )} position-y={0.5} castShadow receiveShadow>
 				<boxBufferGeometry args={[ 1, 1, 1 ]}/>
-				<meshPhongMaterial color="white" side={THREE.DoubleSide}/>
+				<meshStandardMaterial color="black" side={THREE.DoubleSide}/>
 			</mesh>
 			<Ground/>
 		</group>
