@@ -17,7 +17,7 @@ const SCALE = 30;
 
 export default function AmbientParticles( props: GroupProps ) {
 
-	const mesh = useRef<InstancedMesh>();
+	const mesh = useRef<InstancedMesh>( null );
 	const uuid = useRef( uuidv4() );
 	const { playlist, aa, getVolume, objectQueued, objectRendered } = useStore( ( state ) => ( {
 		playlist: state.playlist,

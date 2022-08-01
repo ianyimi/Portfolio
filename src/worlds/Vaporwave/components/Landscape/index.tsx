@@ -1,10 +1,11 @@
 import { Fog, useLimiter } from "spacesvr";
 import { useFrame } from "@react-three/fiber";
-import React, { useEffect, useRef } from "react";
+import React, { Ref, useEffect, useRef } from "react";
 import Terrain from "./Terrain";
 import { usePlane } from "@react-three/cannon";
 import Audio from "../Audio";
 import * as THREE from "three";
+import { BufferGeometry, Material, Mesh } from "three";
 import Lights from "./Lights";
 import { useStore } from "utils/store";
 import shallow from "zustand/shallow";
@@ -83,7 +84,7 @@ export default function Index() {
 					side={THREE.DoubleSide}
 				/>
 			</mesh>
-			<mesh name="ground" ref={collider}>
+			<mesh name="ground" ref={collider as Ref<Mesh<BufferGeometry, Material | Material[]>> | undefined}>
 				<planeBufferGeometry attach="geometry" args={[ 2, 5, 24, 24 ]}/>
 				<meshBasicMaterial visible={false}/>
 			</mesh>

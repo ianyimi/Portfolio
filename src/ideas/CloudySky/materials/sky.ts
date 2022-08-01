@@ -3,32 +3,36 @@ import { useMemo } from "react";
 import { useLimiter } from "spacesvr";
 import { useFrame } from "@react-three/fiber";
 
-export const useSkyMat = (radius: number, colors: number[]): ShaderMaterial => {
-  const mat = useMemo(
-    () =>
-      new ShaderMaterial({
-        uniforms: {
-          radius: new Uniform(radius),
-          colors: new Uniform(colors),
-          num_colors: new Uniform(colors.length),
-          time: new Uniform(0),
-        },
-        vertexShader: vert,
-        fragmentShader: frag,
-        side: DoubleSide,
-      }),
-    [radius, colors]
-  );
+export const useSkyMat = ( radius: number, colors: number[] ): ShaderMaterial => {
 
-  const limiter = useLimiter(30);
-  useFrame(({ clock }) => {
-    if (!mat || !limiter.isReady(clock)) return;
+	const mat = useMemo(
+		() =>
+			new ShaderMaterial( {
+				uniforms: {
+					radius: new Uniform( radius ),
+					colors: new Uniform( colors ),
+					num_colors: new Uniform( colors.length ),
+					time: new Uniform( 0 ),
+				},
+				vertexShader: vert,
+				fragmentShader: frag,
+				side: DoubleSide,
+			} ),
+		[ radius, colors ]
+	);
 
-    // @ts-ignore
-    mat.uniforms.time.value = ((new Date() / 1000) % 10000) / 5;
-  });
+	const limiter = useLimiter( 30 );
+	useFrame( ( { clock } ) => {
 
-  return mat;
+		if ( ! mat || ! limiter.isReady( clock ) ) return;
+
+		// @ts-ignore
+		mat.uniforms.time.value = ( ( new Date() / 1000 ) % 10000 ) / 5;
+
+	} );
+
+	return mat;
+
 };
 
 const vert = `

@@ -9,12 +9,12 @@ import shallow from "zustand/shallow";
 import { v4 as uuidv4 } from "uuid";
 
 type VisualizerProps = {
-  barCount?: number,
-  barWidth?: number,
-  barHeight?: number,
-  reverse?: boolean,
-  radius?: number,
-  index: number
+	barCount?: number,
+	barWidth?: number,
+	barHeight?: number,
+	reverse?: boolean,
+	radius?: number,
+	index: number
 } & GroupProps
 
 export default function AudioVisualizer( props: VisualizerProps ) {
@@ -28,8 +28,8 @@ export default function AudioVisualizer( props: VisualizerProps ) {
 		index,
 		...restProps
 	} = props;
-	const group1 = useRef();
-	const group2 = useRef();
+	const group1 = useRef( null );
+	const group2 = useRef( null );
 	const uuid = useRef( uuidv4() );
 	const cubes: ReactNode[] = [];
 	const { playlist, aa, objectQueued, objectRendered } = useStore( ( state ) => ( {
@@ -61,6 +61,7 @@ export default function AudioVisualizer( props: VisualizerProps ) {
 				}}
 			>
 				<boxBufferGeometry args={[ barWidth, barHeight, barWidth, 1, 15 ]}/>
+				{/*@ts-ignore*/}
 				<animated.meshStandardMaterial
 					color={color}
 					metalness={0.9}

@@ -1,10 +1,9 @@
-import React, { useEffect, useRef } from "react";
+import React, { Ref, useEffect, useRef } from "react";
 import { useSphere } from "@react-three/cannon";
 import { useFrame } from "@react-three/fiber";
 import { useLimiter } from "spacesvr";
-import { CollideEvent } from "@react-three/cannon/dist/setup";
 import * as THREE from "three";
-import { Vector3 } from "three";
+import { BufferGeometry, Material, Mesh, Vector3 } from "three";
 import { useStore } from "utils/store";
 import shallow from "zustand/shallow";
 import { v4 as uuidv4 } from "uuid";
@@ -33,7 +32,7 @@ const Ball = React.forwardRef( ( props: BallProps, ref ) => {
 		NO_ACTIVE_DISPLAY = display === null;
 
 	const [ collider, api ] = useSphere( () => ( {
-		args: RADIUS,
+		args: [ RADIUS ],
 		mass: 1,
 		position: [ pos[ 0 ], pos[ 1 ], pos[ 2 ] ],
 		linearFactor: [ 0, 1, 1 ],
@@ -41,7 +40,7 @@ const Ball = React.forwardRef( ( props: BallProps, ref ) => {
 		onCollide: bounce
 	} ) );
 
-	function bounce( e: CollideEvent ): void {
+	function bounce( e: any ): void {
 
 		if ( ! api ) return;
 		api.applyImpulse( [ 0, pos[ 1 ], 0 ], [ 0, - 1, 0 ] );
@@ -105,7 +104,8 @@ const Ball = React.forwardRef( ( props: BallProps, ref ) => {
 				onPointerOver={togglePointer}
 				onPointerOut={togglePointer}
 			>
-				<mesh ref={collider}>
+				{/*@ts-ignore*/}
+				<mesh ref={collider as Ref<Mesh<BufferGeometry, Material | Material[]>> | undefined}>
 					<sphereBufferGeometry args={[ RADIUS, 32, 32 ]}/>
 					<meshBasicMaterial map={texture} visible={false}/>
 				</mesh>

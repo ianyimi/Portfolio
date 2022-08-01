@@ -6,8 +6,8 @@ import { useStore } from "utils/store";
 
 export default function Lights() {
 
-	const spotlight1Ref = useRef();
-	const spotlight2Ref = useRef();
+	const spotlight1Ref = useRef( undefined );
+	const spotlight2Ref = useRef( undefined );
 	const playlist = useStore( state => state.playlist );
 
 	const dummy1 = new Object3D(),

@@ -30,6 +30,7 @@
     "react-device-detect": "^2.2.2",
     "react-dom": "^18.1.0",
     "react-spring": "9.1.2",
+    "spacesvr": "^2.0.5",
     "three": "0.139.2",
     "three-custom-shader-material": "3.3.6",
     "uuid": "8.3.2",
