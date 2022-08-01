@@ -93,7 +93,10 @@ export const useStore = create<StoreState>()( ( set: any, get: any ) => {
 			const newLoadTotal = get().loadTotal;
 			newLoadTotal.push( id );
 			set(
-				() => ( { loadTotal: newLoadTotal } )
+				() => ( {
+					loadTotal: newLoadTotal,
+					progress: get().loaded.length >= get().loadTotal ? 100 : Math.floor( 100 * get().loaded.length / get().loadTotal.length ),
+				} )
 			);
 
 		},

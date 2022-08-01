@@ -1,15 +1,13 @@
-import * as THREE from "three";
 import { useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useStore } from "utils/store";
 import shallow from "zustand/shallow";
-import Ground from "./Ground";
+import * as THREE from "three";
+import { Ground } from "./index";
 
 export default function Environment() {
 
-	const mesh = useRef( null );
 	const uuid = useRef( uuidv4() );
-	const uuid2 = useRef( uuidv4() );
 	const { objectQueued, objectRendered } = useStore( state => ( {
 		objectQueued: state.objectQueued,
 		objectRendered: state.objectRendered,

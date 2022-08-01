@@ -153,6 +153,7 @@ export default function Landing() {
 		progress: state.progress,
 		os: state.os,
 	} ), shallow );
+	const sceneLoaded = progress === 100;
 
 	useEffect( () => {
 
@@ -182,7 +183,7 @@ export default function Landing() {
 
 	function start() {
 
-		if ( progress !== 100 || enter ) return;
+		if ( ! sceneLoaded || enter ) return;
 		setEnter( true );
 
 	}
@@ -203,7 +204,7 @@ export default function Landing() {
 				>
 					<div className="border"/>
 					<div className="main-element">
-						{progress === 100 ? "Enter" : "Loading..."}
+						{sceneLoaded ? "Enter" : "Loading..."}
 					</div>
 				</Enter>
 			</Content>
