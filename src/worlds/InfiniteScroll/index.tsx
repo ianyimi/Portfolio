@@ -21,7 +21,7 @@ export default function InfinteScroll() {
 			near: 0.01,
 			far: 20,
 			fov: 75,
-			position: position
+			// position: position
 		},
 		resize: { polyfill: ResizeObserver },
 		dpr: 1,

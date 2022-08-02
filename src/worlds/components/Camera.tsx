@@ -1,4 +1,4 @@
-import { CameraShake, OrbitControls } from "@react-three/drei";
+import { CameraShake } from "@react-three/drei";
 import { useState } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
@@ -31,8 +31,8 @@ export default function Camera() {
 
 	return (
 		<group>
-			<OrbitControls/>
-			{/*<Rig/>*/}
+			{/*<OrbitControls/>*/}
+			<Rig/>
 			{/*<PerspectiveCamera*/}
 			{/*	makeDefault*/}
 			{/*	position={position}*/}
