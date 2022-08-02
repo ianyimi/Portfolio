@@ -11,6 +11,8 @@ import { useStore } from "utils/store";
 import shallow from "zustand/shallow";
 import { v4 as uuidv4 } from "uuid";
 import { Bloom, EffectComposer, Select, Selection } from "@react-three/postprocessing";
+import { useFrame } from "@react-three/fiber";
+import { useLimiter } from "spacesvr";
 
 type GLTFResult = GLTF & {
 	nodes: {
@@ -119,6 +121,25 @@ export default function Model( props: JSX.IntrinsicElements['group'] ) {
 
 
 	}, [ group.current ] );
+
+	const speed = 1;
+	const rotationIntensity = 1;
+	const floatIntensity = 1;
+	const floatingRange = [ 0, 0.015 ];
+	const offset = useRef( Math.random() * 10000 );
+	const limiter = useLimiter( 45 );
+	useFrame( ( { clock } ) => {
+
+		if ( ! group.current ) return;
+		const t = offset.current + clock.getElapsedTime();
+		group.current.rotation.x = ( Math.cos( ( t / 4 ) * speed ) / 8 ) * rotationIntensity;
+		group.current.rotation.y = ( Math.sin( ( t / 4 ) * speed ) / 8 ) * rotationIntensity;
+		group.current.rotation.z = ( Math.sin( ( t / 4 ) * speed ) / 20 ) * rotationIntensity;
+		let yPosition = ( Math.sin( ( t / 4 ) * speed ) / 10 );
+		yPosition = THREE.MathUtils.mapLinear( yPosition, - 0.1, 0.1, floatingRange?.[0] ?? - 0.1, floatingRange?.[1] ?? 0.1 ) + 0.075;
+		group.current.position.y = yPosition * floatIntensity;
+
+	} );
 
 	return (
 		<group ref={group} scale={0.05} position={[ - 0.1, 0.075, 0.1 ]} rotation-x={Math.PI / 12} {...props} dispose={null}>

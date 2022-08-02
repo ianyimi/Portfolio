@@ -1,6 +1,6 @@
 import Car from "./models/Dolorean4";
 import { Suspense, useMemo, useRef } from "react";
-import { CurveModifier, Float } from "@react-three/drei";
+import { CurveModifier } from "@react-three/drei";
 import { BufferGeometry, CatmullRomCurve3, LineBasicMaterial, LineLoop, Vector3 } from "three";
 
 export default function Dolorean() {
@@ -32,11 +32,9 @@ export default function Dolorean() {
 		<group ref={group}>
 			<CurveModifier ref={curveRef}>
 				<group>
-					<Float floatingRange={[ 0, 0.015 ]} floatIntensity={1}>
-						<Suspense fallback={null}>
-							<Car/>
-						</Suspense>
-					</Float>
+					<Suspense fallback={null}>
+						<Car/>
+					</Suspense>
 				</group>
 			</CurveModifier>
 			<primitive object={line}/>

@@ -16,7 +16,7 @@
     "@react-three/cannon": "6.3.0",
     "@react-three/drei": "9.19.0",
     "@react-three/fiber": "8.0.22",
-    "@react-three/postprocessing": "2.3.2",
+    "@react-three/postprocessing": "2.5.5",
     "@react-three/xr": "4.0.1",
     "culori": "0.18.2",
     "glsl-noise-simplex": "0.0.2",
