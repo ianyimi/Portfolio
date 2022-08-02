@@ -37,7 +37,7 @@ export default function Dolorean() {
 					</Suspense>
 				</group>
 			</CurveModifier>
-			<primitive object={line}/>
+			{/*<primitive object={line}/>*/}
 		</group>
 	);
 

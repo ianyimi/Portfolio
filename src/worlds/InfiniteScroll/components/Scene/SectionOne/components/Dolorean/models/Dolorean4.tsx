@@ -10,7 +10,7 @@ import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
 import { useStore } from "utils/store";
 import shallow from "zustand/shallow";
 import { v4 as uuidv4 } from "uuid";
-import { Bloom, EffectComposer, Select, Selection } from "@react-three/postprocessing";
+import { Select } from "@react-three/postprocessing";
 import { useFrame } from "@react-three/fiber";
 import { useLimiter } from "spacesvr";
 
@@ -358,45 +358,40 @@ export default function Model( props: JSX.IntrinsicElements['group'] ) {
 					/>
 				</group>
 			</group>
-			<Selection>
-				<EffectComposer>
-					<Bloom kernelSize={10} luminanceThreshold={0} luminanceSmoothing={0} intensity={0.5}/>
-				</EffectComposer>
-				<Select enabled>
-					<mesh
-						name="CPDeLorean_EngineRearR002"
-						geometry={nodes.CPDeLorean_EngineRearR002.geometry}
-						material={nodes.CPDeLorean_EngineRearR002.material}
-						position={[ - 0.5991, - 0.2639, - 0.4273 ]}
-						rotation={[ - Math.PI / 2, - 0.4363, Math.PI / 2 ]}
-						scale={[ 0.03, 0.03, 0.03 ]}
-					/>
-					<mesh
-						name="CPDeLorean_EngineRearL002"
-						geometry={nodes.CPDeLorean_EngineRearL002.geometry}
-						material={nodes.CPDeLorean_EngineRearL002.material}
-						position={[ 0.549, - 0.2639, - 0.4273 ]}
-						rotation={[ Math.PI / 2, - 0.4363, - Math.PI / 2 ]}
-						scale={[ 0.03, 0.03, 0.03 ]}
-					/>
-					<mesh
-						name="CPDeLorean_EngineFrontL002"
-						geometry={nodes.CPDeLorean_EngineFrontL002.geometry}
-						material={nodes.CPDeLorean_EngineFrontL002.material}
-						position={[ 0.549, - 0.2639, 1.3591 ]}
-						rotation={[ Math.PI / 2, - 0.4363, - Math.PI / 2 ]}
-						scale={[ 0.03, 0.03, 0.03 ]}
-					/>
-					<mesh
-						name="CPDeLorean_EngineFrontR002"
-						geometry={nodes.CPDeLorean_EngineFrontR002.geometry}
-						material={nodes.CPDeLorean_EngineFrontR002.material}
-						position={[ - 0.5991, - 0.2639, 1.3591 ]}
-						rotation={[ - Math.PI / 2, - 0.4363, Math.PI / 2 ]}
-						scale={[ 0.03, 0.03, 0.03 ]}
-					/>
-				</Select>
-			</Selection>
+			<Select enabled>
+				<mesh
+					name="CPDeLorean_EngineRearR002"
+					geometry={nodes.CPDeLorean_EngineRearR002.geometry}
+					material={nodes.CPDeLorean_EngineRearR002.material}
+					position={[ - 0.5991, - 0.2639, - 0.4273 ]}
+					rotation={[ - Math.PI / 2, - 0.4363, Math.PI / 2 ]}
+					scale={[ 0.03, 0.03, 0.03 ]}
+				/>
+				<mesh
+					name="CPDeLorean_EngineRearL002"
+					geometry={nodes.CPDeLorean_EngineRearL002.geometry}
+					material={nodes.CPDeLorean_EngineRearL002.material}
+					position={[ 0.549, - 0.2639, - 0.4273 ]}
+					rotation={[ Math.PI / 2, - 0.4363, - Math.PI / 2 ]}
+					scale={[ 0.03, 0.03, 0.03 ]}
+				/>
+				<mesh
+					name="CPDeLorean_EngineFrontL002"
+					geometry={nodes.CPDeLorean_EngineFrontL002.geometry}
+					material={nodes.CPDeLorean_EngineFrontL002.material}
+					position={[ 0.549, - 0.2639, 1.3591 ]}
+					rotation={[ Math.PI / 2, - 0.4363, - Math.PI / 2 ]}
+					scale={[ 0.03, 0.03, 0.03 ]}
+				/>
+				<mesh
+					name="CPDeLorean_EngineFrontR002"
+					geometry={nodes.CPDeLorean_EngineFrontR002.geometry}
+					material={nodes.CPDeLorean_EngineFrontR002.material}
+					position={[ - 0.5991, - 0.2639, 1.3591 ]}
+					rotation={[ - Math.PI / 2, - 0.4363, Math.PI / 2 ]}
+					scale={[ 0.03, 0.03, 0.03 ]}
+				/>
+			</Select>
 		</group>
 	);
 
