@@ -4,7 +4,7 @@ import Camera from "../components/Camera";
 import { Suspense } from "react";
 import { Overlay, Scene } from "./components";
 import { Props as ContainerProps } from "@react-three/fiber/dist/declarations/src/web/Canvas";
-import { Euler, Vector3 } from "three";
+import { Vector3 } from "three";
 
 export default function InfinteScroll() {
 
@@ -18,11 +18,10 @@ export default function InfinteScroll() {
 			stencil: false,
 		},
 		camera: {
-			position: position,
-			rotation: new Euler( Math.atan( position.x / position.z ) + 1, 0, 0 ),
 			near: 0.01,
 			far: 20,
-			fov: 75
+			fov: 75,
+			position: position
 		},
 		resize: { polyfill: ResizeObserver },
 		dpr: 1,

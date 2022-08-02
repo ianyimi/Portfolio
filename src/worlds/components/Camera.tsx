@@ -1,7 +1,8 @@
-import { CameraShake } from "@react-three/drei";
+import { CameraShake, OrbitControls } from "@react-three/drei";
 import { useState } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
+import { useLimiter } from "spacesvr";
 
 export default function Camera() {
 
@@ -9,7 +10,14 @@ export default function Camera() {
 
 		const [ vec ] = useState( () => new THREE.Vector3() );
 		const { camera, mouse } = useThree();
-		useFrame( () => camera.position.lerp( vec.set( mouse.x * 2, 1, 60 ), 0.05 ) );
+		const limiter = useLimiter( 45 );
+		useFrame( ( { clock } ) => {
+
+			if ( ! limiter.isReady( clock ) ) return;
+			camera.position.lerp( vec.set( mouse.x / 75, mouse.y / 75 + 0.1, 0.35 ), 0.05 );
+			// camera.position.lerp( vec.set( 0, 0.1, 0.35 ), 0.05 );
+
+		} );
 		return <CameraShake
 			maxYaw={0.01}
 			maxPitch={0.01}
@@ -23,8 +31,8 @@ export default function Camera() {
 
 	return (
 		<group>
-			{/*<OrbitControls/>*/}
-			<Rig/>
+			<OrbitControls/>
+			{/*<Rig/>*/}
 			{/*<PerspectiveCamera*/}
 			{/*	makeDefault*/}
 			{/*	position={position}*/}

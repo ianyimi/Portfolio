@@ -4,26 +4,26 @@ import create from "zustand";
 import produce from "immer";
 
 export type StoreState = {
-  os: string | undefined,
-  playlist: Playlist,
-  setPlaylist: ( playlist: Playlist ) => void,
-  setPalette: ( palette: string[] ) => void,
-  display: number | null,
-  setDisplay: ( value: number | null ) => void,
-  audioSrc: string,
-  setAudioSrc: ( src: string ) => void,
-  paused: boolean,
-  setPaused: ( paused: boolean ) => void,
-  aa: AudioAnalyser | undefined,
-  setAa: ( aa: AnalyserNode ) => void,
-  loaded: string[],
-  progress: number,
-  objectRendered: ( id: string ) => void,
-  loadTotal: string[],
-  objectQueued: ( id: string ) => void,
-  getSpeed: () => number,
-  getVolume: () => number,
-  hexToVec3: ( color: string ) => Vector3
+	os: string | undefined,
+	playlist: Playlist,
+	setPlaylist: ( playlist: Playlist ) => void,
+	setPalette: ( palette: string[] ) => void,
+	display: number | null,
+	setDisplay: ( value: number | null ) => void,
+	audioSrc: string,
+	setAudioSrc: ( src: string ) => void,
+	paused: boolean,
+	setPaused: ( paused: boolean ) => void,
+	aa: AudioAnalyser | undefined,
+	setAa: ( aa: AnalyserNode ) => void,
+	loaded: string[],
+	progress: number,
+	objectRendered: ( id: string ) => void,
+	loadTotal: string[],
+	objectQueued: ( id: string ) => void,
+	getSpeed: () => number,
+	getVolume: () => number,
+	hexToVec3: ( color: string ) => Vector3,
 }
 
 let os: string | undefined = undefined;
@@ -90,6 +90,7 @@ export const useStore = create<StoreState>()( ( set: any, get: any ) => {
 
 			if ( get().loadTotal.includes( id ) || id === "" ) return;
 			console.log( "queueing: " + ( get().loadTotal.length + 1 ) + " items" );
+			console.log( "progress: " + get().progress );
 			const newLoadTotal = get().loadTotal;
 			newLoadTotal.push( id );
 			set(
@@ -98,6 +99,7 @@ export const useStore = create<StoreState>()( ( set: any, get: any ) => {
 					progress: get().loaded.length >= get().loadTotal ? 100 : Math.floor( 100 * get().loaded.length / get().loadTotal.length ),
 				} )
 			);
+			console.log( "progress: " + get().progress );
 
 		},
 		getSpeed: () => {

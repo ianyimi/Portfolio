@@ -1,4 +1,4 @@
-import { Suspense, useEffect } from "react";
+import { Suspense } from "react";
 import { Scroll, ScrollControls } from "@react-three/drei";
 import SectionOne from "./SectionOne";
 import { useThree } from "@react-three/fiber";
@@ -7,11 +7,11 @@ export default function Scene() {
 
 	const { viewport, camera } = useThree();
 
-	useEffect( () => {
-
-		camera.lookAt( 0, camera.position.y, 0 );
-
-	}, [] );
+	// useEffect( () => {
+	//
+	// 	camera.lookAt( 0, camera.position.y, 0 );
+	//
+	// }, [] );
 
 	return (
 		<group>

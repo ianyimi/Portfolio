@@ -6,8 +6,8 @@ import { useStore } from "utils/store";
 
 export default function Lights() {
 
-	const spotlight1Ref = useRef( undefined );
-	const spotlight2Ref = useRef( undefined );
+	const spotlight1Ref = useRef<THREE.SpotLight>();
+	const spotlight2Ref = useRef<THREE.SpotLight>();
 	const playlist = useStore( state => state.playlist );
 
 	const dummy1 = new Object3D(),
@@ -17,7 +17,9 @@ export default function Lights() {
 
 	return (
 		<group>
+			{/*@ts-ignore*/}
 			<animated.spotLight
+				// @ts-ignore
 				ref={spotlight1Ref}
 				target={dummy1}
 				color={new THREE.Color( playlist.palette[ playlist.secondaryColorIndex ] )}
@@ -29,6 +31,7 @@ export default function Lights() {
 				decay={10}
 			/>
 			<animated.spotLight
+				// @ts-ignore
 				ref={spotlight2Ref}
 				target={dummy2}
 				color={new THREE.Color( playlist.palette[ playlist.secondaryColorIndex ] )}
