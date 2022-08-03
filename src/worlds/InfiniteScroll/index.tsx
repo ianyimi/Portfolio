@@ -5,7 +5,8 @@ import { Suspense } from "react";
 import { Overlay, Scene } from "./components";
 import { Props as ContainerProps } from "@react-three/fiber/dist/declarations/src/web/Canvas";
 import { Vector3 } from "three";
-import { Bloom, EffectComposer, Selection } from "@react-three/postprocessing";
+import { Selection } from "@react-three/postprocessing";
+import PostProcessing from "./components/PostProcessing";
 
 export default function InfinteScroll() {
 
@@ -22,7 +23,7 @@ export default function InfinteScroll() {
 			near: 0.01,
 			far: 20,
 			fov: 75,
-			// position: position
+			position: position
 		},
 		resize: { polyfill: ResizeObserver },
 		dpr: 1,
@@ -38,9 +39,7 @@ export default function InfinteScroll() {
 					<Suspense fallback={null}>
 						<Camera/>
 						<Selection>
-							<EffectComposer autoClear={false}>
-								<Bloom kernelSize={10} luminanceThreshold={0} luminanceSmoothing={0} intensity={0.5}/>
-							</EffectComposer>
+							<PostProcessing/>
 							<Scene/>
 						</Selection>
 					</Suspense>

@@ -130,7 +130,7 @@ export default function Model( props: JSX.IntrinsicElements['group'] ) {
 	const limiter = useLimiter( 45 );
 	useFrame( ( { clock } ) => {
 
-		if ( ! group.current ) return;
+		if ( ! limiter.isReady( clock ) || ! group.current ) return;
 		const t = offset.current + clock.getElapsedTime();
 		group.current.rotation.x = ( Math.cos( ( t / 4 ) * speed ) / 8 ) * rotationIntensity;
 		group.current.rotation.y = ( Math.sin( ( t / 4 ) * speed ) / 8 ) * rotationIntensity;
@@ -367,6 +367,8 @@ export default function Model( props: JSX.IntrinsicElements['group'] ) {
 					rotation={[ - Math.PI / 2, - 0.4363, Math.PI / 2 ]}
 					scale={[ 0.03, 0.03, 0.03 ]}
 				/>
+			</Select>
+			<Select>
 				<mesh
 					name="CPDeLorean_EngineRearL002"
 					geometry={nodes.CPDeLorean_EngineRearL002.geometry}
@@ -375,6 +377,8 @@ export default function Model( props: JSX.IntrinsicElements['group'] ) {
 					rotation={[ Math.PI / 2, - 0.4363, - Math.PI / 2 ]}
 					scale={[ 0.03, 0.03, 0.03 ]}
 				/>
+			</Select>
+			<Select>
 				<mesh
 					name="CPDeLorean_EngineFrontL002"
 					geometry={nodes.CPDeLorean_EngineFrontL002.geometry}
@@ -383,6 +387,8 @@ export default function Model( props: JSX.IntrinsicElements['group'] ) {
 					rotation={[ Math.PI / 2, - 0.4363, - Math.PI / 2 ]}
 					scale={[ 0.03, 0.03, 0.03 ]}
 				/>
+			</Select>
+			<Select>
 				<mesh
 					name="CPDeLorean_EngineFrontR002"
 					geometry={nodes.CPDeLorean_EngineFrontR002.geometry}

@@ -32,7 +32,7 @@
     "react-dom": "^18.1.0",
     "react-spring": "9.1.2",
     "spacesvr": "^2.0.5",
-    "three": "^0.143.0",
+    "three": "0.142.0",
     "three-custom-shader-material": "3.3.6",
     "uuid": "8.3.2",
     "vanta": "^0.5.22",
