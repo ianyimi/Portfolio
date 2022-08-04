@@ -1,13 +1,12 @@
 import { GroupProps } from "@react-three/fiber";
-import { Dolorean, Environment, SpotLights } from "./components";
+// @ts-ignore
+import Dolorean from "./components/Dolorean";
 
 export default function SectionOne( props: GroupProps ) {
 
 	return (
 		<group {...props}>
-			<Environment/>
 			<Dolorean/>
-			<SpotLights/>
 		</group>
 	);
 

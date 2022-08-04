@@ -90,7 +90,7 @@ export default function SpotLights() {
 				<spotLight
 					ref={light5}
 					color={[ 1, 1, 1 ]}
-					intensity={2}
+					intensity={0}
 					distance={3}
 					angle={0.5}
 					penumbra={0.5}

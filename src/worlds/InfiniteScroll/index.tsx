@@ -2,11 +2,10 @@ import { Canvas } from "@react-three/fiber";
 import { Physics } from "@react-three/cannon";
 import Camera from "../components/Camera";
 import { Suspense } from "react";
-import { Overlay, Scene } from "./components";
+import { Overlay, PostProcessing, Scene } from "./components";
 import { Props as ContainerProps } from "@react-three/fiber/dist/declarations/src/web/Canvas";
 import { Vector3 } from "three";
 import { Selection } from "@react-three/postprocessing";
-import PostProcessing from "./components/PostProcessing";
 
 export default function InfinteScroll() {
 

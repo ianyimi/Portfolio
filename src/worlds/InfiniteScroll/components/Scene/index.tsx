@@ -1,25 +1,18 @@
 import { Suspense } from "react";
 import { Scroll, ScrollControls } from "@react-three/drei";
-import SectionOne from "./SectionOne";
-import { useThree } from "@react-three/fiber";
+
+import { Environment, SectionThree } from "./components";
 
 export default function Scene() {
-
-	const { viewport, camera } = useThree();
-
-	// useEffect( () => {
-	//
-	// 	camera.lookAt( 0, camera.position.y, 0 );
-	//
-	// }, [] );
 
 	return (
 		<group>
 			<Suspense fallback={null}>
 				<ScrollControls pages={3} damping={2}>
 					<ambientLight intensity={0.25}/>
+					<Environment/>
 					{/*<ambientLight intensity={0.75}/>*/}
-					<SectionOne/>
+					<SectionThree/>
 					<Scroll>
 						{/*<SectionOne/>*/}
 						{/*<SectionTwo position={[ 0, viewport.height, 0 ]}/>*/}

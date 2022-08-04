@@ -47,4 +47,29 @@ export const globalStyles = css`
   canvas {
     z-index: -1;
   }
+
+  /* ===== Scrollbar CSS ===== */
+  /* Firefox */
+
+  * {
+    scrollbar-width: auto;
+    scrollbar-color: #ffffff #000000;
+  }
+
+  /* Chrome, Edge, and Safari */
+
+  *::-webkit-scrollbar {
+    width: 18px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0);
+    margin: 0 5px 0;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: none;
+  }
 `;
