@@ -65,9 +65,9 @@ type GLTFResult = GLTF & {
 	}
 }
 
-const FILE_URL = "https://dqeczc7c9n9n1.cloudfront.net/models/dolorean7-1659555702/dolorean7.glb.gz";
+const FILE_URL = "https://dqeczc7c9n9n1.cloudfront.net/models/dolorean8-1659650729/dolorean8.glb.gz";
 
-type ActionName = 'Action.003'
+type ActionName = 'Action'
 type GLTFActions = Record<ActionName, THREE.AnimationAction>
 
 export default function Model( props: JSX.IntrinsicElements['group'] ) {
@@ -180,11 +180,10 @@ export default function Model( props: JSX.IntrinsicElements['group'] ) {
 	} );
 
 	return (
-		<group ref={group} scale={0.075} position={[ - 0.1, 0.075, 0.1 ]}
-		       rotation={[ Math.PI / 12, 0, 0 ]} {...props}
+		<group ref={group} scale={0.075} position={[ - 0.1, 0.075, 0.1 ]} rotation={[ Math.PI / 12, 0, 0 ]} {...props}
 		       dispose={null}>
 			<group name="Scene">
-				<group name="Empty" ref={carGroup} position={[ - 0.1315, - 0.0077, - 0.0039 ]} rotation={[ - 1.9093, 1.4861, 1.647 ]}>
+				<group name="Empty" ref={carGroup} position={[ - 8.0928, 1.6987, 9.2459 ]} rotation={[ 2.8412, - 0.6201, 3.0063 ]}>
 					<group ref={floatGroup}>
 						<group name="CPDeLorean_MainBody" position={[ - 0.025, - 0.4634, 0.4333 ]} scale={0.006}/>
 						<mesh

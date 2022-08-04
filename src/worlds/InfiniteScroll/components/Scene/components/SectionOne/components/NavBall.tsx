@@ -33,12 +33,12 @@ export default function NavBall( props: { section: string, color?: string, offse
 	useFrame( ( { clock } ) => {
 
 		if ( ! limiter.isReady( clock ) ) return;
-		const sectionOne = data.range( 0, 1 / 3, 0.1 );
-		if ( 0 <= sectionOne && sectionOne < 1 && ! active ) {
+		const sectionOne = data.range( 1 / 3, 1 / 3 );
+		if ( sectionOne <= 0 && ! active ) {
 
 			setTimeout( () => setActive( true ), offset );
 
-		} else if ( ( sectionOne < 0 || 1 <= sectionOne ) && active ) {
+		} else if ( sectionOne > 0 && active ) {
 
 			setTimeout( () => setActive( false ), maxDelay - offset );
 

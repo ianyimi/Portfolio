@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { ScrollControls } from "@react-three/drei";
 
-import { Environment, SectionOne } from "./components";
+import { Environment, SectionOne, SectionThree } from "./components";
 
 export default function Scene() {
 
@@ -13,7 +13,7 @@ export default function Scene() {
 					<Environment/>
 					{/*<ambientLight intensity={0.75}/>*/}
 					<SectionOne/>
-					{/*<SectionThree/>*/}
+					<SectionThree/>
 					{/*<SectionTwo position={[ 0, viewport.height, 0 ]}/>*/}
 					{/*<Scroll html>*/}
 					{/*	<div style={{*/}
