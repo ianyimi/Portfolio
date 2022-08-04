@@ -5,7 +5,7 @@ import { useThree } from "@react-three/fiber";
 import { Falsy } from "utility-types";
 import { useStore } from "utils/store";
 
-const DEBUG = true;
+const DEBUG = false;
 
 export default function SpotLights() {
 
@@ -90,8 +90,8 @@ export default function SpotLights() {
 				<spotLight
 					ref={light5}
 					color={[ 1, 1, 1 ]}
-					intensity={3}
-					distance={1}
+					intensity={2}
+					distance={3}
 					angle={0.5}
 					penumbra={0.5}
 					decay={0.1}

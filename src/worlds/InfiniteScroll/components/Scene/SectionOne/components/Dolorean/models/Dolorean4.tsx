@@ -11,8 +11,8 @@ import { useStore } from "utils/store";
 import shallow from "zustand/shallow";
 import { v4 as uuidv4 } from "uuid";
 import { Select } from "@react-three/postprocessing";
-import { useFrame } from "@react-three/fiber";
 import { useLimiter } from "spacesvr";
+import { useFrame } from "@react-three/fiber";
 
 type GLTFResult = GLTF & {
 	nodes: {
@@ -136,7 +136,7 @@ export default function Model( props: JSX.IntrinsicElements['group'] ) {
 		group.current.rotation.y = ( Math.sin( ( t / 4 ) * speed ) / 8 ) * rotationIntensity;
 		group.current.rotation.z = ( Math.sin( ( t / 4 ) * speed ) / 20 ) * rotationIntensity;
 		let yPosition = ( Math.sin( ( t / 4 ) * speed ) / 10 );
-		yPosition = THREE.MathUtils.mapLinear( yPosition, - 0.1, 0.1, floatingRange?.[0] ?? - 0.1, floatingRange?.[1] ?? 0.1 ) + 0.075;
+		yPosition = THREE.MathUtils.mapLinear( yPosition, - 0.1, 0.1, floatingRange?.[0] ?? - 0.1, floatingRange?.[1] ?? 0.1 ) - 0.075;
 		group.current.position.y = yPosition * floatIntensity;
 
 	} );

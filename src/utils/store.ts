@@ -1,4 +1,4 @@
-import { AudioAnalyser, CatmullRomCurve3, LineLoop, Vector3 } from "three";
+import { AudioAnalyser, Vector3 } from "three";
 import { Playlist, playlists } from "../worlds/Vaporwave/utils/constants";
 import create from "zustand";
 import produce from "immer";
@@ -16,8 +16,8 @@ export type StoreState = {
 	setPaused: ( paused: boolean ) => void,
 	aa: AudioAnalyser | undefined,
 	setAa: ( aa: AnalyserNode ) => void,
-	curve: CatmullRomCurve3,
-	line?: LineLoop,
+	enter: boolean,
+	toggleEnter: () => void,
 	loaded: string[],
 	progress: number,
 	objectRendered: ( id: string ) => void,
@@ -78,11 +78,8 @@ export const useStore = create<StoreState>()( ( set: any, get: any ) => {
 		setAa: ( aa: AnalyserNode | AudioAnalyser ) => set(
 			() => ( { aa: aa } )
 		),
-		curve: new CatmullRomCurve3( handlePos, true, 'centripetal' ),
-		// line: new LineLoop(
-		// 	new BufferGeometry().setFromPoints( get().curve.getPoints( 50 ) ),
-		// 	new LineBasicMaterial( { color: 0x00ff00 } )
-		// ),
+		enter: false,
+		toggleEnter: () => set( () => ( { enter: true } ) ),
 		loaded: [],
 		progress: 0,
 		objectRendered: ( id: string ) => {

@@ -1,6 +1,7 @@
 import Car from "./models/Dolorean4";
+import Car2 from "./models/Dolorean6";
 import { Suspense, useRef } from "react";
-import { BufferGeometry, CatmullRomCurve3, LineBasicMaterial, LineLoop, Vector3 } from "three";
+import { Vector3 } from "three";
 import { CurveModifierRef } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useLimiter } from "spacesvr";
@@ -16,11 +17,11 @@ export default function Dolorean() {
 		new Vector3( - 1, 0, 1 ),
 		new Vector3( - 1, 0, - 1 )
 	];
-	const curve = new CatmullRomCurve3( handlePos, true, 'centripetal' );
-	const line = new LineLoop(
-		new BufferGeometry().setFromPoints( curve.getPoints( 50 ) ),
-		new LineBasicMaterial( { color: 0x00ff00 } )
-	);
+	// const curve = new CatmullRomCurve3( handlePos, true, 'centripetal' );
+	// const line = new LineLoop(
+	// 	new BufferGeometry().setFromPoints( curve.getPoints( 50 ) ),
+	// 	new LineBasicMaterial( { color: 0x00ff00 } )
+	// );
 
 	const limiter = useLimiter( 45 );
 	useFrame( ( { clock } ) => {
@@ -39,9 +40,10 @@ export default function Dolorean() {
 			{/*		</mesh>*/}
 			<Suspense fallback={null}>
 				<Car/>
+				<Car2/>
 			</Suspense>
 			{/*</CurveModifier>*/}
-			<primitive object={line}/>
+			{/*<primitive object={line}/>*/}
 		</group>
 	);
 

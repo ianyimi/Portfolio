@@ -51,7 +51,7 @@ export default function Ground() {
 			castShadow
 			receiveShadow
 		>
-			<planeGeometry args={[ 1.5, 1.5 ]}/>
+			<planeGeometry args={[ 5, 5 ]}/>
 			<MeshReflectorMaterial
 				envMapIntensity={0}
 				normalMap={normal}

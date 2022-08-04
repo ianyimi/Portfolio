@@ -32,7 +32,7 @@ export default function Camera() {
 	return (
 		<group>
 			<OrbitControls/>
-			{/*<Rig/>*/}
+			<Rig/>
 			{/*<PerspectiveCamera*/}
 			{/*	makeDefault*/}
 			{/*	position={position}*/}
