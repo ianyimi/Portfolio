@@ -150,7 +150,7 @@ export default function Fog() {
 
 	const { scene } = useThree();
 
-	scene.fog = new THREE.Fog( "black", 1, 2.5 );
+	scene.fog = new THREE.Fog( "black", 0.25, 0.75 );
 
 	return (
 		<></>

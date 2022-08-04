@@ -654,6 +654,11 @@
   dependencies:
     tslib "^2.4.0"
 
+"@types/d3-ease@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@types/d3-ease/-/d3-ease-3.0.0.tgz#c29926f8b596f9dadaeca062a32a45365681eae0"
+  integrity sha512-aMo4eaAOijJjA6uU+GIeW018dvy9+oH5Y2VPPzjjfxevvGQ/oRDs+tfYC9b50Q4BygRR8yE2QCLsrT0WtAVseA==
+
 "@types/eslint-visitor-keys@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@types/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#1ee30d79544ca84d68d4b3cdb0af4f205663dd2d"
@@ -1079,6 +1084,11 @@ culori@0.18.2, culori@^0.18.2:
   version "0.18.2"
   resolved "https://registry.yarnpkg.com/culori/-/culori-0.18.2.tgz#8bbfe9a8bc56938cda870e5f44d3f3c82da764c9"
   integrity sha512-cEoI0aymWhLTFxYOPCERk3GRVA+pLML0a3VpTjmGZQICOq4Zs8/YHyZJYnPUwwt59Bup7hmWNI1pM3VLM/Sjog==
+
+d3-ease@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/d3-ease/-/d3-ease-3.0.1.tgz#9658ac38a2140d59d346160f1f6c30fda0bd12f4"
+  integrity sha512-wR/XK3D3XcLIZwpbvQwQ5fK+8Ykds1ip7A2Txe0yxncXSdq1L9skcG7blcedkOX+ZcgxGAmLX1FrRGbADwzi0w==
 
 debounce@^1.2.1:
   version "1.2.1"

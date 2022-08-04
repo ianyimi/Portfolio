@@ -1,7 +1,7 @@
 import { Suspense } from "react";
-import { Scroll, ScrollControls } from "@react-three/drei";
+import { ScrollControls } from "@react-three/drei";
 
-import { Environment, SectionThree } from "./components";
+import { Environment, SectionOne } from "./components";
 
 export default function Scene() {
 
@@ -12,16 +12,18 @@ export default function Scene() {
 					<ambientLight intensity={0.25}/>
 					<Environment/>
 					{/*<ambientLight intensity={0.75}/>*/}
-					<SectionThree/>
-					<Scroll>
-						{/*<SectionOne/>*/}
-						{/*<SectionTwo position={[ 0, viewport.height, 0 ]}/>*/}
-					</Scroll>
-					<Scroll html>
-						<div style={{ height: "100vh" }}>1</div>
-						<div style={{ top: "100vh", height: "100vh" }}>2</div>
-						<div style={{ top: "200vh", height: "100vh" }}>3</div>
-					</Scroll>
+					<SectionOne/>
+					{/*<SectionThree/>*/}
+					{/*<SectionTwo position={[ 0, viewport.height, 0 ]}/>*/}
+					{/*<Scroll html>*/}
+					{/*	<div style={{*/}
+					{/*		zIndex: 10,*/}
+					{/*	}}>*/}
+					{/*		<div style={{ height: "100vh" }}>1</div>*/}
+					{/*		<div style={{ top: "100vh", height: "100vh" }}>2</div>*/}
+					{/*		<div style={{ top: "200vh", height: "100vh" }}>3</div>*/}
+					{/*	</div>*/}
+					{/*</Scroll>*/}
 				</ScrollControls>
 			</Suspense>
 		</group>
