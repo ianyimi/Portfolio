@@ -23,7 +23,6 @@ export default function NavBall( props: { section: string, color?: string, offse
 
 	useEffect( () => {
 
-		console.log( "run" );
 		if ( currentSection !== 0 && previousSection !== 0 ) return;
 
 		if ( currentSection === 0 ) {

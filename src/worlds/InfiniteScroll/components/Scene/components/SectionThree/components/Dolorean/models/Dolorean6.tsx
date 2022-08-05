@@ -133,7 +133,7 @@ export default function Model( props: JSX.IntrinsicElements['group'] ) {
 
 		}
 
-		console.log( "change" );
+		console.log( ACTIVE );
 		const action = actions.Action;
 
 		if ( ACTIVE ) {
