@@ -8,7 +8,7 @@ export default function Scene() {
 	return (
 		<group>
 			<Suspense fallback={null}>
-				<ScrollControls pages={3} damping={2}>
+				<ScrollControls pages={3} damping={100}>
 					<ambientLight intensity={0.25}/>
 					<Environment/>
 					{/*<ambientLight intensity={0.75}/>*/}

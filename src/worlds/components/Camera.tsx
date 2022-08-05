@@ -1,4 +1,4 @@
-import { CameraShake } from "@react-three/drei";
+import { CameraShake, OrbitControls } from "@react-three/drei";
 import { useState } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
