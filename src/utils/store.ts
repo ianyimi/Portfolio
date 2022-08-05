@@ -18,6 +18,12 @@ export type StoreState = {
 	setAa: ( aa: AnalyserNode ) => void,
 	enter: boolean,
 	toggleEnter: () => void,
+	sectionDelays: number[],
+	currentSection: number | null,
+	previousSection: number | null,
+	setSection: ( id: number ) => void,
+	animating: boolean,
+	setAnimationStatus: ( status: boolean ) => void,
 	loaded: string[],
 	progress: number,
 	objectRendered: ( id: string ) => void,
@@ -80,6 +86,15 @@ export const useStore = create<StoreState>()( ( set: any, get: any ) => {
 		),
 		enter: false,
 		toggleEnter: () => set( () => ( { enter: true } ) ),
+		sectionDelays: [ 500, 0, 0, 1000 ],
+		currentSection: null,
+		previousSection: null,
+		setSection: ( id: number ) => set( () => ( {
+			previousSection: get().currentSection,
+			currentSection: id
+		} ) ),
+		animating: false,
+		setAnimationStatus: ( status: boolean ) => set( () => ( { animating: status } ) ),
 		loaded: [],
 		progress: 0,
 		objectRendered: ( id: string ) => {

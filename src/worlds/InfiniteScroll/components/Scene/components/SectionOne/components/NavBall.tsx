@@ -1,7 +1,6 @@
-import { GroupProps, useFrame } from "@react-three/fiber";
-import { Float, useCursor, useScroll } from "@react-three/drei";
-import { useState } from "react";
-import { useLimiter } from "spacesvr";
+import { GroupProps } from "@react-three/fiber";
+import { Float, useCursor } from "@react-three/drei";
+import { useEffect, useState } from "react";
 import { animated, useSpring } from "react-spring/three";
 import { useStore } from "utils/store";
 import * as easings from "d3-ease";
@@ -9,11 +8,43 @@ import * as easings from "d3-ease";
 export default function NavBall( props: { section: string, color?: string, offset?: number, maxDelay?: number } & GroupProps ) {
 
 	const { section, color = "black", offset = 0, maxDelay = 200, ...restProps } = props;
-	const enter = useStore( state => state.enter );
-	const data = useScroll();
+	const { enter, currentSection, previousSection, sectionDelays, setAnimationStatus } = useStore( state => ( {
+		enter: state.enter,
+		currentSection: state.currentSection,
+		previousSection: state.previousSection,
+		sectionDelays: state.sectionDelays,
+		setAnimationStatus: state.setAnimationStatus,
+	} ) );
 	const [ active, setActive ] = useState( false );
 	const [ hovered, setHovered ] = useState( false );
 	useCursor( hovered );
+
+	console.log( currentSection );
+
+	useEffect( () => {
+
+		console.log( "run" );
+		if ( currentSection !== 0 && previousSection !== 0 ) return;
+
+		if ( currentSection === 0 ) {
+
+			setTimeout( () => {
+
+				setActive( true );
+				setAnimationStatus( true );
+				setTimeout( () => setAnimationStatus( false ), 2000 );
+
+			}, previousSection ? sectionDelays[ previousSection ] + offset : 0 );
+
+		} else {
+
+			setAnimationStatus( true );
+			setTimeout( () => setAnimationStatus( false ), 500 + maxDelay - offset );
+
+		}
+
+
+	}, [ currentSection ] );
 
 	const { s, i } = useSpring( {
 		s: enter && active ? 1 : 0,
@@ -25,25 +56,6 @@ export default function NavBall( props: { section: string, color?: string, offse
 			friction: 12,
 			easing: active ? easings.easeElastic : easings.easeBackOut
 		}
-	} );
-
-	// console.log( enter && active );
-
-	const limiter = useLimiter( 45 );
-	useFrame( ( { clock } ) => {
-
-		if ( ! limiter.isReady( clock ) ) return;
-		const sectionOne = data.range( 1 / 3, 1 / 3 );
-		if ( sectionOne <= 0 && ! active ) {
-
-			setTimeout( () => setActive( true ), offset );
-
-		} else if ( sectionOne > 0 && active ) {
-
-			setTimeout( () => setActive( false ), maxDelay - offset );
-
-		}
-
 	} );
 
 	return (

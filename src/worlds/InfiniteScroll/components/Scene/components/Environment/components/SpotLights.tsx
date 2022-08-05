@@ -1,9 +1,11 @@
-import { MutableRefObject, useRef } from "react";
+import { MutableRefObject, useEffect, useRef, useState } from "react";
 import { useHelper } from "@react-three/drei";
 import { Object3D, SpotLightHelper } from "three";
 import { useThree } from "@react-three/fiber";
 import { Falsy } from "utility-types";
 import { useStore } from "utils/store";
+import { animated, useSpring } from "react-spring/three";
+import * as easings from "d3-ease";
 
 const DEBUG = false;
 
@@ -25,10 +27,48 @@ export default function SpotLights() {
 	const dummyObj = new Object3D();
 	scene.add( dummyObj );
 
-	const { objectQueued, objectRendered } = useStore( state => ( {
+	const [ active, setActive ] = useState( false );
+	const {
+		objectQueued,
+		objectRendered,
+		currentSection,
+		previousSection,
+		setAnimationStatus,
+		sectionDelays
+	} = useStore( state => ( {
 		objectQueued: state.objectQueued,
-		objectRendered: state.objectRendered
+		objectRendered: state.objectRendered,
+		currentSection: state.currentSection,
+		previousSection: state.previousSection,
+		setAnimationStatus: state.setAnimationStatus,
+		sectionDelays: state.sectionDelays,
 	} ) );
+
+	useEffect( () => {
+
+		if ( currentSection !== 0 && previousSection !== 0 ) return;
+		setTimeout( () => {
+
+			setActive( true );
+			setAnimationStatus( true );
+			setTimeout( () => setAnimationStatus( false ), 500 );
+
+		}, previousSection ? sectionDelays[ previousSection ] : 0 );
+
+	}, [ currentSection ] );
+
+	const ACTIVE = currentSection !== 0;
+
+	const { i } = useSpring( {
+		i: active ? 0.5 : 0,
+		config: {
+			duration: active ? 2000 : 500,
+			mass: 1,
+			tension: 180,
+			friction: 12,
+			easing: active ? easings.easeElastic : easings.easeBackOut
+		}
+	} );
 
 	return (
 		<group>
@@ -87,10 +127,11 @@ export default function SpotLights() {
 				/>
 			</group>
 			<group name="centerLight">
-				<spotLight
+				{/* @ts-ignore */}
+				<animated.spotLight
 					ref={light5}
 					color={[ 1, 1, 1 ]}
-					intensity={0}
+					intensity={i}
 					distance={3}
 					angle={0.5}
 					penumbra={0.5}

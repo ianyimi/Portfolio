@@ -9,18 +9,27 @@ export default function TitleText( props: GroupProps ) {
 			{/*	<boxBufferGeometry args={[ 0.1, 0.1, 0.1 ]}/>*/}
 			{/*	<meshBasicMaterial color="red"/>*/}
 			{/*</mesh>*/}
-			{/*<Html prepend>*/}
-			{/*	<h1*/}
-			{/*		style={{*/}
-			{/*			color: "white",*/}
-			{/*			fontFamily: "Thunderstorm",*/}
-			{/*			fontSize: "10em",*/}
-			{/*			width: "80vw"*/}
-			{/*		}}*/}
-			{/*	>*/}
-			{/*		Isaiah Anyimi*/}
-			{/*	</h1>*/}
-			{/*</Html>*/}
+			<Html
+				prepend
+				className="syncscroll"
+				name="scroll"
+				style={{
+					display: "scroll"
+				}}
+			>
+				<h1
+					className="syncscroll"
+					id="scroll"
+					style={{
+						color: "white",
+						fontFamily: "Thunderstorm",
+						fontSize: "10em",
+						width: "80vw"
+					}}
+				>
+					Isaiah Anyimi
+				</h1>
+			</Html>
 		</group>
 	);
 

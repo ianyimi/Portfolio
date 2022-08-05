@@ -8,6 +8,7 @@ import { MeshReflectorMaterial, useAnimations, useGLTF, useScroll } from '@react
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
 import { useLimiter } from "spacesvr";
 import { useFrame } from "@react-three/fiber";
+import { useStore } from "utils/store";
 
 type GLTFResult = GLTF & {
 	nodes: {
@@ -76,11 +77,13 @@ export default function Model( props: JSX.IntrinsicElements['group'] ) {
 	const group = useRef<THREE.Group>( null );
 	const carGroup = useRef<THREE.Group>( null );
 	const floatGroup = useRef<THREE.Group>( null );
-	const [ active, setActive ] = useState( false );
 	const [ animating, setAnimationStatus ] = useState( false );
 	const { nodes, materials, animations } = useGLTF( FILE_URL ) as unknown as GLTFResult;
 	const { actions } = useAnimations<any>( animations, carGroup );
 	const data = useScroll();
+
+	const currentSection = useStore( state => state.currentSection );
+	const ACTIVE = currentSection === 3;
 
 	const enter = ( action: THREE.AnimationAction | null ) => {
 
@@ -90,11 +93,11 @@ export default function Model( props: JSX.IntrinsicElements['group'] ) {
 		// @ts-ignore
 		setTimeout( () => {
 
-			action.halt( 3.85 );
-			setTimeout( () => setAnimationStatus( false ), 3000 );
+			action.halt( 2.95 );
+			setTimeout( () => setAnimationStatus( false ), 2950 );
 
-		}, 1000 );
-		action.setEffectiveTimeScale( 0.5 ).play();
+		}, 500 );
+		action.setEffectiveTimeScale( 0.75 ).play();
 
 	};
 
@@ -133,7 +136,7 @@ export default function Model( props: JSX.IntrinsicElements['group'] ) {
 		console.log( "change" );
 		const action = actions.Action;
 
-		if ( active ) {
+		if ( ACTIVE ) {
 
 			enter( action );
 
@@ -143,10 +146,10 @@ export default function Model( props: JSX.IntrinsicElements['group'] ) {
 
 		}
 
-	}, [ active ] );
+	}, [ ACTIVE ] );
 
 
-	const speed = 1;
+	const speed = 2;
 	const rotationIntensity = 1;
 	const floatIntensity = 1;
 	const floatingRange = [ 0, 0.015 ];
@@ -164,18 +167,6 @@ export default function Model( props: JSX.IntrinsicElements['group'] ) {
 		let yPosition = ( Math.sin( ( t / 4 ) * speed ) / 10 );
 		yPosition = THREE.MathUtils.mapLinear( yPosition, - 0.1, 0.1, floatingRange?.[0] ?? - 0.1, floatingRange?.[1] ?? 0.1 ) - 0.075;
 		floatGroup.current.position.y = yPosition * floatIntensity;
-
-		// Animate Car
-		const ready = data.range( 1 / 3, 1 / 3, 0.1 );
-		if ( ready === 1 && ! active ) {
-
-			setActive( true );
-
-		} else if ( ready !== 1 && active ) {
-
-			setActive( false );
-
-		}
 
 	} );
 

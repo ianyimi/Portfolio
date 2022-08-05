@@ -15,7 +15,7 @@ export default function SectionOne( props: GroupProps ) {
 
 	return (
 		<group {...props}>
-			<TitleText position={[ - 0.075, 0.12, 0.21125 ]}/>
+			{/*<TitleText position={[ - 0.075, 0.12, 0.21125 ]}/>*/}
 			<NavBall position={positions[ 0 ]} section="About" color="blue" offset={0} maxDelay={maxDelay}/>
 			<NavBall position={positions[ 1 ]} section="Work" color="red" offset={100} maxDelay={maxDelay}/>
 			<NavBall position={positions[ 2 ]} section="Contact" color="green" offset={maxDelay} maxDelay={maxDelay}/>
