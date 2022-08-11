@@ -22,6 +22,8 @@
     "d3-ease": "^3.0.1",
     "glsl-noise-simplex": "0.0.2",
     "glslify": "7.1.1",
+    "gsap": "^3.10.4",
+    "html2canvas": "^1.4.1",
     "immer": "9.0.15",
     "next": "^12.1.6",
     "nipplejs": "0.8.1",

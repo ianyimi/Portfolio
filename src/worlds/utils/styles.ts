@@ -3,6 +3,18 @@ import { css } from '@emotion/react';
 export const globalStyles = css`
 
   @font-face {
+    font-family: "Bosch";
+    src: url("https://dqeczc7c9n9n1.cloudfront.net/fonts/Bosch.eot?") format("embedded-opentype"),
+    url("https://dqeczc7c9n9n1.cloudfront.net/fonts/Bosch.woff") format("woff"),
+    url("https://dqeczc7c9n9n1.cloudfront.net/fonts/Bosch.ttf") format("truetype");
+  }
+  @font-face {
+    font-family: "Nafta";
+    src: url("https://dqeczc7c9n9n1.cloudfront.net/fonts/nafta.eot?") format("embedded-opentype"),
+    url("https://dqeczc7c9n9n1.cloudfront.net/fonts/nafta.woff") format("woff"),
+    url("https://dqeczc7c9n9n1.cloudfront.net/fonts/nafta.ttf") format("truetype");
+  }
+  @font-face {
     font-family: "Thunderstorm";
     src: url("https://dqeczc7c9n9n1.cloudfront.net/fonts/thunderstorm.eot?") format("embedded-opentype"),
     url("https://dqeczc7c9n9n1.cloudfront.net/fonts/thunderstorm.woff") format("woff"),

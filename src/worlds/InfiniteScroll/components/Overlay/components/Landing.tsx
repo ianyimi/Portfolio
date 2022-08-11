@@ -148,12 +148,12 @@ export default function Landing() {
 	const [ enter, setEnter ] = useState( false );
 	const [ vantaEffect, setVantaEffect ] = useState<any>( undefined );
 	const vantaRef = useRef( null );
-	const { playlist, progress, os, toggleEnter, setSection } = useStore( state => ( {
+	const { playlist, progress, os, toggleEnter, setCurrentSection } = useStore( state => ( {
 		playlist: state.playlist,
 		progress: state.progress,
 		os: state.os,
 		toggleEnter: state.toggleEnter,
-		setSection: state.setSection,
+		setCurrentSection: state.setCurrentSection,
 	} ), shallow );
 	const sceneLoaded = progress === 100;
 
@@ -187,7 +187,7 @@ export default function Landing() {
 
 		if ( ! sceneLoaded || enter ) return;
 		setEnter( true );
-		setSection( 0 );
+		setCurrentSection( 0, 3 );
 		toggleEnter();
 
 	}

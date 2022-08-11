@@ -1,13 +1,16 @@
-import { CameraShake } from "@react-three/drei";
-import { useState } from "react";
+import { CameraShake, OrbitControls } from "@react-three/drei";
+import { MutableRefObject, useRef, useState } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { useLimiter } from "spacesvr";
 
 export default function Camera() {
 
-	function Rig() {
+	const controls = useRef( null );
 
+	function Rig( props: { controls?: MutableRefObject<any> } ) {
+
+		const { controls } = props;
 		const [ vec ] = useState( () => new THREE.Vector3() );
 		const { camera, mouse } = useThree();
 		const limiter = useLimiter( 45 );
@@ -25,14 +28,16 @@ export default function Camera() {
 			yawFrequency={0.5}
 			pitchFrequency={0.5}
 			rollFrequency={0.4}
+			// @ts-ignore
+			controls={controls ? controls : undefined}
 		/>;
 
 	}
 
 	return (
 		<group>
-			{/*<OrbitControls/>*/}
-			<Rig/>
+			<OrbitControls ref={controls}/>
+			<Rig controls={controls}/>
 			{/*<PerspectiveCamera*/}
 			{/*	makeDefault*/}
 			{/*	position={position}*/}

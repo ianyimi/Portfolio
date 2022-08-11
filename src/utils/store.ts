@@ -21,7 +21,7 @@ export type StoreState = {
 	sectionDelays: number[],
 	currentSection: number | null,
 	previousSection: number | null,
-	setSection: ( id: number ) => void,
+	setCurrentSection: ( id: number, prevId?: number ) => void,
 	animating: boolean,
 	setAnimationStatus: ( status: boolean ) => void,
 	loaded: string[],
@@ -89,8 +89,8 @@ export const useStore = create<StoreState>()( ( set: any, get: any ) => {
 		sectionDelays: [ 500, 0, 0, 1000 ],
 		currentSection: null,
 		previousSection: null,
-		setSection: ( id: number ) => set( () => ( {
-			previousSection: get().currentSection,
+		setCurrentSection: ( id: number, prevId?: number ) => set( () => ( {
+			previousSection: prevId ? prevId : get().currentSection,
 			currentSection: id
 		} ) ),
 		animating: false,
