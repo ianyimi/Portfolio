@@ -1,10 +1,14 @@
+\![pflp](https://user-images.githubusercontent.com/41877924/184818087-c313f013-09fd-4ece-80d6-b24c37603f94.png)
+
+
 # spacesvr starter package
 
 A starter repository to quickly start building using [spacesvr](https://github.com/spacesvr/spacesvr)
 
 [![Version](https://img.shields.io/npm/v/spacesvr?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/@react-three/drei)
 [![Downloads](https://img.shields.io/npm/dt/spacesvr.svg?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/@react-three/drei)
-[![Discord Shield](https://img.shields.io/discord/610733384804859934?style=flat&colorA=000000&colorB=000000&label=discord&logo=discord&logoColor=ffffff)](https://discord.gg/nFHrmUbaz5)
+[![Discord Shie![Uploading pflp.png…]()
+ld](https://img.shields.io/discord/610733384804859934?style=flat&colorA=000000&colorB=000000&label=discord&logo=discord&logoColor=ffffff)](https://discord.gg/nFHrmUbaz5)
 
 ### \> how to use
 
