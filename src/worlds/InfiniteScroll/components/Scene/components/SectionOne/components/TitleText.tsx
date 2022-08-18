@@ -21,8 +21,8 @@ export default function TitleText( props: GroupProps ) {
 	gsap.to( ".name", {
 		marginBottom: active ? 0 : "25px",
 		opacity: active ? 1 : 0,
-		duration: 2,
-		stagger: 0.15,
+		duration: active ? 2 : 0.5,
+		stagger: active ? 0.15 : 0,
 		delay: active ? 1 : 0,
 	} );
 
@@ -42,20 +42,22 @@ export default function TitleText( props: GroupProps ) {
 			{/*	<boxBufferGeometry args={[ 0.1, 0.1, 0.1 ]}/>*/}
 			{/*	<meshBasicMaterial color="red"/>*/}
 			{/*</mesh>*/}
-			<Html transform scale={0.025} position={[ 0.075, - 0.04, 0 ]}>
-				{/*<h1*/}
-				{/*	id="titleText"*/}
-				{/*	style={{*/}
-				{/*		color: "white",*/}
-				{/*		fontFamily: "Bosch",*/}
-				{/*		marginBottom: "25px",*/}
-				{/*		opacity: 0*/}
-				{/*	}}*/}
-				{/*>*/}
-				<h1 className="name" style={h1Style}>Isaiah </h1>
-				<h1 className="name" style={h1Style}>Anyimi</h1>
-				{/*</h1>*/}
-			</Html>
+			<animated.group>
+				<Html transform scale={0.025} position={[ 0.075, - 0.04, 0 ]}>
+					{/*<h1*/}
+					{/*	id="titleText"*/}
+					{/*	style={{*/}
+					{/*		color: "white",*/}
+					{/*		fontFamily: "Bosch",*/}
+					{/*		marginBottom: "25px",*/}
+					{/*		opacity: 0*/}
+					{/*	}}*/}
+					{/*>*/}
+					<h1 className="name" style={h1Style}>Isaiah </h1>
+					<h1 className="name" style={h1Style}>Anyimi</h1>
+					{/*</h1>*/}
+				</Html>
+			</animated.group>
 			{/*<animated.group position-z={z}>*/}
 			{/*	<Float speed={2} floatIntensity={0.5} floatingRange={[ 0, 0.0005 ]} position={[ camera.position.x, - 0.05, 0 ]}>*/}
 			{/*		<Text3D size={0.025} height={0.0075} font="https://dqeczc7c9n9n1.cloudfront.net/fonts/bitmap.json">*/}

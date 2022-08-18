@@ -13,6 +13,7 @@ export default function SectionOne( props: GroupProps ) {
 			<NavBall index={0} section="About" color="blue" offset={0} maxDelay={maxDelay}/>
 			<NavBall index={1} section="Work" color="red" offset={100} maxDelay={maxDelay}/>
 			<NavBall index={2} section="Contact" color="green" offset={maxDelay} maxDelay={maxDelay}/>
+			{/*<NavBall index={3} section="Home" color="black" offset={maxDelay} maxDelay={maxDelay}/>*/}
 		</group>
 	);
 
