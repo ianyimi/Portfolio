@@ -3,7 +3,6 @@ import { Float, Html, useCursor } from "@react-three/drei";
 import { useEffect, useState } from "react";
 import { animated, useSpring } from "react-spring/three";
 import { useStore } from "utils/store";
-// import Html from "worlds/components/Html";
 import * as easings from "d3-ease";
 
 const POSITIONS = {
@@ -49,7 +48,7 @@ export default function NavBall( props: NavBallProps ) {
 		setAnimationStatus: state.setAnimationStatus,
 	} ) );
 	// 0 - landing page, 1 - section active, 2 - section inactive
-	const [ active, setActive ] = useState( 0 );
+	const [ currentPage, setPage ] = useState( 0 );
 	const [ hovered, setHovered ] = useState( false );
 	useCursor( hovered );
 
@@ -61,7 +60,7 @@ export default function NavBall( props: NavBallProps ) {
 
 			setTimeout( () => {
 
-				setActive( 1 );
+				setPage( 1 );
 				setAnimationStatus( true );
 				setTimeout( () => setAnimationStatus( false ), 2000 );
 
@@ -69,7 +68,7 @@ export default function NavBall( props: NavBallProps ) {
 
 		} else {
 
-			setActive( 2 );
+			setPage( 2 );
 			setAnimationStatus( true );
 			setTimeout( () => setAnimationStatus( false ), 500 + maxDelay - offset );
 
@@ -79,15 +78,15 @@ export default function NavBall( props: NavBallProps ) {
 	}, [ currentSection ] );
 
 	const { s, i, p } = useSpring( {
-		s: enter && active === 1 ? 1 : enter && active === 2 ? 0.4 : 0,
-		i: enter && active === 1 ? 0.5 : enter && active === 2 ? 0.1 : 0,
-		p: enter && active === 2 ? POSITIONS.inactive[ index ] : POSITIONS.active[ index ],
+		s: enter && currentPage === 1 ? 1 : enter && currentPage === 2 ? 0.4 : 0,
+		i: enter && currentPage === 1 ? 0.5 : enter && currentPage === 2 ? 0.1 : 0,
+		p: enter && currentPage === 2 ? POSITIONS.inactive[ index ] : POSITIONS.active[ index ],
 		config: {
-			duration: active === 1 ? 2000 : 500,
+			duration: currentPage === 1 ? 2000 : 500,
 			mass: 1,
 			tension: 180,
 			friction: 12,
-			easing: active === 1 ? easings.easeElastic : easings.easeBackOut,
+			easing: currentPage === 1 ? easings.easeElastic : easings.easeBackOut,
 		}
 	} );
 

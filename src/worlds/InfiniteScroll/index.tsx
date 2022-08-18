@@ -25,7 +25,7 @@ export default function InfinteScroll() {
 			position: position
 		},
 		resize: { polyfill: ResizeObserver },
-		dpr: 1,
+		dpr: window.devicePixelRatio,
 		events: undefined,
 	};
 
