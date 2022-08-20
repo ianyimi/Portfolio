@@ -70,7 +70,7 @@ export default function NavBall( props: NavBallProps ) {
 
 			setPage( 2 );
 			setAnimationStatus( true );
-			setTimeout( () => setAnimationStatus( false ), 500 + maxDelay - offset );
+			setTimeout( () => setAnimationStatus( false ), currentSection === 2 ? 0 : 500 + maxDelay - offset );
 
 		}
 
@@ -91,10 +91,9 @@ export default function NavBall( props: NavBallProps ) {
 	} );
 
 	const sections = [
-		{ name: "Home", id: 0 },
+		{ name: "About", id: 0 },
 		{ name: "Work", id: 1 },
-		{ name: "About", id: 2 },
-		{ name: "Contact", id: 3 },
+		{ name: "Contact", id: 2 },
 	];
 	const changeSection = () => {
 

@@ -3,7 +3,6 @@ import { MutableRefObject, useEffect, useRef, useState } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { useLimiter } from "spacesvr";
-import { Vector2 } from "three";
 
 export default function Camera() {
 
@@ -14,7 +13,7 @@ export default function Camera() {
 		const { controls } = props;
 		const [ vec ] = useState( () => new THREE.Vector3() );
 		const { camera, mouse } = useThree();
-		const limiter = useLimiter( 45 );
+		// const limiter = useLimiter( 45 );
 		// useFrame( ( { clock } ) => {
 		//
 		// 	if ( ! limiter.isReady( clock ) ) return;
@@ -28,8 +27,11 @@ export default function Camera() {
 			function handleMouseMove( event: MouseEvent ) {
 
 				event = event || window.event;
-				const mouse = new Vector2( event.clientX / window.innerWidth, event.clientY / window.innerHeight );
-				camera.position.lerp( vec.set( mouse.x / 75, mouse.y / 75 + 0.1, 0.35 ), 0.05 );
+
+				console.log( "pageX: ", event.pageX,
+					"pageY: ", event.pageY,
+					"clientX: ", event.clientX,
+					"clientY:", event.clientY );
 
 			}
 
