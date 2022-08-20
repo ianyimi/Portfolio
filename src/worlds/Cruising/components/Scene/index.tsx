@@ -1,6 +1,7 @@
 import { Physics } from "@react-three/cannon";
 import { Suspense } from "react";
 import Camera from "./components/Camera";
+import Environment from "./components/Environment";
 import { Selection } from "@react-three/postprocessing";
 import { PostProcessing, Scene } from "../../../InfiniteScroll/components";
 import { Canvas } from "@react-three/fiber";
@@ -22,7 +23,7 @@ export default function Cruising() {
 			near: 0.01,
 			far: 20,
 			fov: 75,
-			position: position
+			// position: position
 		},
 		resize: { polyfill: ResizeObserver },
 		dpr: window.devicePixelRatio,
@@ -35,6 +36,7 @@ export default function Cruising() {
 				{/*<Debug scale={1} color="red">*/}
 				<Suspense fallback={null}>
 					<Camera/>
+					<Environment />
 				</Suspense>
 				{/*</Debug>*/}
 			</Physics>

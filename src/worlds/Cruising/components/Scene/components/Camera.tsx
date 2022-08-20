@@ -1,5 +1,8 @@
 import { CameraShake, OrbitControls } from "@react-three/drei";
-import { MutableRefObject, useEffect, useRef } from "react";
+import { MutableRefObject, useEffect, useRef, useState } from "react";
+import { useThree } from "@react-three/fiber";
+import * as THREE from "three";
+import { Vector2 } from "three";
 
 export default function Camera() {
 
@@ -8,17 +11,16 @@ export default function Camera() {
 	function Rig( props: { controls?: MutableRefObject<any> } ) {
 
 		const { controls } = props;
+		const [ vec ] = useState( () => new THREE.Vector3() );
+		const { camera } = useThree();
 
 		useEffect( () => {
 
 			function handleMouseMove( event: MouseEvent ) {
 
 				event = event || window.event;
-
-				console.log( "pageX: ", event.pageX,
-					"pageY: ", event.pageY,
-					"clientX: ", event.clientX,
-					"clientY:", event.clientY );
+				const mouse = new Vector2( event.clientX / window.innerWidth, event.clientY / window.innerHeight );
+				camera.position.lerp( vec.set( mouse.x / 75 + camera.position.x, mouse.y / 75 + camera.position.y, camera.position.z ), 0.05 );
 
 			}
 
