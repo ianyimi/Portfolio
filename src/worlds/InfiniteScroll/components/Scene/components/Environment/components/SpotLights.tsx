@@ -47,17 +47,25 @@ export default function SpotLights() {
 	useEffect( () => {
 
 		if ( currentSection !== 0 && previousSection !== 0 ) return;
-		setTimeout( () => {
+		if ( currentSection === 2 ) {
 
-			setActive( true );
+			setTimeout( () => {
+
+				setActive( true );
+				setAnimationStatus( true );
+				setTimeout( () => setAnimationStatus( false ), 2000 );
+
+			}, previousSection ? sectionDelays[ previousSection ] : 0 );
+
+		} else {
+
+			setActive( false );
 			setAnimationStatus( true );
 			setTimeout( () => setAnimationStatus( false ), 500 );
 
-		}, previousSection ? sectionDelays[ previousSection ] : 0 );
+		}
 
 	}, [ currentSection ] );
-
-	const ACTIVE = currentSection !== 0;
 
 	const { i } = useSpring( {
 		i: active ? 0.5 : 0,

@@ -86,7 +86,7 @@ export const useStore = create<StoreState>()( ( set: any, get: any ) => {
 		),
 		enter: false,
 		toggleEnter: () => set( () => ( { enter: true } ) ),
-		sectionDelays: [ 500, 0, 0, 1000 ],
+		sectionDelays: [ 500, 0, 0 ],
 		currentSection: null,
 		previousSection: null,
 		setCurrentSection: ( id: number, prevId?: number ) => set( () => ( {

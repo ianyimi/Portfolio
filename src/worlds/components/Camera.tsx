@@ -20,7 +20,7 @@ export default function Camera() {
 
 				event = event || window.event;
 				const mouse = new Vector2( event.clientX / window.innerWidth, event.clientY / window.innerHeight );
-				camera.position.lerp( vec.set( mouse.x / 75 + camera.position.x, mouse.y / 75 + camera.position.y, camera.position.z ), 0.05 );
+				camera.position.lerp( vec.set( mouse.x / 75, mouse.y / 75 + 0.1, 0.35 ), 0.05 );
 
 			}
 
@@ -43,7 +43,7 @@ export default function Camera() {
 
 	return (
 		<group>
-			<OrbitControls ref={controls}/>
+			{/*<OrbitControls ref={controls}/>*/}
 			<Rig controls={controls}/>
 		</group>
 	);
