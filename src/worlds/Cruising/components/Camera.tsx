@@ -48,7 +48,7 @@ export default function Camera() {
 
 	newStoryControls.enable();
 	newStoryControls.goToPOI( 0 );
-	// setControls( newStoryControls );
+	setControls( newStoryControls );
 
 	// setInterval( () => newStoryControls.nextPOI(), 5000 );
 

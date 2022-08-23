@@ -13,8 +13,11 @@ const htmlPositions = [
 export default function Landing() {
 
 	const viewHelpers = false;
-	const { currentSection } = useStore( state => ( {
-		currentSection: state.currentSection
+	const { currentSection, setCurrentSection, enter, storyControls } = useStore( state => ( {
+		currentSection: state.currentSection,
+		setCurrentSection: state.setCurrentSection,
+		enter: state.enter,
+		storyControls: state.storyControls
 	} ) );
 	const active = currentSection === 0;
 
@@ -31,15 +34,61 @@ export default function Landing() {
 		ease: [ 0, 0.71, 0.2, 1.01 ]
 	};
 
-	const titleVariants = {
-		active: { opacity: active ? 1 : 0, y: active ? 0 : "-50px" },
-		inactive: { opacity: 0, y: "-50px" }
+	const titleVariant1 = {
+		active: {
+			opacity: active ? 1 : 0,
+			x: enter ? active ? 0 : "-50px" : 0,
+			y: active ? 0 : "-50px"
+		},
+		inactive: {
+			opacity: 0,
+			// x: enter ? active ? "-50px" :
+			y: "-50px"
+		}
+	};
+
+	const titleVariant2 = {
+		active: {
+			opacity: active ? 1 : 0,
+			x: enter ? active ? 0 : "50px" : 0,
+			y: active ? 0 : "50px"
+		},
+		inactive: { opacity: 0, y: "50px" }
 	};
 
 	const navHover = {
 		scale: 1.2,
 		color: "red"
 	};
+
+	const navElements = [];
+	const navSections = [ "About", "Work", "Contact" ];
+	for ( let i = 0; i < navSections.length; i ++ ) {
+
+		const first = i === 0;
+		const section = navSections[ i ];
+		navElements.push(
+			<motion.h1
+				className={first ? styles.navElement : styles.navElement + " " + styles[ `nav${i + 1}` ]}
+				whileHover={navHover}
+				transition={basicTransition}
+				onClick={() => {
+
+					storyControls.goToPOI( i );
+					if ( currentSection !== i ) {
+
+						setCurrentSection( i );
+
+					}
+
+				}}
+			>
+				{section}
+			</motion.h1>
+
+		);
+
+	}
 
 	return (
 
@@ -54,8 +103,11 @@ export default function Landing() {
 					className={styles.titleName}
 					initial="inactive"
 					animate="active"
-					variants={titleVariants}
-					transition={basicTransition}
+					variants={titleVariant1}
+					transition={{
+						...basicTransition,
+						delay: active ? 0 : 0.15,
+					}}
 				>
 					ISAIAH
 				</motion.h1>
@@ -64,24 +116,22 @@ export default function Landing() {
 					className={styles.titleName}
 					initial="inactive"
 					animate="active"
-					variants={titleVariants}
+					variants={titleVariant2}
 					transition={{
 						...basicTransition,
-						delay: 0.25,
+						delay: active ? 0.25 : 0,
 					}}
 				>
 					ANYIMI
 				</motion.h1>
 			</Html>
+			<Html position={htmlPositions[ 1 ]} center>
+				{navElements}
+			</Html>
 			<mesh position={htmlPositions[ 1 ]}>
 				<boxBufferGeometry args={[ 0.1, 0.1, 0.1 ]} />
 				<meshBasicMaterial color="blue" visible={viewHelpers}/>
 			</mesh>
-			<Html position={htmlPositions[ 1 ]} center>
-				<motion.h4 className={styles.navElement} whileHover={navHover} transition={basicTransition}>About</motion.h4>
-				<motion.h4 className={styles.navElement + " " + styles.navTwo} whileHover={navHover} transition={basicTransition}>Work</motion.h4>
-				<motion.h4 className={styles.navElement + " " + styles.navThree} whileHover={navHover} transition={basicTransition}>Contact</motion.h4>
-			</Html>
 		</group>
 
 	);
