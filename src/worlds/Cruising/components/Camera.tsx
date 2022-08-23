@@ -48,9 +48,9 @@ export default function Camera() {
 
 	newStoryControls.enable();
 	newStoryControls.goToPOI( 0 );
-	setControls( newStoryControls );
+	// setControls( newStoryControls );
 
-	// setInterval( () => newStoryControls.nextPOI(), 5000 );
+	setInterval( () => newStoryControls.nextPOI(), 5000 );
 
 	useFrame( ( { camera, clock } ) => {
 
@@ -66,7 +66,7 @@ export default function Camera() {
 
 	return (
 		<group>
-			{/*<OrbitControls ref={controls}/>*/}
+			{/*<OrbitControls/>*/}
 			<Rig />
 		</group>
 	);

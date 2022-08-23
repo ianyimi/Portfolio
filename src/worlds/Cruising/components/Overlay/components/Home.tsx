@@ -1,8 +1,10 @@
+import styles from "./Home.module.css";
+
 export default function Home() {
 
 	return (
 
-		<div>
+		<div className="">
 			<h1>Isaiah Anyimi</h1>
 			<h4>Work</h4>
 			<h4>About</h4>

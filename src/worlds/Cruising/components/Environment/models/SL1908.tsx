@@ -7,6 +7,7 @@ import React, { useEffect, useRef } from 'react';
 import { useGLTF, useAnimations } from '@react-three/drei';
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
 import { AnimationClip } from "three";
+import { useStore } from "../../../../../utils/store";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -173,9 +174,11 @@ export default function Model( props: JSX.IntrinsicElements['group'] ) {
 	const group = useRef<THREE.Group>( null );
 	const { nodes, materials, animations } = useGLTF( FILE_URL ) as unknown as GLTFResult;
 	const { actions } = useAnimations<AnimationClip>( animations, group );
+	const setCurrentSection = useStore( state => state.setCurrentSection );
 
 	useEffect( () => {
 
+		if ( ! actions ) return;
 		for ( const action of Object.values( actions ) ) {
 
 			if ( ! action ) continue;
@@ -183,6 +186,8 @@ export default function Model( props: JSX.IntrinsicElements['group'] ) {
 			// action.play();
 
 		}
+
+		setCurrentSection( 0 );
 
 	}, [ actions ] );
 

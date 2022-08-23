@@ -3,6 +3,7 @@ import { Physics } from "@react-three/cannon";
 import { Suspense } from "react";
 import Camera from "./components/Camera";
 import Environment from "./components/Environment";
+import Content from "./components/Content";
 import { Canvas } from "@react-three/fiber";
 import { Euler, Vector3 } from "three";
 import { Props as ContainerProps } from "@react-three/fiber/dist/declarations/src/web/Canvas";
@@ -40,6 +41,7 @@ export default function Cruising() {
 					<Suspense fallback={null}>
 						<Camera/>
 						<Environment />
+						<Content />
 					</Suspense>
 					{/*</Debug>*/}
 				</Physics>

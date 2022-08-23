@@ -1,0 +1,12 @@
+.titleName {
+  font-size: 7em;
+  font-family: Bosch;
+  line-height: 20px;
+}
+
+.navElement {
+  font-size: 3em;
+  font-family: Nafta;
+  margin-top: 25px;
+  cursor: pointer;
+}
