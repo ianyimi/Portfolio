@@ -37,6 +37,7 @@
     "spacesvr": "^2.0.5",
     "three": "0.142.0",
     "three-custom-shader-material": "3.3.6",
+    "three-story-controls": "^1.0.6",
     "uuid": "8.3.2",
     "vanta": "^0.5.22",
     "zustand": "4.0.0-rc.1"
