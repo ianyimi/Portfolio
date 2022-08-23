@@ -50,7 +50,7 @@ export default function Camera() {
 	newStoryControls.goToPOI( 0 );
 	// setControls( newStoryControls );
 
-	setInterval( () => newStoryControls.nextPOI(), 5000 );
+	// setInterval( () => newStoryControls.nextPOI(), 5000 );
 
 	useFrame( ( { camera, clock } ) => {
 
