@@ -1,8 +1,11 @@
+import Home from "./components/Home";
+import styles from "./index.module.css";
+
 export default function Overlay() {
 
 	return (
-		<div>
-
+		<div className={styles.overlay}>
+			<Home />
 		</div>
 	);
 

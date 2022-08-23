@@ -1,0 +1,10 @@
+.mainDiv {
+  z-index: 3;
+  background-color: rgba(0, 0, 0, 0);
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  top: 0;
+  left: 0;
+}

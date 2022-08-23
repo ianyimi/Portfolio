@@ -16,7 +16,7 @@ export default function Bridges() {
 
 		for ( const bridge of [ bridgeOne.current, bridgeTwo.current ] ) {
 
-			bridge.position.x -= 0.3;
+			bridge.position.x -= 0.5;
 			if ( bridge.position.x <= - 150 ) bridge.position.x = 150;
 
 		}
