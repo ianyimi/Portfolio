@@ -6,7 +6,7 @@ import { Vector3 } from "three";
 import { motion } from "framer-motion";
 
 const htmlPositions = [
-	new Vector3( 1.5, 1.35, 0 ),
+	new Vector3( 1.5, 1.5, 0 ),
 	new Vector3( 2.75, 0.35, - 0.25 )
 ];
 
@@ -18,17 +18,27 @@ export default function Landing() {
 	} ) );
 	const active = currentSection === 0;
 
-	gsap.to( ".titleName", {
-		opacity: active ? 1 : 0,
-		y: active ? 0 : "-50px",
-		duration: 1000,
-		delay: 1000,
-		stagger: active ? 0.1 : - 0.1,
-	} );
+	// gsap.to( ".titleName", {
+	// 	opacity: active ? 1 : 0,
+	// 	y: active ? 0 : "-50px",
+	// 	duration: 1000,
+	// 	delay: 1000,
+	// 	stagger: active ? 0.1 : - 0.1,
+	// } );
+
+	const basicTransition = {
+		duration: 1,
+		ease: [ 0, 0.71, 0.2, 1.01 ]
+	};
 
 	const titleVariants = {
 		active: { opacity: active ? 1 : 0, y: active ? 0 : "-50px" },
 		inactive: { opacity: 0, y: "-50px" }
+	};
+
+	const navHover = {
+		scale: 1.2,
+		color: "red"
 	};
 
 	return (
@@ -39,41 +49,38 @@ export default function Landing() {
 				<meshBasicMaterial color="blue" visible={viewHelpers}/>
 			</mesh>
 			<Html position={htmlPositions[ 0 ]} center>
-				<motion.h1 className={styles.titleName}>Isaiah</motion.h1>
-				{/*<motion.h1*/}
-				{/*	className={styles.titleName}*/}
-				{/*	initial="inactive"*/}
-				{/*	animate="animate"*/}
-				{/*	variants={titleVariants}*/}
-				{/*	transition={{*/}
-				{/*		duration: 1,*/}
-				{/*		ease: [ 0, 0.71, 0.2, 1.01 ]*/}
-				{/*	}}*/}
-				{/*>*/}
-				{/*	Isaiah*/}
-				{/*</motion.h1>*/}
-				<motion.h1 className={styles.titleName}>Anyimi</motion.h1>
-				{/*<motion.h1*/}
-				{/*	className={styles.titleName}*/}
-				{/*	initial="inactive"*/}
-				{/*	animate="animate"*/}
-				{/*	variants={titleVariants}*/}
-				{/*	transition={{*/}
-				{/*		duration: 1,*/}
-				{/*		ease: [ 0, 0.71, 0.2, 1.01 ]*/}
-				{/*	}}*/}
-				{/*>*/}
-				{/*	Anyimi*/}
-				{/*</motion.h1>*/}
+				{/*<motion.h1 className={styles.titleName}>Isaiah</motion.h1>*/}
+				<motion.h1
+					className={styles.titleName}
+					initial="inactive"
+					animate="active"
+					variants={titleVariants}
+					transition={basicTransition}
+				>
+					ISAIAH
+				</motion.h1>
+				{/*<motion.h1 className={styles.titleName}>Anyimi</motion.h1>*/}
+				<motion.h1
+					className={styles.titleName}
+					initial="inactive"
+					animate="active"
+					variants={titleVariants}
+					transition={{
+						...basicTransition,
+						delay: 0.25,
+					}}
+				>
+					ANYIMI
+				</motion.h1>
 			</Html>
 			<mesh position={htmlPositions[ 1 ]}>
 				<boxBufferGeometry args={[ 0.1, 0.1, 0.1 ]} />
 				<meshBasicMaterial color="blue" visible={viewHelpers}/>
 			</mesh>
 			<Html position={htmlPositions[ 1 ]} center>
-				<motion.h4 className={styles.navElement}>About</motion.h4>
-				<motion.h4 className={styles.navElement}>Work</motion.h4>
-				<motion.h4 className={styles.navElement}>Contact</motion.h4>
+				<motion.h4 className={styles.navElement} whileHover={navHover} transition={basicTransition}>About</motion.h4>
+				<motion.h4 className={styles.navElement + " " + styles.navTwo} whileHover={navHover} transition={basicTransition}>Work</motion.h4>
+				<motion.h4 className={styles.navElement + " " + styles.navThree} whileHover={navHover} transition={basicTransition}>Contact</motion.h4>
 			</Html>
 		</group>
 

@@ -1,7 +1,7 @@
 .titleName {
   font-size: 7em;
   font-family: Bosch;
-  line-height: 20px;
+  line-height: 30px;
 }
 
 .navElement {
@@ -9,4 +9,12 @@
   font-family: Nafta;
   margin-top: 25px;
   cursor: pointer;
+}
+
+.navTwo {
+  margin-left: 25px;
+}
+
+.navThree {
+  margin-left: 50px;
 }
