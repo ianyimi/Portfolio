@@ -21,9 +21,9 @@ export type StoreState = {
 	storyControls: any,
 	setControls: ( controls: any ) => void,
 	sectionDelays: number[],
-	currentSection: number | null,
-	previousSection: number | null,
-	setCurrentSection: ( id: number, prevId?: number ) => void,
+	currentSection: { name: string, poi: number, delay: number } | null,
+	previousSection: { name: string, poi: number, delay: number } | null,
+	setCurrentSection: ( section: { name: string, poi: number, delay: number } | null, prevId?: number ) => void,
 	animating: boolean,
 	setAnimationStatus: ( status: boolean ) => void,
 	loaded: string[],
@@ -91,11 +91,11 @@ export const useStore = create<StoreState>()( ( set: any, get: any ) => {
 		storyControls: undefined,
 		setControls: ( controls: any ) => set( () => ( { storyControls: controls } ) ),
 		sectionDelays: [ 500, 0, 0 ],
-		currentSection: null,
+		currentSection: { name: "About", poi: 0, delay: 1000 },
 		previousSection: null,
-		setCurrentSection: ( id: number, prevId?: number ) => set( () => ( {
+		setCurrentSection: ( section: { name: string, poi: number, delay: number } | null, prevId?: number ) => set( () => ( {
 			previousSection: prevId ? prevId : get().currentSection,
-			currentSection: id
+			currentSection: section
 		} ) ),
 		animating: false,
 		setAnimationStatus: ( status: boolean ) => set( () => ( { animating: status } ) ),

@@ -4,6 +4,8 @@ import { gsap } from "gsap";
 import { useStore } from "utils/store";
 import { Vector3 } from "three";
 import { motion } from "framer-motion";
+import { useFrame } from "@react-three/fiber";
+import { useState } from "react";
 
 const htmlPositions = [
 	new Vector3( 1.5, 1.5, 0 ),
@@ -13,21 +15,16 @@ const htmlPositions = [
 export default function Landing() {
 
 	const viewHelpers = false;
-	const { currentSection, setCurrentSection, enter, storyControls } = useStore( state => ( {
+	const { currentSection, setCurrentSection, enter, storyControls, animating } = useStore( state => ( {
 		currentSection: state.currentSection,
 		setCurrentSection: state.setCurrentSection,
 		enter: state.enter,
-		storyControls: state.storyControls
+		storyControls: state.storyControls,
+		animating: state.animating,
 	} ) );
-	const active = currentSection === 0;
+	const active = currentSection && currentSection.poi === 0;
 
-	// gsap.to( ".titleName", {
-	// 	opacity: active ? 1 : 0,
-	// 	y: active ? 0 : "-50px",
-	// 	duration: 1000,
-	// 	delay: 1000,
-	// 	stagger: active ? 0.1 : - 0.1,
-	// } );
+	// useFrame( () => console.log( ! storyControls.cameraRig.inTransit ) );
 
 	const basicTransition = {
 		duration: 1,
@@ -36,33 +33,46 @@ export default function Landing() {
 
 	const titleVariant1 = {
 		active: {
-			opacity: active ? 1 : 0,
-			x: enter ? active ? 0 : "-50px" : 0,
-			y: active ? 0 : "-50px"
+			opacity: active && ! animating ? 1 : 0,
+			x: active && ! animating ? 0 : "-50px",
+			// y: active ? 0 : "-50px",
+			// visibility: active ? "visible" : "hidden"
 		},
 		inactive: {
 			opacity: 0,
-			// x: enter ? active ? "-50px" :
-			y: "-50px"
+			x: "-50px"
+			// y: "-50px"
 		}
 	};
 
 	const titleVariant2 = {
 		active: {
-			opacity: active ? 1 : 0,
-			x: enter ? active ? 0 : "50px" : 0,
-			y: active ? 0 : "50px"
+			opacity: active && ! animating ? 1 : 0,
+			x: active && ! animating ? 0 : "50px",
+			// y: active ? 0 : "50px",
+			// visibility: active ? "visible" : "hidden"
 		},
-		inactive: { opacity: 0, y: "50px" }
+		inactive: {
+			opacity: 0,
+			x: "50px",
+			// y: "50px"
+		}
 	};
 
 	const navHover = {
 		scale: 1.2,
-		color: "red"
+		color: "rgba(255, 0, 0, 1)"
 	};
 
 	const navElements = [];
-	const navSections = [ "About", "Work", "Contact" ];
+	const navSections = [
+		{ name: "About", poi: 0, delay: 1000 },
+		{ name: "Work", poi: 1, delay: 0 },
+		{ name: "Contact", poi: 2, delay: 0 },
+	];
+
+	console.log( animating );
+
 	for ( let i = 0; i < navSections.length; i ++ ) {
 
 		const first = i === 0;
@@ -74,16 +84,17 @@ export default function Landing() {
 				transition={basicTransition}
 				onClick={() => {
 
-					storyControls.goToPOI( i );
-					if ( currentSection !== i ) {
+					if ( currentSection?.name !== section.name ) {
 
-						setCurrentSection( i );
+						setCurrentSection( section );
+						setTimeout( () => storyControls.goToPOI( section.poi ), currentSection?.delay );
 
 					}
 
 				}}
+				key={i}
 			>
-				{section}
+				{section.name}
 			</motion.h1>
 
 		);

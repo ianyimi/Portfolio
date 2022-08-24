@@ -7,6 +7,7 @@ import { Quaternion, Vector2, Vector3 } from "three";
 import { CameraRig, StoryPointsControls } from "three-story-controls";
 import { useStore } from "utils/store";
 import shallow from "zustand/shallow";
+import { useLimiter } from "spacesvr";
 
 const CAMERA_ANGLES = [
 	{
@@ -36,25 +37,65 @@ export default function Camera() {
 	const position = new Vector3();
 	const quaternion = new Quaternion();
 
-	const midTransition = useRef( false );
 	const { camera, scene } = useThree();
-	const { setControls } = useStore( state => ( {
-		setControls: state.setControls
+	const { setControls, animating, setAnimationStatus } = useStore( state => ( {
+		setControls: state.setControls,
+		animating: state.animating,
+		setAnimationStatus: state.setAnimationStatus,
 	} ), shallow );
 
 	const logPosition = false;
 	const cameraRig = new CameraRig( camera, scene );
 	const newStoryControls = new StoryPointsControls( cameraRig, CAMERA_ANGLES, { cycle: true } );
+	useEffect( () => {
+
+		const move = ( start: boolean ) => {
+
+			setAnimationStatus( start );
+
+		};
+
+		cameraRig.addEventListener( "CameraMoveStart", () => move( true ) );
+		cameraRig.addEventListener( "CameraMoveEnd", () => move( false ) );
+
+		return () => {
+
+			cameraRig.removeEventListener( "CameraMoveStart", () => move( true ) );
+			cameraRig.removeEventListener( "CameraMoveEnd", () => move( false ) );
+
+		};
+
+	}, [] );
+
+
+	// useEffect( () => {
 
 	newStoryControls.enable();
 	newStoryControls.goToPOI( 0 );
 	setControls( newStoryControls );
 
+	// }, [] );
+
 	// setInterval( () => newStoryControls.nextPOI(), 5000 );
 
+	const limiter = useLimiter( 45 );
 	useFrame( ( { camera, clock } ) => {
 
-		if ( midTransition.current ) newStoryControls.update( clock.getElapsedTime() );
+		if ( ! limiter.isReady( clock ) ) return;
+		// newStoryControls.update( clock.getElapsedTime() );
+
+		// console.log( cameraRig.isInTransit );
+		// if ( cameraRig.isInTransit ) {
+		//
+		// 	if ( ! animating ) setAnimationStatus( true );
+		// 	// newStoryControls.update( clock.getElapsedTime() );
+		//
+		// } else if ( animating ) {
+		//
+		// 	setAnimationStatus( false );
+		//
+		// }
+
 
 		if ( ! logPosition ) return;
 		camera.getWorldPosition( position );
