@@ -15,8 +15,8 @@ export default function Environment() {
 			<Suspense fallback={null}>
 				<SL1908 />
 				<Bridges />
-				<Lights />
-				{/*<spotLight position={[ 3, 3, 0 ]} intensity={1} castShadow />*/}
+				{/*<Lights />*/}
+				<spotLight position={[ 3, 3, 0 ]} intensity={1} castShadow />
 				{/*<HDRI src="https://dqeczc7c9n9n1.cloudfront.net/images/hdri.hdr" disableBackground/>*/}
 				<Sky sunPosition={[ 0, 1, 0 ]} />
 			</Suspense>

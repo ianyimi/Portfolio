@@ -129,7 +129,7 @@ export default function Landing() {
 						delay: active ? 0 : 0.15,
 					}}
 				>
-					{/*ISAIAH*/}
+					ISAIAH
 				</motion.h1>
 				{/*<motion.h1 className={styles.titleName}>Anyimi</motion.h1>*/}
 				<motion.h1
@@ -142,11 +142,11 @@ export default function Landing() {
 						delay: active ? 0.25 : 0,
 					}}
 				>
-					{/*ANYIMI*/}
+					ANYIMI
 				</motion.h1>
 			</Html>
 			<Html position={htmlPositions[ 1 ]} center>
-				{/*{navElements}*/}
+				{navElements}
 			</Html>
 			<mesh position={htmlPositions[ 1 ]}>
 				<boxBufferGeometry args={[ 0.1, 0.1, 0.1 ]} />

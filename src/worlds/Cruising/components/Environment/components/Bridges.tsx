@@ -24,7 +24,7 @@ export default function Bridges() {
 		for ( const bridge of [ bridgeOne.current, bridgeTwo.current ] ) {
 
 			bridge.position.x -= speed;
-			if ( bridge.position.x <= 0 - tunnelRespawn / 2.5 ) bridge.position.x = 3 * tunnelRespawn / 2;
+			if ( bridge.position.x <= 0 - bridgeRespawn / 2.5 ) bridge.position.x = 3 * bridgeRespawn / 2;
 
 		}
 
@@ -33,10 +33,10 @@ export default function Bridges() {
 	return (
 
 		<group>
-			<Tunnel3 ref={bridgeOne} />
-			<Tunnel3 position-x={tunnelRespawn} ref={bridgeTwo} />
-			{/*<Bridge ref={bridgeOne} />*/}
-			{/*<Bridge position-x={bridgeRespawn} ref={bridgeTwo} />*/}
+			{/*<Tunnel3 ref={bridgeOne} />*/}
+			{/*<Tunnel3 position-x={tunnelRespawn} ref={bridgeTwo} />*/}
+			<Bridge ref={bridgeOne} />
+			<Bridge position-x={bridgeRespawn} ref={bridgeTwo} />
 		</group>
 
 	);

@@ -45,31 +45,31 @@ export default function Camera() {
 	} ), shallow );
 
 	const logPosition = false;
-	// const cameraRig = new CameraRig( camera, scene );
-	// const newStoryControls = new StoryPointsControls( cameraRig, CAMERA_ANGLES, { cycle: true } );
-	// useEffect( () => {
-	//
-	// 	const move = ( start: boolean ) => {
-	//
-	// 		setAnimationStatus( start );
-	//
-	// 	};
-	//
-	// 	cameraRig.addEventListener( "CameraMoveStart", () => move( true ) );
-	// 	cameraRig.addEventListener( "CameraMoveEnd", () => move( false ) );
-	//
-	// 	return () => {
-	//
-	// 		cameraRig.removeEventListener( "CameraMoveStart", () => move( true ) );
-	// 		cameraRig.removeEventListener( "CameraMoveEnd", () => move( false ) );
-	//
-	// 	};
-	//
-	// }, [] );
+	const cameraRig = new CameraRig( camera, scene );
+	const newStoryControls = new StoryPointsControls( cameraRig, CAMERA_ANGLES, { cycle: true } );
+	useEffect( () => {
 
-	// newStoryControls.enable();
-	// newStoryControls.goToPOI( 0 );
-	// setControls( newStoryControls );
+		const move = ( start: boolean ) => {
+
+			setAnimationStatus( start );
+
+		};
+
+		cameraRig.addEventListener( "CameraMoveStart", () => move( true ) );
+		cameraRig.addEventListener( "CameraMoveEnd", () => move( false ) );
+
+		return () => {
+
+			cameraRig.removeEventListener( "CameraMoveStart", () => move( true ) );
+			cameraRig.removeEventListener( "CameraMoveEnd", () => move( false ) );
+
+		};
+
+	}, [] );
+
+	newStoryControls.enable();
+	newStoryControls.goToPOI( 0 );
+	setControls( newStoryControls );
 
 
 	// setInterval( () => newStoryControls.nextPOI(), 5000 );
@@ -103,8 +103,8 @@ export default function Camera() {
 
 	return (
 		<group>
-			<OrbitControls/>
-			{/*<Rig />*/}
+			{/*<OrbitControls/>*/}
+			<Rig />
 		</group>
 	);
 
