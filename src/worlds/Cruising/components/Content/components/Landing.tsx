@@ -27,7 +27,7 @@ export default function Landing() {
 	// useFrame( () => console.log( ! storyControls.cameraRig.inTransit ) );
 
 	const basicTransition = {
-		duration: 1,
+		duration: active ? 1 : 0.5,
 		ease: [ 0, 0.71, 0.2, 1.01 ]
 	};
 
@@ -63,6 +63,9 @@ export default function Landing() {
 		scale: 1.2,
 		color: "rgba(255, 0, 0, 1)"
 	};
+	const navTap = {
+		scale: 0.9
+	};
 
 	const navElements = [];
 	const navSections = [
@@ -77,14 +80,20 @@ export default function Landing() {
 
 		const first = i === 0;
 		const section = navSections[ i ];
+		const thisButton = currentSection?.name === section.name;
 		navElements.push(
-			<motion.h1
+			<motion.h4
 				className={first ? styles.navElement : styles.navElement + " " + styles[ `nav${i + 1}` ]}
 				whileHover={navHover}
-				transition={basicTransition}
+				whileTap={thisButton ? {} : navTap}
+				transition={{
+					type: "spring",
+					stiffness: 400,
+					damping: 17
+				}}
 				onClick={() => {
 
-					if ( currentSection?.name !== section.name ) {
+					if ( ! thisButton ) {
 
 						setCurrentSection( section );
 						setTimeout( () => storyControls.goToPOI( section.poi ), currentSection?.delay );
@@ -95,7 +104,7 @@ export default function Landing() {
 				key={i}
 			>
 				{section.name}
-			</motion.h1>
+			</motion.h4>
 
 		);
 
@@ -120,7 +129,7 @@ export default function Landing() {
 						delay: active ? 0 : 0.15,
 					}}
 				>
-					ISAIAH
+					{/*ISAIAH*/}
 				</motion.h1>
 				{/*<motion.h1 className={styles.titleName}>Anyimi</motion.h1>*/}
 				<motion.h1
@@ -133,11 +142,11 @@ export default function Landing() {
 						delay: active ? 0.25 : 0,
 					}}
 				>
-					ANYIMI
+					{/*ANYIMI*/}
 				</motion.h1>
 			</Html>
 			<Html position={htmlPositions[ 1 ]} center>
-				{navElements}
+				{/*{navElements}*/}
 			</Html>
 			<mesh position={htmlPositions[ 1 ]}>
 				<boxBufferGeometry args={[ 0.1, 0.1, 0.1 ]} />
