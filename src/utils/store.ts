@@ -2,6 +2,7 @@ import { AudioAnalyser, Vector3 } from "three";
 import { Playlist, playlists } from "../worlds/Vaporwave/utils/constants";
 import create from "zustand";
 import produce from "immer";
+import { addEffect } from "@react-three/fiber";
 
 export type StoreState = {
 	os: string | undefined,
@@ -89,9 +90,27 @@ export const useStore = create<StoreState>()( ( set: any, get: any ) => {
 		enter: false,
 		toggleEnter: () => set( () => ( { enter: true } ) ),
 		storyControls: undefined,
-		setControls: ( controls: any ) => set( () => ( { storyControls: controls } ) ),
+		setControls: ( controls: any ) => {
+
+			set( () => ( { storyControls: controls } ) );
+			// addEffect( () => {
+			//
+			// 	console.log( get().storyControls );
+			// 	if ( get().previousSection && get().storyControls.cameraRig.isMoving() ) {
+			//
+			// 		if ( ! get().animating ) set( () => ( { animating: true } ) );
+			//
+			// 	} else if ( get().animating ) {
+			//
+			// 		set( () => ( { animating: false } ) );
+			//
+			// 	}
+			//
+			// } );
+
+		},
 		sectionDelays: [ 500, 0, 0 ],
-		currentSection: { name: "About", poi: 0, delay: 1000 },
+		currentSection: { name: "Home", poi: 0, delay: 1000 },
 		previousSection: null,
 		setCurrentSection: ( section: { name: string, poi: number, delay: number } | null, prevId?: number ) => set( () => ( {
 			previousSection: prevId ? prevId : get().currentSection,

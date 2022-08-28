@@ -1,28 +1,25 @@
 import { Html } from "@react-three/drei";
 import styles from "./Landing.module.css";
-import { gsap } from "gsap";
 import { useStore } from "utils/store";
 import { Vector3 } from "three";
-import { motion } from "framer-motion";
-import { useFrame } from "@react-three/fiber";
-import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useRef, useState } from "react";
 
 const htmlPositions = [
 	new Vector3( 1.5, 1.5, 0 ),
 	new Vector3( 2.75, 0.35, - 0.25 )
 ];
 
-export default function Landing() {
+export default function Landing( props: {viewHelpers?: boolean} ) {
 
-	const viewHelpers = false;
-	const { currentSection, setCurrentSection, enter, storyControls, animating } = useStore( state => ( {
+	const { viewHelpers = false } = props;
+	const firstName = useRef( null );
+	const lastName = useRef( null );
+	const { currentSection, animating } = useStore( state => ( {
 		currentSection: state.currentSection,
-		setCurrentSection: state.setCurrentSection,
-		enter: state.enter,
-		storyControls: state.storyControls,
 		animating: state.animating,
 	} ) );
-	const active = currentSection && currentSection.poi === 0;
+	const active = currentSection && currentSection.name === "Home";
 
 	// useFrame( () => console.log( ! storyControls.cameraRig.inTransit ) );
 
@@ -36,7 +33,7 @@ export default function Landing() {
 			opacity: active && ! animating ? 1 : 0,
 			x: active && ! animating ? 0 : "-50px",
 			// y: active ? 0 : "-50px",
-			// visibility: active ? "visible" : "hidden"
+			// visibility: active ? "hidden" : "hidden"
 		},
 		inactive: {
 			opacity: 0,
@@ -59,101 +56,46 @@ export default function Landing() {
 		}
 	};
 
-	const navHover = {
-		scale: 1.2,
-		color: "rgba(255, 0, 0, 1)"
-	};
-	const navTap = {
-		scale: 0.9
-	};
-
-	const navElements = [];
-	const navSections = [
-		{ name: "About", poi: 0, delay: 1000 },
-		{ name: "Work", poi: 1, delay: 0 },
-		{ name: "Contact", poi: 2, delay: 0 },
-	];
-
-	console.log( animating );
-
-	for ( let i = 0; i < navSections.length; i ++ ) {
-
-		const first = i === 0;
-		const section = navSections[ i ];
-		const thisButton = currentSection?.name === section.name;
-		navElements.push(
-			<motion.h4
-				className={first ? styles.navElement : styles.navElement + " " + styles[ `nav${i + 1}` ]}
-				whileHover={navHover}
-				whileTap={thisButton ? {} : navTap}
-				transition={{
-					type: "spring",
-					stiffness: 400,
-					damping: 17
-				}}
-				onClick={() => {
-
-					if ( ! thisButton ) {
-
-						setCurrentSection( section );
-						setTimeout( () => storyControls.goToPOI( section.poi ), currentSection?.delay );
-
-					}
-
-				}}
-				key={i}
-			>
-				{section.name}
-			</motion.h4>
-
-		);
-
-	}
-
 	return (
-
 		<group >
 			<mesh position={htmlPositions[ 0 ]}>
 				<boxBufferGeometry args={[ 0.1, 0.1, 0.1 ]} />
 				<meshBasicMaterial color="blue" visible={viewHelpers}/>
 			</mesh>
 			<Html position={htmlPositions[ 0 ]} center>
-				{/*<motion.h1 className={styles.titleName}>Isaiah</motion.h1>*/}
-				<motion.h1
-					className={styles.titleName}
-					initial="inactive"
-					animate="active"
-					variants={titleVariant1}
-					transition={{
-						...basicTransition,
-						delay: active ? 0 : 0.15,
-					}}
-				>
-					ISAIAH
-				</motion.h1>
-				{/*<motion.h1 className={styles.titleName}>Anyimi</motion.h1>*/}
-				<motion.h1
-					className={styles.titleName}
-					initial="inactive"
-					animate="active"
-					variants={titleVariant2}
-					transition={{
-						...basicTransition,
-						delay: active ? 0.25 : 0,
-					}}
-				>
-					ANYIMI
-				</motion.h1>
+				<AnimatePresence>
+					{/*<motion.h1 className={styles.titleName}>Isaiah</motion.h1>*/}
+					<motion.h1
+						ref={firstName}
+						className={styles.titleName}
+						initial="inactive"
+						animate="active"
+						exit="inactive"
+						variants={titleVariant1}
+						transition={{
+							...basicTransition,
+							delay: active ? 0 : 0.15,
+						}}
+					>
+						ISAIAH
+					</motion.h1>
+					{/*<motion.h1 className={styles.titleName}>Anyimi</motion.h1>*/}
+					<motion.h1
+						ref={lastName}
+						className={styles.titleName}
+						initial="inactive"
+						animate="active"
+						variants={titleVariant2}
+						transition={{
+							...basicTransition,
+							delay: active ? 0.25 : 0,
+						}}
+					>
+						ANYIMI
+					</motion.h1>
+				</AnimatePresence>
 			</Html>
-			<Html position={htmlPositions[ 1 ]} center>
-				{navElements}
-			</Html>
-			<mesh position={htmlPositions[ 1 ]}>
-				<boxBufferGeometry args={[ 0.1, 0.1, 0.1 ]} />
-				<meshBasicMaterial color="blue" visible={viewHelpers}/>
-			</mesh>
 		</group>
-
 	);
 
 }

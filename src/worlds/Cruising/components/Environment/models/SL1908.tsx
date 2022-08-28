@@ -187,7 +187,7 @@ export default function Model( props: JSX.IntrinsicElements['group'] ) {
 
 		}
 
-		setCurrentSection( { name: "About", poi: 0, delay: 1000 } );
+		// setCurrentSection( { name: "Home", poi: 0, delay: 1000 } );
 
 	}, [ actions ] );
 

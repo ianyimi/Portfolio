@@ -15,21 +15,33 @@ const CAMERA_ANGLES = [
 		quaternion: new Quaternion( - 0.08214, 0.21672, 0.01830, 0.9725 )
 	},
 	{
-		position: new Vector3( 5.733, 1.222, 1.387 ),
-		quaternion: new Quaternion( - 0.056, 0.748, 0.063, 0.657 )
+		position: new Vector3( 1.02, 1.408, - 1.069 ),
+		quaternion: new Quaternion( 0, 0.996, 0.08, - 0.001 )
 	},
 	{
-		position: new Vector3( 1.86, 1.076, - 2.618 ),
-		quaternion: new Quaternion( - 0.001, 0.999, 0.006, 0.026 )
+		position: new Vector3( - 0.023, 1.374, - 0.252 ),
+		quaternion: new Quaternion( - 0.076, - 0.767, - 0.092, 0.631 )
 	},
 	{
-		position: new Vector3( - 1.44, 1.07, - 0.209 ),
-		quaternion: new Quaternion( - 0.018, - 0.759, - 0.021, 0.65 )
-	},
-	{
-		position: new Vector3( - 0.862, 1.794, 1.698 ),
-		quaternion: new Quaternion( - 0.324, - 0.451, - 0.18, 0.812 )
+		position: new Vector3( 5.302, 0.715, 0.724 ),
+		quaternion: new Quaternion( 0.007, 0.692, - 0.008, 0.721 )
 	}
+	// {
+	// 	position: new Vector3( 5.733, 1.222, 1.387 ),
+	// 	quaternion: new Quaternion( - 0.056, 0.748, 0.063, 0.657 )
+	// },
+	// {
+	// 	position: new Vector3( 1.86, 1.076, - 2.618 ),
+	// 	quaternion: new Quaternion( - 0.001, 0.999, 0.006, 0.026 )
+	// },
+	// {
+	// 	position: new Vector3( - 1.44, 1.07, - 0.209 ),
+	// 	quaternion: new Quaternion( - 0.018, - 0.759, - 0.021, 0.65 )
+	// },
+	// {
+	// 	position: new Vector3( - 0.862, 1.794, 1.698 ),
+	// 	quaternion: new Quaternion( - 0.324, - 0.451, - 0.18, 0.812 )
+	// }
 ];
 
 export default function Camera() {
@@ -38,60 +50,36 @@ export default function Camera() {
 	const quaternion = new Quaternion();
 
 	const { camera, scene } = useThree();
-	const { setControls, animating, setAnimationStatus } = useStore( state => ( {
+	const { setControls, previousSection, animating, setAnimationStatus } = useStore( state => ( {
 		setControls: state.setControls,
+		previousSection: state.previousSection,
 		animating: state.animating,
 		setAnimationStatus: state.setAnimationStatus,
 	} ), shallow );
 
-	const logPosition = false;
-	const cameraRig = new CameraRig( camera, scene );
-	const newStoryControls = new StoryPointsControls( cameraRig, CAMERA_ANGLES, { cycle: true } );
+	const animate = () => setAnimationStatus( true );
+	const stopAnimation = () => setAnimationStatus( false );
+
 	useEffect( () => {
 
-		const move = ( start: boolean ) => {
-
-			setAnimationStatus( start );
-
-		};
-
-		cameraRig.addEventListener( "CameraMoveStart", () => move( true ) );
-		cameraRig.addEventListener( "CameraMoveEnd", () => move( false ) );
-
-		return () => {
-
-			cameraRig.removeEventListener( "CameraMoveStart", () => move( true ) );
-			cameraRig.removeEventListener( "CameraMoveEnd", () => move( false ) );
-
-		};
+		const cameraRig = new CameraRig( camera, scene );
+		const newStoryControls = new StoryPointsControls( cameraRig, CAMERA_ANGLES, { cycle: true } );
+		newStoryControls.onCameraStart = animate;
+		newStoryControls.onCameraEnd = stopAnimation;
+		newStoryControls.enable();
+		newStoryControls.goToPOI( 0 );
+		setControls( newStoryControls );
 
 	}, [] );
-
-	newStoryControls.enable();
-	newStoryControls.goToPOI( 0 );
-	setControls( newStoryControls );
 
 
 	// setInterval( () => newStoryControls.nextPOI(), 5000 );
 
+	const logPosition = false;
 	const limiter = useLimiter( 45 );
 	useFrame( ( { camera, clock } ) => {
 
 		if ( ! limiter.isReady( clock ) ) return;
-		// newStoryControls.update( clock.getElapsedTime() );
-
-		// console.log( cameraRig.isInTransit );
-		// if ( cameraRig.isInTransit ) {
-		//
-		// 	if ( ! animating ) setAnimationStatus( true );
-		// 	// newStoryControls.update( clock.getElapsedTime() );
-		//
-		// } else if ( animating ) {
-		//
-		// 	setAnimationStatus( false );
-		//
-		// }
-
 
 		if ( ! logPosition ) return;
 		camera.getWorldPosition( position );

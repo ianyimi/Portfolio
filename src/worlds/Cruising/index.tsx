@@ -5,13 +5,13 @@ import Camera from "./components/Camera";
 import Environment from "./components/Environment";
 import Content from "./components/Content";
 import { Canvas } from "@react-three/fiber";
-import { Euler, Vector3 } from "three";
+import { Quaternion, Vector3 } from "three";
 import { Props as ContainerProps } from "@react-three/fiber/dist/declarations/src/web/Canvas";
 
 export default function Cruising() {
 
-	const position = new Vector3( 2.372463967836559, 1.1387610629294629, 2.1044855554561877 ),
-		rotation = new Euler( - 0.11835010535654007, 0.5072966601500595, 0.05770222371833232 );
+	const position = new Vector3( 2.504, 1.0920, 2.2795 ),
+		quaternion = new Quaternion( - 0.08214, 0.21672, 0.01830, 0.9725 );
 	const defaultCanvasProps: Partial<ContainerProps> = {
 		gl: {
 			powerPreference: "high-performance",
@@ -25,7 +25,7 @@ export default function Cruising() {
 			far: 200,
 			fov: 75,
 			position: position,
-			rotation: rotation,
+			quaternion: quaternion,
 		},
 		resize: { polyfill: ResizeObserver },
 		dpr: window.devicePixelRatio,

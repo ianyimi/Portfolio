@@ -1,11 +1,14 @@
-import { Html } from "@react-three/drei";
 import Landing from "./components/Landing";
+import Nav from "./components/Nav";
 
 export default function Content() {
 
+	const viewHelpers = true;
+
 	return (
 		<group>
-			<Landing />
+			<Nav viewHelpers={viewHelpers} />
+			<Landing viewHelpers={viewHelpers} />
 		</group>
 	);
 

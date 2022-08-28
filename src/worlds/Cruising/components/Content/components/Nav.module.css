@@ -1,0 +1,14 @@
+.navElement {
+  font-size: 3em;
+  font-family: Nafta;
+  margin-top: 25px;
+  cursor: pointer;
+}
+
+.nav2 {
+  margin-left: 25px;
+}
+
+.nav3 {
+  margin-left: 50px;
+}
