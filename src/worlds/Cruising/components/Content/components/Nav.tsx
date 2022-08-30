@@ -4,7 +4,7 @@ import styles from "./Nav.module.css";
 import { Html } from "@react-three/drei";
 import { Vector3 } from "three";
 import { useStore } from "utils/store";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
 type Section = {
 	name: string,
@@ -65,6 +65,7 @@ export default function Nav( props: { viewHelpers?: boolean } ) {
 				const h4 = document.getElementsByClassName( styles[ `nav${i}` ] )[ 0 ];
 				const section = navSections[ i ];
 
+				if ( ! h4 ) return;
 				if ( currentSection && currentSection.name === section.name ) {
 
 					h4.innerHTML = "Home";
@@ -115,7 +116,6 @@ export default function Nav( props: { viewHelpers?: boolean } ) {
 			>
 				{section.name}
 			</motion.h4>
-
 		);
 
 	}
@@ -138,7 +138,7 @@ export default function Nav( props: { viewHelpers?: boolean } ) {
 					{navElements}
 				</Html>
 				<mesh>
-					<boxBufferGeometry args={[ 0.1, 0.1, 0.1 ]} />
+					<boxBufferGeometry args={[ 0.1, 0.1, 0.1 ]}/>
 					<meshBasicMaterial color="blue" visible={viewHelpers}/>
 				</mesh>
 			</Motion.group>
