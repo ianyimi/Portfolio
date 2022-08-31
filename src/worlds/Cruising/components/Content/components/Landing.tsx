@@ -2,7 +2,8 @@ import { Html } from "@react-three/drei";
 import styles from "./Landing.module.css";
 import { useStore } from "utils/store";
 import { Vector3 } from "three";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
+import { motion as Motion } from "framer-motion-3d";
 import { useRef, useState } from "react";
 
 const htmlPositions = [
@@ -15,8 +16,9 @@ export default function Landing( props: {viewHelpers?: boolean} ) {
 	const { viewHelpers = false } = props;
 	const firstName = useRef( null );
 	const lastName = useRef( null );
-	const { currentSection, animating } = useStore( state => ( {
+	const { currentSection, previousSection, animating } = useStore( state => ( {
 		currentSection: state.currentSection,
+		previousSection: state.previousSection,
 		animating: state.animating,
 	} ) );
 	const active = currentSection && currentSection.name === "Home";
@@ -56,14 +58,20 @@ export default function Landing( props: {viewHelpers?: boolean} ) {
 		}
 	};
 
+	const landingGroupAnimate = {
+		x: 1.5,
+		y: ! active && ! animating ? 5 : 1.5,
+		z: 0
+	};
+
 	return (
-		<group >
-			<mesh position={htmlPositions[ 0 ]}>
-				<boxBufferGeometry args={[ 0.1, 0.1, 0.1 ]} />
-				<meshBasicMaterial color="blue" visible={viewHelpers}/>
-			</mesh>
-			<Html position={htmlPositions[ 0 ]} center>
-				<AnimatePresence>
+		<group>
+			<Motion.group animate={landingGroupAnimate}>
+				<mesh>
+					<boxBufferGeometry args={[ 0.1, 0.1, 0.1 ]} />
+					<meshBasicMaterial color="blue" visible={viewHelpers}/>
+				</mesh>
+				<Html center>
 					{/*<motion.h1 className={styles.titleName}>Isaiah</motion.h1>*/}
 					<motion.h1
 						ref={firstName}
@@ -93,8 +101,8 @@ export default function Landing( props: {viewHelpers?: boolean} ) {
 					>
 						ANYIMI
 					</motion.h1>
-				</AnimatePresence>
-			</Html>
+				</Html>
+			</Motion.group>
 		</group>
 	);
 

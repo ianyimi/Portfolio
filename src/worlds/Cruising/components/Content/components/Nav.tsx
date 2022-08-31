@@ -5,6 +5,7 @@ import { Html } from "@react-three/drei";
 import { Vector3 } from "three";
 import { useStore } from "utils/store";
 import { useEffect, useMemo, useRef } from "react";
+import { Properties } from "csstype";
 
 type Section = {
 	name: string,
@@ -29,8 +30,8 @@ export default function Nav( props: { viewHelpers?: boolean } ) {
 	const htmlPositions: Record<string, Vector3> = {
 		Home: new Vector3( 2.75, 0.35, - 0.25 ),
 		About: new Vector3( 1.5, 1.5, 0 ),
-		Work: new Vector3( 2.75, 0.35, - 0.25 ),
-		Contact: new Vector3( 2.75, 0.35, - 0.25 )
+		Work: new Vector3( 1, 1.75, 0 ),
+		Contact: new Vector3( 3.5, 0.1, 0.6 )
 	};
 
 
@@ -68,6 +69,7 @@ export default function Nav( props: { viewHelpers?: boolean } ) {
 				if ( ! h4 ) return;
 				if ( currentSection && currentSection.name === section.name ) {
 
+					console.log( `true: ${section.name}` );
 					h4.innerHTML = "Home";
 
 				} else if ( h4.innerHTML === "Home" ) {
@@ -84,16 +86,18 @@ export default function Nav( props: { viewHelpers?: boolean } ) {
 
 	for ( let i = 1; i < navSections.length; i ++ ) {
 
-		const first = i === 0;
 		const section = navSections[ i ],
 			homeSection = navSections[ 0 ];
 		const thisButton = currentSection?.name === section.name;
 		navElements.push(
 			<motion.h4
-				className={first ? styles.navElement : styles.navElement + " " + styles[ `nav${i}` ]}
+				className={styles.navElement + " " + styles[ `nav${i}` ]}
 				whileHover={navHover}
 				whileTap={navTap}
-				animate={navAnimate}
+				animate={{
+					...navAnimate,
+					x: `${25 * ( i - 1 )}px`
+				}}
 				transition={{
 					type: "spring",
 					stiffness: 400,
@@ -131,11 +135,26 @@ export default function Nav( props: { viewHelpers?: boolean } ) {
 
 	}, [ activePosition.current ] );
 
+	const inlineNav = ( horizontal?: boolean ) => ( {
+
+		display: "flex",
+		flexDirection: horizontal ? "row" : "column",
+		// h4: {
+		// 	margin: horizontal ? "0 25px 0 25px" : 0
+		// }
+
+	} );
+
+	const horizontalNav = activePosition.current === "Work" ||
+		activePosition.current === "Contact";
+
 	return (
 		<group>
 			<Motion.group animate={navGroupAnimate}>
 				<Html center>
-					{navElements}
+					<div style={inlineNav( horizontalNav ) as Properties<string | number, string & {}>}>
+						{navElements}
+					</div>
 				</Html>
 				<mesh>
 					<boxBufferGeometry args={[ 0.1, 0.1, 0.1 ]}/>

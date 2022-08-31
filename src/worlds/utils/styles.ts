@@ -41,6 +41,7 @@ export const globalStyles = css`
     height: 100vh;
     margin: 0;
     padding: 0;
+	  font-display: optional;
   }
 
   body {
