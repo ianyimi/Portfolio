@@ -6,8 +6,6 @@ module.exports = {
 		"eslint:recommended",
 		"plugin:@typescript-eslint/eslint-recommended",
 		"plugin:@typescript-eslint/recommended",
-		"plugin:react/recommended",
-		"plugin:react-hooks/recommended",
 		"prettier/@typescript-eslint",
 		"next/core-web-vitals",
 		"mdcs",
@@ -17,6 +15,7 @@ module.exports = {
 		// sometimes required for workarounds, perhaps change both of these to warn in the future
 		"@typescript-eslint/no-explicit-any": "off",
 		"@typescript-eslint/no-non-null-assertion": "off",
+		"@typescript-eslint/explicit-module-boundary-types": "off",
 		// type inference is generally good enough
 		"@typescript-eslint/explicit-function-return-type": "off",
 		// issue with eslint-plugin-react https://github.com/yannickcr/eslint-plugin-react/issues/2353

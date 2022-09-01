@@ -149,7 +149,7 @@ export default function Nav( props: { viewHelpers?: boolean } ) {
 		<group>
 			<Motion.group animate={navGroupAnimate}>
 				<Html center>
-					<div style={inlineNav( horizontalNav ) as Properties<string | number, string & {}>}>
+					<div style={inlineNav( horizontalNav ) as Properties<string | number, string & Record<string, unknown>>}>
 						{navElements}
 					</div>
 				</Html>

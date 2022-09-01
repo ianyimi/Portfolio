@@ -27,12 +27,11 @@ export default function Projects( props: {viewHelpers?: boolean} ) {
 	} );
 
 	return (
-		<group position={[0.25, 1, 1.35]}>
+		<group position={[ 0.25, 1, 1.35 ]}>
 			{/*<Scroll html>*/}
 			<Html center>
 				{projects}
 			</Html>
-			
 			{/*</Scroll>*/}
 			<mesh>
 				<boxBufferGeometry args={[ 0.1, 0.1, 0.1 ]}/>

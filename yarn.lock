@@ -3099,7 +3099,7 @@ peerjs-js-binarypack@1.0.1:
   resolved "https://registry.yarnpkg.com/peerjs-js-binarypack/-/peerjs-js-binarypack-1.0.1.tgz#80fa2b61c794a6b16d64253700405e476ada29be"
   integrity sha512-N6aeia3NhdpV7kiGxJV5xQiZZCVEEVjRz2T2C6UZQiBkHWHzUv/oWA4myQLcwBwO8LUoR1KWW5oStvwVesmfCg==
 
-peerjs@1.4.6, peerjs@^1.4.6:
+peerjs@^1.4.6:
   version "1.4.6"
   resolved "https://registry.yarnpkg.com/peerjs/-/peerjs-1.4.6.tgz#781f335f4043fcd686dc19acd3341db0570f7e72"
   integrity sha512-0XA105/9yBFGxfpyCjlI1bcBiyPmXHs8+UDvO2j1WGnY+FXilMn35+P/3t8HzKnUnR1SX0PRkDSk8kM17ciNxA==
@@ -3526,10 +3526,10 @@ source-map@^0.6.0, source-map@~0.6.1:
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.6.1.tgz#74722af32e9614e9c287a8d0bbde48b5e2f1a263"
   integrity sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==
 
-spacesvr@^2.0.5:
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/spacesvr/-/spacesvr-2.0.5.tgz#66dc60b1458f79a468eb45f1ac91d4fa507d2104"
-  integrity sha512-quNZLYZ94sPVHk/Gg+x53Stg9Zh4KzuR1sKPr8nXdG6LrA4qHNnG7QW2g9PosFWHuXGCH6gvTyrWBj1HArl99Q==
+spacesvr@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/spacesvr/-/spacesvr-2.2.1.tgz#87bb5745d6630318f5cac41e23b0575a829dd022"
+  integrity sha512-P4JYDpJP/RZAKn50wUkzWoh54lUUwzECW8sVWDGTxw0VbqaEB2+QhDarC8NAlUcrQPMYGWWqEWDW89g9E0bi7Q==
   dependencies:
     "@emotion/react" "^11.4.0"
     "@emotion/styled" "^11.3.0"
