@@ -9,6 +9,7 @@ module.exports = {
 		"plugin:react/recommended",
 		"plugin:react-hooks/recommended",
 		"prettier/@typescript-eslint",
+		"next/core-web-vitals",
 		"mdcs",
 	],
 	ignorePatterns: [ "/public/draco-gltf/*.js" ],

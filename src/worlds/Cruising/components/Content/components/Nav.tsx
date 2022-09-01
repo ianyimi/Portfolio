@@ -29,8 +29,8 @@ export default function Nav( props: { viewHelpers?: boolean } ) {
 
 	const htmlPositions: Record<string, Vector3> = {
 		Home: new Vector3( 2.75, 0.35, - 0.25 ),
-		About: new Vector3( 1.5, 1.5, 0 ),
-		Work: new Vector3( 1, 1.75, 0 ),
+		About: new Vector3( 0.9, 1.9, 0 ),
+		Work: new Vector3( 0.25, 1.35, 0 ),
 		Contact: new Vector3( 3.5, 0.1, 0.6 )
 	};
 
@@ -69,7 +69,6 @@ export default function Nav( props: { viewHelpers?: boolean } ) {
 				if ( ! h4 ) return;
 				if ( currentSection && currentSection.name === section.name ) {
 
-					console.log( `true: ${section.name}` );
 					h4.innerHTML = "Home";
 
 				} else if ( h4.innerHTML === "Home" ) {
@@ -145,9 +144,7 @@ export default function Nav( props: { viewHelpers?: boolean } ) {
 
 	} );
 
-	const horizontalNav = activePosition.current === "Work" ||
-		activePosition.current === "Contact";
-
+	const horizontalNav = activePosition.current !== "Home";
 	return (
 		<group>
 			<Motion.group animate={navGroupAnimate}>

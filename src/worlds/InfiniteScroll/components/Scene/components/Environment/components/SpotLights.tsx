@@ -46,8 +46,8 @@ export default function SpotLights() {
 
 	useEffect( () => {
 
-		if ( currentSection !== 0 && previousSection !== 0 ) return;
-		if ( currentSection === 2 ) {
+		if ( currentSection?.poi !== 0 && previousSection?.poi !== 0 ) return;
+		if ( currentSection?.poi === 2 ) {
 
 			setTimeout( () => {
 
@@ -55,7 +55,7 @@ export default function SpotLights() {
 				setAnimationStatus( true );
 				setTimeout( () => setAnimationStatus( false ), 2000 );
 
-			}, previousSection ? sectionDelays[ previousSection ] : 0 );
+			}, previousSection ? previousSection.delay : 0 );
 
 		} else {
 

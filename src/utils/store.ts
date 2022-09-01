@@ -91,23 +91,7 @@ export const useStore = create<StoreState>()( ( set: any, get: any ) => {
 		toggleEnter: () => set( () => ( { enter: true } ) ),
 		storyControls: undefined,
 		setControls: ( controls: any ) => {
-
 			set( () => ( { storyControls: controls } ) );
-			// addEffect( () => {
-			//
-			// 	console.log( get().storyControls );
-			// 	if ( get().previousSection && get().storyControls.cameraRig.isMoving() ) {
-			//
-			// 		if ( ! get().animating ) set( () => ( { animating: true } ) );
-			//
-			// 	} else if ( get().animating ) {
-			//
-			// 		set( () => ( { animating: false } ) );
-			//
-			// 	}
-			//
-			// } );
-
 		},
 		sectionDelays: [ 500, 0, 0 ],
 		currentSection: { name: "Home", poi: 0, delay: 1000 },

@@ -37,12 +37,16 @@ export const globalStyles = css`
   canvas,
   html,
   body {
-    widht: 100vw;
+    width: 100vw;
     height: 100vh;
     margin: 0;
     padding: 0;
 	  font-display: optional;
   }
+	
+	.stopScrolling {
+	
+	}
 
   body {
     line-height: 1;

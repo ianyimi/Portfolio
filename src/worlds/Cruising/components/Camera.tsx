@@ -19,9 +19,13 @@ const CAMERA_ANGLES = [
 		quaternion: new Quaternion( 0, 0.996, 0.08, - 0.001 )
 	},
 	{
-		position: new Vector3( - 0.023, 1.374, - 0.252 ),
-		quaternion: new Quaternion( - 0.076, - 0.767, - 0.092, 0.631 )
+		position: new Vector3( - 0.862, 1.794, 1.698 ),
+		quaternion: new Quaternion( - 0.324, - 0.451, - 0.18, 0.812 )
 	},
+	// {
+	// 	position: new Vector3( - 0.023, 1.374, - 0.252 ),
+	// 	quaternion: new Quaternion( - 0.076, - 0.767, - 0.092, 0.631 )
+	// },
 	{
 		position: new Vector3( 5.302, 0.715, 0.724 ),
 		quaternion: new Quaternion( 0.007, 0.692, - 0.008, 0.721 )
@@ -38,10 +42,6 @@ const CAMERA_ANGLES = [
 	// 	position: new Vector3( - 1.44, 1.07, - 0.209 ),
 	// 	quaternion: new Quaternion( - 0.018, - 0.759, - 0.021, 0.65 )
 	// },
-	// {
-	// 	position: new Vector3( - 0.862, 1.794, 1.698 ),
-	// 	quaternion: new Quaternion( - 0.324, - 0.451, - 0.18, 0.812 )
-	// }
 ];
 
 export default function Camera() {
@@ -73,8 +73,6 @@ export default function Camera() {
 	}, [] );
 
 
-	// setInterval( () => newStoryControls.nextPOI(), 5000 );
-
 	const logPosition = false;
 	const limiter = useLimiter( 45 );
 	useFrame( ( { camera, clock } ) => {
@@ -98,6 +96,7 @@ export default function Camera() {
 
 }
 
+// Camera Parallax copied from R3F CameraShake component
 function Rig() {
 
 	const [ vec ] = useState( () => new THREE.Vector3() );

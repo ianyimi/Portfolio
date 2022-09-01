@@ -187,7 +187,7 @@ export default function Landing() {
 
 		if ( ! sceneLoaded || enter ) return;
 		setEnter( true );
-		setCurrentSection( 0, 3 );
+		setCurrentSection({ name: "Home", poi: 0, delay: 1000 }, 3 );
 		toggleEnter();
 
 	}
