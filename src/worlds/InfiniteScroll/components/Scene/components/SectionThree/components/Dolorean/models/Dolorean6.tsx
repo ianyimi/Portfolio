@@ -83,7 +83,7 @@ export default function Model( props: JSX.IntrinsicElements['group'] ) {
 	const data = useScroll();
 
 	const currentSection = useStore( state => state.currentSection );
-	const ACTIVE = currentSection === 2;
+	const ACTIVE = currentSection?.poi === 2;
 
 	const enter = ( action: THREE.AnimationAction | null ) => {
 
