@@ -24,6 +24,7 @@ const Page = (props) => {
 // It will receive same props as Page component (from getStaticProps, etc.)
 Page.r3f = (props) => (
   <>
+    {/* @ts-ignore */}
     <Scene/>
   </>
 )

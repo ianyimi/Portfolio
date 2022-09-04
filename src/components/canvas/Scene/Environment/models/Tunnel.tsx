@@ -28,6 +28,7 @@ type GLTFResult = GLTF & {
 
 const FILE_URL = "https://dqeczc7c9n9n1.cloudfront.net/models/tunnel3-1661394284/tunnel3.glb.gz";
 
+// eslint-disable-next-line react/display-name
 const Model = React.forwardRef((props: JSX.IntrinsicElements['group'], ref: ForwardedRef<THREE.Group | undefined>) => {
   
   // const group = useRef<THREE.Group>( null );
