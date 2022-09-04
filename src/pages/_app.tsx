@@ -1,23 +1,31 @@
-import { AppProps } from "next/app";
-import { Global } from "@emotion/react";
-import { globalStyles } from "../worlds/utils/styles";
-import Head from "next/head";
+import { useRouter } from 'next/router'
+import { setState } from '@/helpers/store'
+import { useEffect } from 'react'
+import Header from '@/config'
+import Dom from '@/components/layout/dom'
+import '@/styles/index.css'
+import dynamic from 'next/dynamic'
 
-export default function App( { Component, pageProps }: AppProps ) {
+const LCanvas = dynamic(() => import('@/components/layout/canvas'), {
+  ssr: true,
+})
 
-	return (
-		<>
-			<Head>
-				<title>Isaiah Anyimi</title>
-				<meta name="viewport" content="width=device-width, initial-scale=1"/>
-				{/*<script src="/[YOUR_DIRECTORY]/DrawSVGPlugin.min.js"/>*/}
-				{/*<script src="/[YOUR_DIRECTORY]/MorphSVGPlugin.min.js"/>*/}
-			</Head>
-			<Global styles={globalStyles}/>
-			<Component {...pageProps} />
-		</>
-	);
+function App({ Component, pageProps = { title: 'index' } }) {
+  const router = useRouter()
 
+  useEffect(() => {
+    setState({ router })
+  }, [router])
+
+  return (
+    <>
+      <Header title={pageProps.title} />
+      <Dom>
+        <Component {...pageProps} />
+      </Dom>
+      {Component?.r3f && <LCanvas>{Component.r3f(pageProps)}</LCanvas>}
+    </>
+  )
 }
 
-
+export default App

@@ -1,115 +1,128 @@
-// var webpack = require( 'webpack' );
-var CompressionPlugin = require( 'compression' );
-var DuplicatePackageCheckerPlugin = require( "duplicate-package-checker-webpack-plugin" );
-var StatsWriterPlugin = require( "webpack-stats-plugin" ).StatsWriterPlugin;
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
+const withPWA = require('next-pwa')
+const runtimeCaching = require('next-pwa/cache')
+// const duplicatePackageCheckerPlugin = require("duplicate-package-checker-webpack-plugin")
 
+const dpcPluginConfig = {
+  // Also show module that is requiring each duplicate package (default: false)
+  verbose: true,
+  // Emit errors instead of warnings (default: false)
+  emitError: true,
+  // Show help message if duplicate packages are found (default: true)
+  showHelp: false,
+  // Warn also if major versions differ (default: true)
+  strict: false,
+  /**
+   * Exclude instances of packages from the results.
+   * If all instances of a package are excluded, or all instances except one,
+   * then the package is no longer considered duplicated and won't be emitted as a warning/error.
+   * @param {Object} instance
+   * @param {string} instance.name The name of the package
+   * @param {string} instance.version The version of the package
+   * @param {string} instance.path Absolute path to the package
+   * @param {?string} instance.issuer Absolute path to the module that requested the package
+   * @returns {boolean} true to exclude the instance, false otherwise
+   */
+  exclude(instance) {
+    return instance.name === "fbjs";
+  }
+}
 
-const dpcpConfig = {
-	// Also show module that is requiring each duplicate package (default: false)
-	verbose: true,
-	// Emit errors instead of warnings (default: false)
-	emitError: false,
-	// Show help message if duplicate packages are found (default: true)
-	showHelp: true,
-	// Warn also if major versions differ (default: true)
-	strict: true,
-	/**
-	 * Exclude instances of packages from the results.
-	 * If all instances of a package are excluded, or all instances except one,
-	 * then the package is no longer considered duplicated and won't be emitted as a warning/error.
-	 * @param {Object} instance
-	 * @param {string} instance.name The name of the package
-	 * @param {string} instance.version The version of the package
-	 * @param {string} instance.path Absolute path to the package
-	 * @param {?string} instance.issuer Absolute path to the module that requested the package
-	 * @returns {boolean} true to exclude the instance, false otherwise
-	 */
-	exclude( instance ) {
+const nextConfig = {
+  webpack(config, { isServer }) {
+    // audio support
+    config.module.rules.push({
+      test: /\.(ogg|mp3|wav|mpe?g)$/i,
+      exclude: config.exclude,
+      use: [
+        {
+          loader: require.resolve('url-loader'),
+          options: {
+            limit: config.inlineImageLimit,
+            fallback: require.resolve('file-loader'),
+            publicPath: `${config.assetPrefix}/_next/static/images/`,
+            outputPath: `${isServer ? '../' : ''}static/images/`,
+            name: '[name]-[hash].[ext]',
+            esModule: config.esModule || false,
+          },
+        },
+      ],
+    })
 
-		return instance.name === "fbjs";
+    // shader support
+    config.module.rules.push({
+      test: /\.(glsl|vs|fs|vert|frag)$/,
+      exclude: /node_modules/,
+      use: ['raw-loader', 'glslify-loader'],
+    })
 
-	}
-};
+    return config
+  },
+}
 
-// keep this so that it uses webpack 4 instead of 5
-module.exports = {
-	// mode: "production",
-	// plugins: [
-	// 	new StatsWriterPlugin( {
-	// 		filename: './stats.json',
-	// 		stats: {
-	// 			assets: true,
-	// 			chunks: true,
-	// 			modules: true
-	// 		}
-	// 	} ),
-	// 	new DuplicatePackageCheckerPlugin( dpcpConfig ),
-		// new webpack.optimize.DedupePlugin(),
-		// new webpack.optimize.UglifyJsPlugin(),
-		// new CompressionPlugin( {
-		// 	asset: "[path].gz[query]",
-		// 	algorithm: "gzip",
-		// 	test: /\.js$|\.css$|\.html$/,
-		// 	threshold: 10240,
-		// 	minRatio: 0.8
-		// } )
-	// ],
-	webpack: ( config, options ) => {
+// manage i18n
+if (process.env.EXPORT !== 'true') {
+  nextConfig.i18n = {
+    locales: ['en-US'],
+    defaultLocale: 'en-US',
+  }
+}
 
-		const { dev, isServer } = options;
+const KEYS_TO_OMIT = [
+  'webpackDevMiddleware',
+  'configOrigin',
+  'target',
+  'analyticsId',
+  'webpack5',
+  'amp',
+  'assetPrefix',
+  'basePath',
+  'generateEtags',
+  'i18n',
+  'pwa',
+  'experimental',
+]
 
-		// console.log("===============")
+module.exports = (_phase, { defaultConfig }) => {
+  const plugins = [
+    [
+      withPWA,
+      {
+        pwa: {
+          dest: 'public',
+          disable: process.env.NODE_ENV === 'development',
+          runtimeCaching,
+        },
+      },
+    ],
+    // [new duplicatePackageCheckerPlugin(dpcPluginConfig), {}],
+    [withBundleAnalyzer, {}],
+  ]
 
-		// config.experimental = {
-		// 	...config.experimental,
-		// 	forceSwcTransforms: true
-		// }
-		config.optimization = {
-			...config.optimization,
-			emitOnErrors: true,
-			splitChunks: {
-				chunks: 'async',
-				minSize: 20000,
-				minRemainingSize: 0,
-				minChunks: 1,
-				maxAsyncRequests: 30,
-				maxInitialRequests: 30,
-				enforceSizeThreshold: 50000,
-				cacheGroups: {
-					defaultVendors: {
-						test: /[\\/]node_modules[\\/]/,
-						priority: -10,
-						reuseExistingChunk: true,
-					},
-					default: {
-						minChunks: 2,
-						priority: -20,
-						reuseExistingChunk: true,
-					},
-				},
-			},
-		}
-		// config.resolve.alias = {
-		// 	...config.resolve.alias,
-		// 	"@babel/runtime": "node_modules/next/dist/compiled/@babel/runtime",
-		// 	"@emotion/weak-memoize": "node_modules/@emotion/weak-memoize/src",
-		// 	"react-is": "node_modules/next/dist/compiled/react-is"
-		// };
-		// config.mode = dev ? "development" : "production";
-		// config.plugins.push(new DuplicatePackageCheckerPlugin( dpcpConfig ));
-		// config.plugins.push(
-		// 	new StatsWriterPlugin( {
-		// 		filename: 'stats.json',
-		// 		stats: {
-		// 			assets: true,
-		// 			chunks: true,
-		// 			modules: true
-		// 		}
-		// 	} )
-		// );
-		//
-		// console.log(config)
-		return config;
+  // console.log(plugins)
+  // console.log("\n=======\n")
 
-	},
-};
+  const wConfig = plugins.reduce(
+    (acc, [plugin, config]) => plugin({ ...acc, ...config }),
+    {
+      ...defaultConfig,
+      ...nextConfig,
+    }
+  )
+
+  // console.log(wConfig)
+  // console.log("\n=======\n")
+
+  const finalConfig = {}
+  Object.keys(wConfig).forEach((key) => {
+    if (!KEYS_TO_OMIT.includes(key)) {
+      finalConfig[key] = wConfig[key]
+    }
+  })
+
+  // console.log(finalConfig)
+
+  return finalConfig
+}
