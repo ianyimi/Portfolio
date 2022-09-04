@@ -32,7 +32,7 @@ const FILE_URL = "https://dqeczc7c9n9n1.cloudfront.net/models/bridge-1661142497/
 const Model = React.forwardRef((props: JSX.IntrinsicElements['group'], ref: ForwardedRef<THREE.Group | undefined>) => {
   
   // const group = useRef<THREE.Group>( null );
-  const {nodes, materials} = -useGLTF(FILE_URL) as unknown as GLTFResult;
+  const {nodes, materials} = useGLTF(FILE_URL) as unknown as GLTFResult;
   
   return (
     <group ref={ref as Ref<THREE.Group>} position={[0, -1.185, -0.65]} {...props} dispose={null}>

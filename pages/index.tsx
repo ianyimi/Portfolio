@@ -15,7 +15,7 @@ const Scene = dynamic(() => import('@/components/canvas/Scene'), {
 const Page = (props) => {
   return (
     <>
-      <Instructions/>
+      {/*<Instructions/>*/}
     </>
   )
 }
