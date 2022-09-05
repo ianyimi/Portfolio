@@ -1,8 +1,7 @@
-import {CameraShake, OrbitControls} from "@react-three/drei";
-import {MutableRefObject, useEffect, useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useFrame, useThree} from "@react-three/fiber";
 import * as THREE from "three";
-import {Quaternion, Vector2, Vector3, Object3D} from "three";
+import {Quaternion, Vector2, Vector3} from "three";
 // @ts-ignore
 import {CameraRig, StoryPointsControls} from "three-story-controls";
 import {useStore} from "utils/store";
@@ -45,10 +44,10 @@ const CAMERA_ANGLES = [
 ];
 
 export default function Camera() {
-  
+
   const position = new Vector3();
   const quaternion = new Quaternion();
-  
+
   const {camera, scene} = useThree();
   const {setControls, previousSection, animating, setAnimationStatus} = useStore(state => ({
     setControls: state.setControls,
@@ -56,12 +55,12 @@ export default function Camera() {
     animating: state.animating,
     setAnimationStatus: state.setAnimationStatus,
   }), shallow);
-  
+
   const animate = () => setAnimationStatus(true);
   const stopAnimation = () => setAnimationStatus(false);
-  
+
   useEffect(() => {
-    
+
     const cameraRig = new CameraRig(camera, scene);
     const newStoryControls = new StoryPointsControls(cameraRig, CAMERA_ANGLES, {cycle: true});
     newStoryControls.onCameraStart = animate;
@@ -69,88 +68,107 @@ export default function Camera() {
     newStoryControls.enable();
     newStoryControls.goToPOI(0);
     setControls(newStoryControls);
-    
+
   }, []);
-  
-  
+
+
   const logPosition = false;
   const limiter = useLimiter(45);
   useFrame(({camera, clock}) => {
-    
+
     if (!limiter.isReady(clock)) return;
-    
+
     if (!logPosition) return;
     camera.getWorldPosition(position);
     camera.getWorldQuaternion(quaternion);
     console.log("CamPos: " + floorArray(position.toArray()));
     console.log("CamQuat: " + floorArray(quaternion.toArray()));
-    
+
   });
-  
+
   return (
     <group>
       {/*<OrbitControls/>*/}
       <Rig/>
     </group>
   );
-  
+
 }
 
 // Camera Parallax copied from R3F CameraShake component
 function Rig() {
-  
+
   const [posVec] = useState(() => new THREE.Vector3());
   const [quatPosVec] = useState(() => new THREE.Vector3());
+  const [targetPosVec] = useState(() => new THREE.Vector3());
   const {scene, camera} = useThree();
-  
+  const dummy = useRef(null);
+  const dummy2 = useRef(null);
+
+  const targetRaycaster = new THREE.Raycaster();
+  targetRaycaster.setFromCamera(new Vector2(), camera);
+  targetRaycaster.ray.at(5, targetPosVec);
+  if (dummy2.current) dummy2.current.position.set(targetPosVec.x, targetPosVec.y, targetPosVec.z);
+
   useEffect(() => {
-    
+
     const mouse = new Vector2();
     const newQuaternion = new THREE.Quaternion();
     const raycaster = new THREE.Raycaster();
-    const dummyObj = new Object3D();
-    scene.add(dummyObj);
-    
-    // const initRot = useRef(camera.quaternion.clone());
-    
+
     function handleMouseMove(event: MouseEvent) {
-      
+
+      if (!dummy.current) return;
       // @ts-ignore
       event = event || window.event;
       mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
       mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-      
+
       raycaster.setFromCamera(mouse, camera);
-      raycaster.ray.at(0.1, quatPosVec);
-      
-      dummyObj.position.set(quatPosVec)
-      dummyObj.lookAt(0, 0, 0);
-      dummyObj.getWorldQuaternion(newQuaternion);
-      console.log(quatPosVec)
+      raycaster.ray.at(0.5, quatPosVec);
+
+
+      dummy.current.position.set(quatPosVec.x, quatPosVec.y, quatPosVec.z)
+      dummy.current.lookAt(targetPosVec);
+      // dummy.current.getWorldQuaternion(newQuaternion);
+      // newQuaternion.copy(dummy.current.quaternion);
+      console.log(newQuaternion);
+      // camera.quaternion.slerp(targetPosVec, 0.05);
+      // camera.quaternion.copy(newQuaternion);
+
       // console.log(mouse.x)
-      camera.position.lerp(posVec.set(mouse.x / 7, mouse.y / 7, 0), 0.05);
-      // camera.quaternion.slerp(newQuaternion, 0.05);
+      // camera.position.lerp(posVec.set(mouse.x / 7, mouse.y / 7, 0), 0.05);
+
       // camera.rotation.x = -mouse.y / 10;
       // camera.rotation.y = mouse.x / 10;
-      
+
     }
-    
+
     document.addEventListener('mousemove', handleMouseMove);
-    
+
     return () => {
-      
+
       document.removeEventListener("mousemove", handleMouseMove);
-      
+
     };
-    
+
   }, []);
-  
-  return <></>;
-  
+
+  return <group>
+    <mesh ref={dummy} visible={true}>
+      <boxBufferGeometry args={[0.1, 0.1, 0.1]}/>
+      <meshBasicMaterial color="blue"/>
+    </mesh>
+    <mesh ref={dummy2} visible={true}>
+      <boxBufferGeometry args={[1, 1, 1]}/>
+      <meshBasicMaterial color="green"/>
+    </mesh>
+  </group>;
+
 }
 
 function floorArray(array: number[]) {
-  
+
   return array.map(num => Math.floor(num * 1000) / 1000);
-  
+
 }
