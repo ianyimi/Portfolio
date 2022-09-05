@@ -3,19 +3,19 @@ import {OrbitControls, Preload} from '@react-three/drei'
 import useStore from '@/helpers/store'
 import {useEffect, useRef} from 'react'
 import {Props as ContainerProps} from "@react-three/fiber/dist/declarations/src/web/Canvas";
-import {Vector3, Quaternion} from "three";
+import {Quaternion, Vector3} from "three";
 
 const LControl = () => {
   const dom = useStore((state) => state.dom)
   const control = useRef(null)
-  
+
   useEffect(() => {
     if (control.current) {
       // @ts-ignore
       const domElement = dom.current
       const originalTouchAction = domElement.style['touch-action']
       domElement.style['touch-action'] = 'none'
-      
+
       return () => {
         domElement.style['touch-action'] = originalTouchAction
       }
@@ -27,7 +27,7 @@ const LControl = () => {
 
 const LCanvas = ({children}) => {
   const dom = useStore((state) => state.dom);
-  
+
   const position = new Vector3(2.05, 1.0920, 2.2795),
     quaternion = new Quaternion(-0.08214, 0.21672, 0.01830, 0.9725);
   const defaultCanvasProps: Partial<ContainerProps> = {
@@ -49,7 +49,7 @@ const LCanvas = ({children}) => {
     // dpr: window.devicePixelRatio,
     events: undefined,
   };
-  
+
   return (
     <Canvas
       {...defaultCanvasProps}

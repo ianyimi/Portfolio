@@ -3,9 +3,9 @@ import Work from "./components/Work";
 import Nav from "./components/Nav";
 
 export default function Content() {
-  
-  const viewHelpers = false;
-  
+
+  const viewHelpers = true;
+
   return (
     <group>
       <Nav viewHelpers={viewHelpers}/>
@@ -13,5 +13,5 @@ export default function Content() {
       <Work viewHelpers={viewHelpers}/>
     </group>
   );
-  
+
 }

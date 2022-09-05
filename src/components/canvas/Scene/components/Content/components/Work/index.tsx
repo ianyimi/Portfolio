@@ -1,25 +1,25 @@
-import {useEffect, useMemo, useRef} from "react";
+import {useMemo, useRef} from "react";
 import {useStore} from "utils/store";
 import Projects from "./components/Projects";
 import {motion as Motion} from "framer-motion-3d";
 
 export default function Work(props: { viewHelpers?: boolean }) {
-  
+
   const {viewHelpers = false} = props;
   const group = useRef(null);
   const isMounted = useRef(false);
-  
+
   const {currentSection, animating} = useStore(state => ({
     currentSection: state.currentSection,
     animating: state.animating,
   }));
   const active = !animating && currentSection && currentSection.name === "Work";
-  // console.log(active);
-  
+  console.log(active);
+
   // useEffect( () => {
   //
   // }, [ group.current ] );
-  
+
   // useEffect( () => {
   //
   // 	if ( active ) {
@@ -44,15 +44,15 @@ export default function Work(props: { viewHelpers?: boolean }) {
   // 	}
   //
   // }, [ animating ] );
-  
+
   const groupAnimate = useMemo(() => {
-    
+
     return {
       opacity: isMounted.current ? 1 : 0
     };
-    
+
   }, [isMounted.current]);
-  
+
   return (
     active ? <Motion.group animate={groupAnimate} ref={group}>
       {/*<ScrollControls pages={4} distance={0.75} damping={1}>*/}
@@ -60,5 +60,5 @@ export default function Work(props: { viewHelpers?: boolean }) {
       {/*</ScrollControls>*/}
     </Motion.group> : <></>
   );
-  
+
 }
