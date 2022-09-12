@@ -3,13 +3,13 @@
   justify-content: space-around;
   width: 70vh;
   border: 2px dashed black;
+  overflow: visible;
 }
 
 .labels {
   /*display: flex;*/
   /*flex-direction: column;*/
   height: 60vh;
-  overflow: hidden;
   overflow-y: scroll;
   border: black 2px dashed;
   /*height: 20vh;*/

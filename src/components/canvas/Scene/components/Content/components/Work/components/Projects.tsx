@@ -1,9 +1,9 @@
-import {useScroll} from "framer-motion";
+import {motion, useScroll} from "framer-motion";
 import {useFrame} from "@react-three/fiber";
 import {Html} from "@react-three/drei";
 import {useLimiter} from "spacesvr";
 import {ProjectData} from "../utils/contants";
-import Project from "./Project";
+import PrLabel from "./PrLabel";
 import styles from "./Projects.module.css";
 import {useRef} from "react";
 
@@ -13,21 +13,34 @@ export default function Projects(props: { viewHelpers?: boolean }) {
   const data = useScroll();
   const projectLabels = [];
   const projectImages = [];
-  const images = useRef<HTMLDivElement>(null);
-  const labels = useRef<HTMLDivElement>(null);
+  const images = useRef<HTMLUListElement>(null);
+  const labels = useRef<HTMLUListElement>(null);
 
   for (let i = 0; i < ProjectData.length; i++) {
 
     projectLabels.push(
-      <Project index={i} key={i}/>
+      <PrLabel index={i} key={i}/>
     );
 
   }
+
+  const {scrollY, scrollYProgress} = useScroll({
+    container: labels,
+    // offset: ["start end", "end start"]
+  });
+
+  // useEffect(() => {
+  //   if (!scrollY) return;
+  scrollY.onChange((latest) => {
+    console.log("Page scroll: ", scrollYProgress.get())
+  })
+  // }, [scrollY])
 
   const limiter = useLimiter(45);
   useFrame(({clock}) => {
 
     if (!limiter.isReady(clock)) return;
+    // console.log(scrollYProgress)
 
   });
 
@@ -35,12 +48,12 @@ export default function Projects(props: { viewHelpers?: boolean }) {
     <group position={[0.05, 0.5, 1.05]}>
       {/*<Scroll html>*/}
       <Html center className={styles.htmlDiv}>
-        <div className={styles.labels} ref={labels}>
+        <motion.ul className={styles.labels} ref={labels}>
           {projectLabels}
-        </div>
-        <div className={styles.images}>
+        </motion.ul>
+        <motion.ul className={styles.images}>
           {projectImages}
-        </div>
+        </motion.ul>
       </Html>
       {/*</Scroll>*/}
       <mesh>

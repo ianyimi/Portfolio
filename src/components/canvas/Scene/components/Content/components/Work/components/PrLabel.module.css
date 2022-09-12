@@ -1,4 +1,4 @@
-.project {
+.prlabel {
   width: 97%;
   height: 97%;
   background-color: #fff;
@@ -8,10 +8,10 @@
   /*transform: rotate(2deg);*/
 }
 
-.projectBorder {
+.prLabelBorder {
   width: 300px;
-  height: 150px;
-  margin: 200px 0;
+  height: 300px;
+  margin: 0;
   background: none;
   display: flex;
   justify-content: center;
