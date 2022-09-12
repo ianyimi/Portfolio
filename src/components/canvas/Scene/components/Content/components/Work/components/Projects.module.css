@@ -1,6 +1,26 @@
-.projects {
+.htmlDiv {
   display: flex;
-  flex-direction: column;
+  justify-content: space-around;
+  width: 70vh;
+  border: 2px dashed black;
+}
+
+.labels {
+  /*display: flex;*/
+  /*flex-direction: column;*/
+  height: 60vh;
+  overflow: hidden;
   overflow-y: scroll;
-  height: 20vh;
+  border: black 2px dashed;
+  /*height: 20vh;*/
+}
+
+.images {
+  /*display: flex;*/
+  /*flex-direction: column;*/
+  height: 40vh;
+  overflow: hidden;
+  overflow-y: scroll;
+  border: black 2px dashed;
+  /*height: 20vh;*/
 }

@@ -1,6 +1,23 @@
 .project {
-  width: 30vw;
-  height: 600px;
-  background-color: #f88;
-  margin: 25px;
+  width: 97%;
+  height: 97%;
+  background-color: #fff;
+  border-color: #fff;
+  border-width: 1px 2px 1px 3px;
+  border-radius: 95% 4% 92% 5%/4% 95% 6% 95%;
+  /*transform: rotate(2deg);*/
+}
+
+.projectBorder {
+  width: 300px;
+  height: 150px;
+  margin: 200px 0;
+  background: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-color: #fff;
+  border-width: 3px 4px 3px 5px;
+  border-radius: 95% 4% 92% 5%/4% 95% 6% 95%;
+  transform: rotate(2deg);
 }
