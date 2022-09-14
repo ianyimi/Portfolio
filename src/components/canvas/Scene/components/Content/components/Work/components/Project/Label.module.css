@@ -1,4 +1,4 @@
-.prLabel {
+.label {
   width: 97%;
   height: 97%;
   background-color: #000;
@@ -11,6 +11,7 @@
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
+  flex-direction: column;
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   -webkit-justify-content: center;
@@ -21,7 +22,7 @@
   align-items: center;
 }
 
-.prLabelBorder {
+.labelBorder {
   width: 300px;
   height: 200px;
   margin: 0;
@@ -31,4 +32,37 @@
   align-items: center;
   border-color: #000;
   border-width: 3px 4px 3px 4px;
+}
+
+.labelLinks {
+  margin-top: 15px;
+  width: 50%;
+  /*border: 2px dashed red;*/
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.labelLink {
+  position: relative;
+  display: block;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+.labelLink:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #fff;
+  transform-origin: bottom center;
+  transition: transform 0.25s ease-out;
+}
+
+.labelLink:hover:after {
+  transform: scaleX(1);
+  transform-origin: bottom center;
 }

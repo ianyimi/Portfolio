@@ -23,7 +23,7 @@ const Header = ({title = titleDefault}) => {
         <meta name='description' content={description}/>
         <meta
           name='keywords'
-          content='Software Engineer,Product Manager,PrLabel Manager,Data Scientist,Computer Scientist'
+          content='Software Engineer,Product Manager,Label Manager,Data Scientist,Computer Scientist'
         />
         <meta name='robots' content='index,follow'/>
         <meta name='distribution' content='web'/>

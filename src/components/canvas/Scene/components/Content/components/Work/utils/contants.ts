@@ -1,4 +1,13 @@
-export const ProjectData = [
+export type Project = {
+  name: string,
+  time: string,
+  live?: string,
+  src?: string,
+  img: string,
+  summary?: string
+};
+
+export const ProjectData: Project[] = [
   {
     name: "The Station",
     time: "April 2022",
