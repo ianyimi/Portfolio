@@ -13,24 +13,24 @@ import "swiper/css";
 import "swiper/css/pagination";
 
 export default function Projects(props: { viewHelpers?: boolean }) {
-
+  
   const {viewHelpers = false} = props;
   const projectLabels = [];
   const projectImages = [];
   const images = useRef<any>(null);
   const labels = useRef<any>(null);
-
+  
   const swiper1Ref = useRef<any>();
   const swiper2Ref = useRef<any>();
-
+  
   useLayoutEffect(() => {
     if (!swiper1Ref.current || !swiper2Ref.current) return;
     swiper1Ref.current.controller.control = swiper2Ref.current;
     swiper2Ref.current.controller.control = swiper1Ref.current;
   }, [swiper1Ref.current, swiper2Ref.current]);
-
+  
   for (let i = 0; i < ProjectData.length; i++) {
-
+    
     projectLabels.push(
       <SwiperSlide>
         <PrLabel index={i} key={i}/>
@@ -41,17 +41,17 @@ export default function Projects(props: { viewHelpers?: boolean }) {
         <PrImage index={i} key={i}/>
       </SwiperSlide>
     )
-
+    
   }
-
+  
   const limiter = useLimiter(45);
   useFrame(({clock}) => {
-
+    
     if (!limiter.isReady(clock)) return;
     // console.log(scrollYProgress)
-
+    
   });
-
+  
   return (
     <group position={[0.05, 0.5, 1.05]}>
       <Html center className={styles.htmlDiv}>
@@ -77,7 +77,7 @@ export default function Projects(props: { viewHelpers?: boolean }) {
           className={styles.images}
           modules={[Controller, Mousewheel, Navigation, Autoplay, A11y]}
           onSwiper={(swiper) => {
-            swiper1Ref.current = swiper;
+            swiper2Ref.current = swiper;
           }}
           a11y={{enabled: true}}
           slidesPerView={1}
@@ -95,5 +95,5 @@ export default function Projects(props: { viewHelpers?: boolean }) {
       </mesh>
     </group>
   );
-
+  
 }

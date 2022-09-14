@@ -1,3 +1,10 @@
-.prImageBackground {
-  background-image: url("");
+.prImage {
+  width: 50vh;
+  height: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px dashed #f86;
+  background: rgba(0, 0, 0, 0);
+  background-size: cover;
 }
