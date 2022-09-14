@@ -2,25 +2,17 @@
   display: flex;
   justify-content: space-around;
   width: 70vh;
+  height: 70vh;
   border: 2px dashed black;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .labels {
-  /*display: flex;*/
-  /*flex-direction: column;*/
-  height: 60vh;
-  overflow-y: scroll;
-  border: black 2px dashed;
-  /*height: 20vh;*/
+  height: 100%;
+  border: red 2px dashed;
 }
 
 .images {
-  /*display: flex;*/
-  /*flex-direction: column;*/
-  height: 40vh;
-  overflow: hidden;
-  overflow-y: scroll;
-  border: black 2px dashed;
-  /*height: 20vh;*/
+  height: 100%;
+  border: blue 2px dashed;
 }

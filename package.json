@@ -26,6 +26,7 @@
     "react-is": "^18.2.0",
     "spacesvr": "^2.2.1",
     "styled-components": "^5.3.5",
+    "swiper": "8.0.7",
     "three": "^0.142.0",
     "three-stdlib": "^2.12.1",
     "three-story-controls": "^1.0.6",

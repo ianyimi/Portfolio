@@ -1,16 +1,30 @@
-.prlabel {
+.prLabel {
   width: 97%;
   height: 97%;
   background-color: #fff;
   border-color: #fff;
+  font-color: white;
   border-width: 1px 2px 1px 3px;
   border-radius: 95% 4% 92% 5%/4% 95% 6% 95%;
-  /*transform: rotate(2deg);*/
+
+  /* Center slide text vertically */
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
 }
 
 .prLabelBorder {
   width: 300px;
-  height: 300px;
+  height: 200px;
   margin: 0;
   background: none;
   display: flex;
