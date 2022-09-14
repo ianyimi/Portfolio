@@ -20,7 +20,6 @@ export const ProjectData: Project[] = [
     name: "The Creature Finds Its Voice",
     time: "December 2021",
     live: "https://creature.world",
-    src: "",
     img: "https://dqeczc7c9n9n1.cloudfront.net/images/tcfiv.png",
     summary: ""
   },
@@ -28,14 +27,12 @@ export const ProjectData: Project[] = [
     name: "Chad Knight Seasons",
     time: "May 2021",
     live: "https://muse.place/chadknight/seasons",
-    src: "",
     img: "https://dqeczc7c9n9n1.cloudfront.net/images/mpck.png",
     summary: ""
   },
   {
     name: "SpacesVR",
     time: "Nov 2020",
-    live: "",
     src: "https://github.com/musehq/spacesvr",
     img: "https://dqeczc7c9n9n1.cloudfront.net/images/msvr.png",
     summary: ""

@@ -52,6 +52,9 @@ export default function Projects(props: { viewHelpers?: boolean }) {
           onSwiper={(swiper) => {
             swiper1Ref.current = swiper;
           }}
+          onSlideChange={(swiper) => {
+
+          }}
           pagination={{
             clickable: true,
           }}

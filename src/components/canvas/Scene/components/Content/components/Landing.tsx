@@ -4,7 +4,7 @@ import {useStore} from "utils/store";
 import {Vector3} from "three";
 import {motion} from "framer-motion";
 import {motion as Motion} from "framer-motion-3d";
-import {useRef, useState} from "react";
+import {useRef} from "react";
 
 const htmlPositions = [
   new Vector3(1.5, 1.5, 0),
@@ -12,7 +12,7 @@ const htmlPositions = [
 ];
 
 export default function Landing(props: { viewHelpers?: boolean }) {
-  
+
   const {viewHelpers = false} = props;
   const firstName = useRef(null);
   const lastName = useRef(null);
@@ -22,14 +22,12 @@ export default function Landing(props: { viewHelpers?: boolean }) {
     animating: state.animating,
   }));
   const active = currentSection && currentSection.name === "Home";
-  
-  // useFrame( () => console.log( ! storyControls.cameraRig.inTransit ) );
-  
+
   const basicTransition = {
     duration: active ? 1 : 0.5,
     ease: [0, 0.71, 0.2, 1.01]
   };
-  
+
   const titleVariant1 = {
     active: {
       opacity: active && !animating ? 1 : 0,
@@ -43,7 +41,7 @@ export default function Landing(props: { viewHelpers?: boolean }) {
       y: "-50px"
     }
   };
-  
+
   const titleVariant2 = {
     active: {
       opacity: active && !animating ? 1 : 0,
@@ -57,13 +55,13 @@ export default function Landing(props: { viewHelpers?: boolean }) {
       y: "50px"
     }
   };
-  
+
   const landingGroupAnimate = {
     x: 1.5,
     y: !active && !animating ? 5 : 1.5,
     z: 0
   };
-  
+
   return (
     <group>
       <Motion.group animate={landingGroupAnimate}>
@@ -105,5 +103,5 @@ export default function Landing(props: { viewHelpers?: boolean }) {
       </Motion.group>
     </group>
   );
-  
+
 }
