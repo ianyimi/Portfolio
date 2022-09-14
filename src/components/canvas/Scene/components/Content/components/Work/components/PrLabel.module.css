@@ -1,12 +1,11 @@
 .prLabel {
   width: 97%;
   height: 97%;
-  background-color: #fff;
-  border-color: #fff;
-  font-color: white;
-  border-width: 1px 2px 1px 3px;
-  border-radius: 95% 4% 92% 5%/4% 95% 6% 95%;
-
+  background-color: #000;
+  border-color: #000;
+  font-family: Bosch;
+  font-size: 1.25em;
+  color: white;
   /* Center slide text vertically */
   display: -webkit-box;
   display: -ms-flexbox;
@@ -30,8 +29,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border-color: #fff;
-  border-width: 3px 4px 3px 5px;
-  border-radius: 95% 4% 92% 5%/4% 95% 6% 95%;
-  transform: rotate(2deg);
+  border-color: #000;
+  border-width: 3px 4px 3px 4px;
 }

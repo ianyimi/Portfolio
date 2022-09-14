@@ -67,6 +67,8 @@ export default function Projects(props: { viewHelpers?: boolean }) {
           a11y={{enabled: true}}
           slidesPerView={1}
           direction="vertical"
+          centeredSlides
+          observer
           navigation
           mousewheel
           loop
@@ -82,6 +84,8 @@ export default function Projects(props: { viewHelpers?: boolean }) {
           a11y={{enabled: true}}
           slidesPerView={1}
           direction="vertical"
+          centeredSlides
+          observer
           navigation
           mousewheel
           loop
