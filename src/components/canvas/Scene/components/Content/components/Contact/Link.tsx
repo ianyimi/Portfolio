@@ -79,10 +79,10 @@ export default function Link(props: { index: number, social: any, viewHelpers?: 
               <meshStandardMaterial color={social.baseColor} side={THREE.DoubleSide}/>
             </mesh>}
         </group>
-        <mesh onPointerOver={() => console.log("over")}>
-          <boxBufferGeometry args={[0.1, 0.1, 0.1]}/>
-          <meshStandardMaterial color="blue" visible={viewHelpers}/>
-        </mesh>
+        {/*<mesh onPointerOver={() => console.log("over")}>*/}
+        {/*  <boxBufferGeometry args={[0.1, 0.1, 0.1]}/>*/}
+        {/*  <meshStandardMaterial color="blue" visible={viewHelpers}/>*/}
+        {/*</mesh>*/}
       </Motion.group>
     </Motion.group>
   )

@@ -12,7 +12,7 @@ export const SOCIALS = [
     pos: [3.25, 1.5, 0],
     modelMeshName: "GitHub",
     model: `${s3Models}github-1663200474/github.glb.gz`,
-    scaleFactor: 0.25,
+    scaleFactor: 0.2,
     color: "black",
     href: "https://github.com/ianyimi"
   },
@@ -21,7 +21,7 @@ export const SOCIALS = [
     modelMeshName: "GMail",
     model: `${s3Models}mail-1663200734/mail.glb.gz`,
     scaleFactor: 0.1,
-    color: "white",
+    color: "red",
     href: "mailto:anyiminene@gmail.com"
   },
   {
