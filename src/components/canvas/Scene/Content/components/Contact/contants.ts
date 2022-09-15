@@ -5,7 +5,7 @@ export const SOCIALS = [
     modelMeshName: "LinkedIn",
     model: `${s3Models}linkedin-1663198551/linkedin.glb.gz`,
     scaleFactor: [0.75, 0.5, 0.75],
-    color: "blue",
+    color: "#0072B1",
     href: "https://www.linkedin.com/in/isaiah-anyimi-b3a66b165"
   },
   {
@@ -13,7 +13,7 @@ export const SOCIALS = [
     modelMeshName: "GitHub",
     model: `${s3Models}github-1663200474/github.glb.gz`,
     scaleFactor: 0.2,
-    color: "black",
+    color: "#171515",
     href: "https://github.com/ianyimi"
   },
   {
@@ -21,7 +21,7 @@ export const SOCIALS = [
     modelMeshName: "GMail",
     model: `${s3Models}mail-1663200734/mail.glb.gz`,
     scaleFactor: 0.1,
-    color: "red",
+    color: "#BB011B",
     href: "mailto:anyiminene@gmail.com"
   },
   {
@@ -38,7 +38,7 @@ export const SOCIALS = [
     modelMeshName: "Twitter",
     model: `${s3Models}twitter-1663200876/twitter.glb.gz`,
     scaleFactor: 0.15,
-    color: "lightblue",
+    color: "#1DA1F2",
     href: "https://twitter.com/YonkoZay_"
   }
 ];
