@@ -21,7 +21,7 @@ export const SOCIALS = [
     modelMeshName: "GMail",
     model: `${s3Models}mail-1663200734/mail.glb.gz`,
     scaleFactor: 0.1,
-    color: "#BB011B",
+    color: "red",
     href: "mailto:anyiminene@gmail.com"
   },
   {
