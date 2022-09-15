@@ -1,12 +1,10 @@
-import {useFrame} from "@react-three/fiber";
 import {Html} from "@react-three/drei";
-import {useLimiter} from "spacesvr";
 import {ProjectData} from "../utils/contants";
 import Project from "./Project";
 import styles from "./Projects.module.css";
 import {useEffect, useRef} from "react";
 import {Swiper, SwiperSlide} from "swiper/react";
-import {A11y, Autoplay, Controller, EffectCards, Mousewheel, Navigation, Pagination} from "swiper";
+import {A11y, Autoplay, Controller, EffectCards, EffectFlip, Mousewheel, Navigation, Pagination} from "swiper";
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -35,25 +33,14 @@ export default function Projects(props: { viewHelpers?: boolean }) {
 
   }
 
-  const limiter = useLimiter(45);
-  useFrame(({clock}) => {
-
-    if (!limiter.isReady(clock)) return;
-    // console.log(scrollYProgress)
-
-  });
-
   return (
     <group position={[0.05, 0.5, 1.05]}>
       <Html center className={styles.htmlDiv}>
         <Swiper
           className={styles.labels}
-          modules={[Controller, Mousewheel, EffectCards, Pagination, Navigation, Autoplay, A11y]}
+          modules={[Controller, Mousewheel, EffectCards, EffectFlip, Pagination, Navigation, Autoplay, A11y]}
           onSwiper={(swiper) => {
             swiper1Ref.current = swiper;
-          }}
-          onSlideChange={(swiper) => {
-
           }}
           pagination={{
             clickable: true,
@@ -66,7 +53,7 @@ export default function Projects(props: { viewHelpers?: boolean }) {
             slideShadows: false,
           }}
           a11y={{enabled: true}}
-          loopedSlides={ProjectData.length}
+          loopedSlides={ProjectData.length - 1}
           effect="cards"
           slidesPerView="auto"
           direction="vertical"

@@ -2,10 +2,11 @@ import {motion as Motion} from "framer-motion-3d";
 import {useStore} from "@/utils/store";
 import {useRef, useState} from "react";
 import * as THREE from "three";
-import {GroupProps, useFrame} from "@react-three/fiber";
+import {useFrame} from "@react-three/fiber";
 import {useLimiter} from "spacesvr";
-import {useGLTF} from "@react-three/drei";
+import {Html, useGLTF} from "@react-three/drei";
 import {GLTF} from "three/examples/jsm/loaders/GLTFLoader";
+import styles from "./Link.module.css";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -20,10 +21,11 @@ type GLTFResult = GLTF & {
 }
 
 export default function Link(props: { index: number, social: any, viewHelpers?: boolean }) {
-  
+
   const {index, social, viewHelpers = false} = props;
   const {nodes, materials} = useGLTF(social.model) as GLTFResult
   const [hover, setHover] = useState(false);
+  const click = useRef<HTMLDivElement>(null);
   const {currentSection, previousSection, animating} = useStore(state => ({
     currentSection: state.currentSection,
     previousSection: state.previousSection,
@@ -31,22 +33,25 @@ export default function Link(props: { index: number, social: any, viewHelpers?: 
   }));
   const mesh = useRef<THREE.Mesh>();
   const active = currentSection && currentSection.name === "Contact";
-  
+
   const groupAnimate = {
     scale: active && !animating ? hover ? 1.25 : 1 : 0,
   }
   const meshAnimate = {
     rotateY: active && !animating ? Math.PI * 4 : 0
   }
-  
+
   const limiter = useLimiter(45);
   useFrame(({clock}) => {
     if (!limiter.isReady(clock) || !mesh.current) return;
     mesh.current.rotation.y -= 0.005;
   })
-  
-  console.log(hover)
-  
+
+  const handleClick = () => {
+    if (!active || animating) return;
+    window.open(social.href, "_blank");
+  }
+
   return (
     <Motion.group
       animate={groupAnimate}
@@ -74,11 +79,19 @@ export default function Link(props: { index: number, social: any, viewHelpers?: 
             <meshStandardMaterial color={social.color} side={THREE.DoubleSide}/>
           </mesh>
           {social.modelMeshName === "Instagram" &&
-            <mesh geometry={nodes[`${social.modelMeshName}001`].geometry} position={[0, -0.95, 0]}
-                  scale={[1, 1.6295, 1]}>
-              <meshStandardMaterial color={social.baseColor} side={THREE.DoubleSide}/>
-            </mesh>}
+          <mesh geometry={nodes[`${social.modelMeshName}001`].geometry} position={[0, -0.95, 0]}
+                scale={[1, 1.6295, 1]}>
+            <meshStandardMaterial color={social.baseColor} side={THREE.DoubleSide}/>
+          </mesh>}
         </group>
+        <Html center>
+          <div
+            className={styles.clickContainer}
+            onClick={handleClick}
+            ref={click}
+            style={{cursor: active && !animating ? "pointer" : "default"}}
+          />
+        </Html>
         {/*<mesh onPointerOver={() => console.log("over")}>*/}
         {/*  <boxBufferGeometry args={[0.1, 0.1, 0.1]}/>*/}
         {/*  <meshStandardMaterial color="blue" visible={viewHelpers}/>*/}
