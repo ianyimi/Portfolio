@@ -1,6 +1,6 @@
 import Head from 'next/head'
 
-const titleDefault = "Anyimi '22 Portfolio"
+const titleDefault = "Isaiah Anyimi 2022 Portfolio"
 const url = 'https://ianyimi.com'
 const description =
   'Recent Graduate & Front End Developer'
@@ -17,7 +17,7 @@ const Header = ({title = titleDefault}) => {
         <meta name='author' content={author}/>
         <meta name='designer' content={author}/>
         <meta name='publisher' content={author}/>
-
+        
         {/* Search Engine Optimization Meta Tags */}
         <title>{title}</title>
         <meta name='description' content={description}/>
@@ -36,7 +36,7 @@ const Header = ({title = titleDefault}) => {
         <meta name='og:image' content={'/icons/share.png'}/>
         <meta name='og:site_name' content={title}/>
         <meta name='og:description' content={description}/>
-
+        
         <link rel='apple-touch-icon' href='/icons/apple-touch-icon.png'/>
         <link
           rel='apple-touch-icon'
@@ -60,7 +60,7 @@ const Header = ({title = titleDefault}) => {
           href='/icons/safari-pinned-tab.svg'
         />
         <link rel='apple-touch-startup-image' href='/startup.png'/>
-
+        
         {/* Meta Tags for HTML pages on Mobile */}
         {/* <meta name="format-detection" content="telephone=yes"/>
         <meta name="HandheldFriendly" content="true"/>  */}
@@ -70,7 +70,7 @@ const Header = ({title = titleDefault}) => {
         />
         <meta name='theme-color' content='#000'/>
         <link rel='shortcut icon' href='/icons/favicon.ico'/>
-
+        
         {/* 
       Twitter Summary card
         documentation: https://dev.twitter.com/cards/getting-started
