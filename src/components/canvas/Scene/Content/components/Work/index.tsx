@@ -14,16 +14,21 @@ export default function Work(props: { viewHelpers?: boolean }) {
     previousSection: state.previousSection,
     animating: state.animating,
   }));
-  const active = !animating && currentSection && currentSection.name === "Work";
+  const active = currentSection && currentSection.name === "Work";
+
+  const groupInit = {
+    opacity: 0
+  }
 
   const groupAnimate = {
     opacity: active && !animating ? 1 : 0
   };
 
   return (
-    active ? <Motion.group animate={groupAnimate} ref={group}>
-      <Projects viewHelpers={viewHelpers}/>
-    </Motion.group> : <></>
+    (active && !animating) || (previousSection && previousSection.name === "Work" && animating) ?
+      <Motion.group initial={groupInit} animate={groupAnimate} ref={group}>
+        <Projects viewHelpers={viewHelpers}/>
+      </Motion.group> : <></>
   );
 
 }

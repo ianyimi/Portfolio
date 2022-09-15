@@ -1,11 +1,11 @@
 .label {
   width: 97%;
   height: 97%;
-  background-color: #000;
-  border-color: #000;
+  background-color: white;
+  border-color: white;
   font-family: Bosch;
   font-size: 1.25em;
-  color: white;
+  color: black;
   /* Center slide text vertically */
   display: -webkit-box;
   display: -ms-flexbox;
@@ -23,14 +23,14 @@
 }
 
 .labelBorder {
-  width: 300px;
-  height: 200px;
+  width: 350px;
+  height: 250px;
   margin: 0;
   background: none;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-color: #000;
+  border-color: white;
   border-width: 3px 4px 3px 4px;
 }
 
@@ -57,7 +57,7 @@
   height: 2px;
   bottom: 0;
   left: 0;
-  background-color: #fff;
+  background-color: black;
   transform-origin: bottom center;
   transition: transform 0.25s ease-out;
 }

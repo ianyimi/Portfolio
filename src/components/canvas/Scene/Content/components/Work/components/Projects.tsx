@@ -53,7 +53,7 @@ export default function Projects(props: { viewHelpers?: boolean }) {
             slideShadows: false,
           }}
           a11y={{enabled: true}}
-          loopedSlides={ProjectData.length - 1}
+          // loopedSlides={ProjectData.length - 1}
           effect="cards"
           slidesPerView="auto"
           direction="vertical"
@@ -62,7 +62,7 @@ export default function Projects(props: { viewHelpers?: boolean }) {
           observer
           navigation
           mousewheel
-          loop
+          // loop
         >
           {projects}
         </Swiper>
