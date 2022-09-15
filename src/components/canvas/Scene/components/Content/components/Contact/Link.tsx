@@ -26,12 +26,14 @@ export default function Link(props: { index: number, social: any, viewHelpers?: 
   const {nodes, materials} = useGLTF(social.model) as GLTFResult
   const [hover, setHover] = useState(false);
   const click = useRef<HTMLDivElement>(null);
+  const mesh = useRef<THREE.Mesh>();
+  const floatGroup = useRef<THREE.Group>();
   const {currentSection, previousSection, animating} = useStore(state => ({
     currentSection: state.currentSection,
     previousSection: state.previousSection,
     animating: state.animating,
   }));
-  const mesh = useRef<THREE.Mesh>();
+
   const active = currentSection && currentSection.name === "Contact";
 
   const groupAnimate = {
@@ -41,16 +43,33 @@ export default function Link(props: { index: number, social: any, viewHelpers?: 
     rotateY: active && !animating ? Math.PI * 4 : 0
   }
 
-  const limiter = useLimiter(45);
-  useFrame(({clock}) => {
-    if (!limiter.isReady(clock) || !mesh.current) return;
-    mesh.current.rotation.y -= 0.005;
-  })
-
   const handleClick = () => {
     if (!active || animating) return;
     window.open(social.href, "_blank");
   }
+
+  const speed = 2;
+  const rotationIntensity = 1;
+  const floatIntensity = 1;
+  const floatingRange = [0, 0.015];
+  const offset = useRef(Math.random() * 10000);
+  const limiter = useLimiter(45);
+  useFrame(({clock}) => {
+
+    if (!limiter.isReady(clock) || !floatGroup.current || !mesh.current) return;
+
+    // mesh.current.rotation.y -= 0.005;
+
+    // Float Car
+    const t = offset.current + clock.getElapsedTime();
+    floatGroup.current.rotation.x = (Math.cos((t / 4) * speed) / 8) * rotationIntensity;
+    floatGroup.current.rotation.y = (Math.sin((t / 4) * speed) / 8) * rotationIntensity;
+    floatGroup.current.rotation.z = (Math.sin((t / 4) * speed) / 20) * rotationIntensity;
+    let yPosition = (Math.sin((t / 4) * speed) / 10);
+    yPosition = THREE.MathUtils.mapLinear(yPosition, -0.1, 0.1, floatingRange?.[0] ?? -0.1, floatingRange?.[1] ?? 0.1) - 0.075;
+    floatGroup.current.position.y = yPosition * floatIntensity;
+
+  });
 
   return (
     <Motion.group
@@ -66,37 +85,39 @@ export default function Link(props: { index: number, social: any, viewHelpers?: 
         restDelta: 0.0001
       }}
     >
-      <Motion.group
-        animate={meshAnimate}
-        transition={{delay: active ? 0.5 : 0}}
-        ref={mesh}
-        onPointerOver={() => setHover(true)}
-        onPointerOut={() => setHover(false)}
-        // rotation-y={Math.random() * Math.PI}
-      >
-        <group rotation={[Math.PI / 2, 0, -Math.PI / 2]} scale={social.scaleFactor}>
-          <mesh geometry={nodes[social.modelMeshName].geometry} onClick={() => console.log("click")}>
-            <meshStandardMaterial color={social.color} side={THREE.DoubleSide}/>
-          </mesh>
-          {social.modelMeshName === "Instagram" &&
-          <mesh geometry={nodes[`${social.modelMeshName}001`].geometry} position={[0, -0.95, 0]}
-                scale={[1, 1.6295, 1]}>
-            <meshStandardMaterial color={social.baseColor} side={THREE.DoubleSide}/>
-          </mesh>}
-        </group>
-        <Html center>
-          <div
-            className={styles.clickContainer}
-            onClick={handleClick}
-            ref={click}
-            style={{cursor: active && !animating ? "pointer" : "default"}}
-          />
-        </Html>
-        {/*<mesh onPointerOver={() => console.log("over")}>*/}
-        {/*  <boxBufferGeometry args={[0.1, 0.1, 0.1]}/>*/}
-        {/*  <meshStandardMaterial color="blue" visible={viewHelpers}/>*/}
-        {/*</mesh>*/}
-      </Motion.group>
+      <group ref={floatGroup}>
+        <Motion.group
+          animate={meshAnimate}
+          transition={{delay: active ? 0.5 : 0}}
+          ref={mesh}
+          onPointerOver={() => setHover(true)}
+          onPointerOut={() => setHover(false)}
+          // rotation-y={Math.random() * Math.PI}
+        >
+          <group rotation={[Math.PI / 2, 0, -Math.PI / 2]} scale={social.scaleFactor}>
+            <mesh geometry={nodes[social.modelMeshName].geometry} onClick={() => console.log("click")}>
+              <meshStandardMaterial color={social.color} side={THREE.DoubleSide}/>
+            </mesh>
+            {social.modelMeshName === "Instagram" &&
+            <mesh geometry={nodes[`${social.modelMeshName}001`].geometry} position={[0, -0.95, 0]}
+                  scale={[1, 1.6295, 1]}>
+              <meshStandardMaterial color={social.baseColor} side={THREE.DoubleSide}/>
+            </mesh>}
+          </group>
+          <Html center>
+            <div
+              className={styles.clickContainer}
+              onClick={handleClick}
+              ref={click}
+              style={{cursor: active && !animating ? "pointer" : "default"}}
+            />
+          </Html>
+          {/*<mesh onPointerOver={() => console.log("over")}>*/}
+          {/*  <boxBufferGeometry args={[0.1, 0.1, 0.1]}/>*/}
+          {/*  <meshStandardMaterial color="blue" visible={viewHelpers}/>*/}
+          {/*</mesh>*/}
+        </Motion.group>
+      </group>
     </Motion.group>
   )
 }
