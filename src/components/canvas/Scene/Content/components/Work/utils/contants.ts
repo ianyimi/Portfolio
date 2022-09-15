@@ -10,7 +10,7 @@ export type Project = {
 export const ProjectData: Project[] = [
   {
     name: "The Station",
-    time: "April 2022",
+    time: "2022 - Apr",
     live: "https://etherrealms.org/station",
     src: "https://github.com/ianyimi/EtherRealms",
     img: "https://dqeczc7c9n9n1.cloudfront.net/images/ers.png",
@@ -18,21 +18,21 @@ export const ProjectData: Project[] = [
   },
   {
     name: "The Creature Finds Its Voice",
-    time: "December 2021",
+    time: "2021 - Dec",
     live: "https://creature.world",
     img: "https://dqeczc7c9n9n1.cloudfront.net/images/tcfiv.png",
     summary: ""
   },
   {
     name: "Chad Knight Seasons",
-    time: "May 2021",
+    time: "2021 - May",
     live: "https://muse.place/chadknight/seasons",
     img: "https://dqeczc7c9n9n1.cloudfront.net/images/mpck.png",
     summary: ""
   },
   {
     name: "SpacesVR",
-    time: "Nov 2020",
+    time: "2020 - Nov",
     src: "https://github.com/musehq/spacesvr",
     img: "https://dqeczc7c9n9n1.cloudfront.net/images/msvr.png",
     summary: ""

@@ -21,7 +21,7 @@ type GLTFResult = GLTF & {
 }
 
 export default function Link(props: { index: number, social: any, viewHelpers?: boolean }) {
-
+  
   const {index, social, viewHelpers = false} = props;
   const {nodes, materials} = useGLTF(social.model) as GLTFResult
   const [hover, setHover] = useState(false);
@@ -33,21 +33,21 @@ export default function Link(props: { index: number, social: any, viewHelpers?: 
     previousSection: state.previousSection,
     animating: state.animating,
   }));
-
+  
   const active = currentSection && currentSection.name === "Contact";
-
+  
   const groupAnimate = {
     scale: active && !animating ? hover ? 1.25 : 1 : 0,
   }
   const meshAnimate = {
     rotateY: active && !animating ? Math.PI * 4 : 0
   }
-
+  
   const handleClick = () => {
     if (!active || animating) return;
     window.open(social.href, "_blank");
   }
-
+  
   const speed = 2;
   const rotationIntensity = 1;
   const floatIntensity = 1;
@@ -55,12 +55,10 @@ export default function Link(props: { index: number, social: any, viewHelpers?: 
   const offset = useRef(Math.random() * 10000);
   const limiter = useLimiter(45);
   useFrame(({clock}) => {
-
+    
     if (!limiter.isReady(clock) || !floatGroup.current || !mesh.current) return;
-
-    // mesh.current.rotation.y -= 0.005;
-
-    // Float Car
+    
+    // Float Link - sourced from Drei Float component
     const t = offset.current + clock.getElapsedTime();
     floatGroup.current.rotation.x = (Math.cos((t / 4) * speed) / 8) * rotationIntensity;
     floatGroup.current.rotation.y = (Math.sin((t / 4) * speed) / 8) * rotationIntensity;
@@ -68,9 +66,9 @@ export default function Link(props: { index: number, social: any, viewHelpers?: 
     let yPosition = (Math.sin((t / 4) * speed) / 10);
     yPosition = THREE.MathUtils.mapLinear(yPosition, -0.1, 0.1, floatingRange?.[0] ?? -0.1, floatingRange?.[1] ?? 0.1) - 0.075;
     floatGroup.current.position.y = yPosition * floatIntensity;
-
+    
   });
-
+  
   return (
     <Motion.group
       animate={groupAnimate}
@@ -99,10 +97,10 @@ export default function Link(props: { index: number, social: any, viewHelpers?: 
               <meshStandardMaterial color={social.color} side={THREE.DoubleSide}/>
             </mesh>
             {social.modelMeshName === "Instagram" &&
-            <mesh geometry={nodes[`${social.modelMeshName}001`].geometry} position={[0, -0.95, 0]}
-                  scale={[1, 1.6295, 1]}>
-              <meshStandardMaterial color={social.baseColor} side={THREE.DoubleSide}/>
-            </mesh>}
+              <mesh geometry={nodes[`${social.modelMeshName}001`].geometry} position={[0, -0.95, 0]}
+                    scale={[1, 1.6295, 1]}>
+                <meshStandardMaterial color={social.baseColor} side={THREE.DoubleSide}/>
+              </mesh>}
           </group>
           <Html center>
             <div
