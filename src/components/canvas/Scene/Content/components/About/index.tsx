@@ -1,7 +1,7 @@
 import {motion as Motion} from "framer-motion-3d";
 import {Html} from "@react-three/drei";
 import {motion} from "framer-motion";
-import {useStore} from "utils/store";
+import {useStore} from "@/utils/store";
 
 export default function About(props: { viewHelpers?: boolean }) {
 

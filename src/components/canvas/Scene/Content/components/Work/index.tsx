@@ -1,5 +1,5 @@
 import {useRef} from "react";
-import {useStore} from "utils/store";
+import {useStore} from "@/utils/store";
 import Projects from "./components/Projects";
 import {motion as Motion} from "framer-motion-3d";
 

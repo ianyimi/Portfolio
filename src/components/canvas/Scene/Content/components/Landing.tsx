@@ -1,6 +1,6 @@
 import {Html} from "@react-three/drei";
 import styles from "./Landing.module.css";
-import {useStore} from "utils/store";
+import {useStore} from "@/utils/store";
 import {Vector3} from "three";
 import {motion} from "framer-motion";
 import {motion as Motion} from "framer-motion-3d";
