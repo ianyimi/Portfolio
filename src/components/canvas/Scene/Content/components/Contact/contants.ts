@@ -9,7 +9,7 @@ export const SOCIALS = [
     href: "https://www.linkedin.com/in/isaiah-anyimi-b3a66b165"
   },
   {
-    pos: [3.5, 1.5, 0],
+    pos: [3.5, 0.5, -0.25],
     modelMeshName: "GitHub",
     model: `${s3Models}github-1663200474/github.glb.gz`,
     scaleFactor: 0.2,
@@ -34,7 +34,7 @@ export const SOCIALS = [
     href: "https://www.instagram.com/yonkozay/"
   },
   {
-    pos: [3.5, 0.5, -0.25],
+    pos: [3.5, 1.5, 0],
     modelMeshName: "Twitter",
     model: `${s3Models}twitter-1663200876/twitter.glb.gz`,
     scaleFactor: 0.15,
