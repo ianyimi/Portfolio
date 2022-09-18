@@ -90,15 +90,24 @@ export default function Link(props: { index: number, social: any, viewHelpers?: 
           ref={mesh}
           onPointerOver={() => setHover(true)}
           onPointerOut={() => setHover(false)}
-          // rotation-y={Math.random() * Math.PI}
         >
           <group rotation={[Math.PI / 2, 0, -Math.PI / 2]} scale={social.scaleFactor}>
-            <mesh geometry={nodes[social.modelMeshName].geometry} onClick={() => console.log("click")}>
+            <mesh
+              geometry={nodes[social.modelMeshName].geometry}
+              onClick={() => console.log("click")}
+              castShadow
+              receiveShadow
+            >
               <meshStandardMaterial color={social.color} side={THREE.DoubleSide}/>
             </mesh>
             {social.modelMeshName === "Instagram" &&
-              <mesh geometry={nodes[`${social.modelMeshName}001`].geometry} position={[0, -0.95, 0]}
-                    scale={[1, 1.6295, 1]}>
+              <mesh
+                geometry={nodes[`${social.modelMeshName}001`].geometry}
+                position={[0, -0.95, 0]}
+                scale={[1, 1.6295, 1]}
+                castShadow
+                receiveShadow
+              >
                 <meshStandardMaterial color={social.baseColor} side={THREE.DoubleSide}/>
               </mesh>}
           </group>
@@ -110,10 +119,6 @@ export default function Link(props: { index: number, social: any, viewHelpers?: 
               style={{cursor: active && !animating ? "pointer" : "default"}}
             />
           </Html>
-          {/*<mesh onPointerOver={() => console.log("over")}>*/}
-          {/*  <boxBufferGeometry args={[0.1, 0.1, 0.1]}/>*/}
-          {/*  <meshStandardMaterial color="blue" visible={viewHelpers}/>*/}
-          {/*</mesh>*/}
         </Motion.group>
       </group>
     </Motion.group>
