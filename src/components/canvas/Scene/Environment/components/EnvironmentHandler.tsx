@@ -10,7 +10,7 @@ export default function EnvironmentHandler() {
   const tunnelOne = useRef<THREE.Group>();
   const tunnelTwo = useRef<THREE.Group>();
   
-  const speed = 0.5;
+  const speed = 0.35;
   
   
   return (

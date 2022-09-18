@@ -68,11 +68,11 @@ export default function Nav(props: { viewHelpers?: boolean }) {
         
         if (!h4) return;
         
-        if (currentSection && currentSection.name === "Home") {
-          h4.style.color = "black"
-        } else if (currentSection) {
-          h4.style.color = "white"
-        }
+        // if (currentSection && currentSection.name === "Home") {
+        //   h4.style.color = "black"
+        // } else if (currentSection) {
+        //   h4.style.color = "white"
+        // }
         
         if (currentSection && currentSection.name === section.name) {
           
