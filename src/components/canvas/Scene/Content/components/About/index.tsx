@@ -21,11 +21,6 @@ export default function About(props: { viewHelpers?: boolean }) {
     z: -0.25
   };
   
-  const imageAnimate = {
-    y: active && !animating ? 0 : "-30px",
-    opacity: active && !animating ? 1 : 0
-  }
-  
   const summaryAnimate = {
     x: active && !animating ? 0 : "30px",
     opacity: active && !animating ? 1 : 0
@@ -33,7 +28,40 @@ export default function About(props: { viewHelpers?: boolean }) {
   
   const basicTransition = {
     delay: active ? 0.3 : 0,
-    duration: active ? 0.75 : 0.25
+    duration: active ? 0.75 : 0.25,
+    when: "beforeChildren",
+    staggerChildren: 0.3
+  }
+  
+  const bioImageAnimate = {
+    y: active && !animating ? 0 : "-30px",
+    opacity: active && !animating ? 1 : 0
+  }
+  
+  const bioSummaryAnimate = {
+    y: active && !animating ? 0 : "30px",
+    opacity: active && !animating ? 1 : 0
+  }
+  
+  const subjectContainerAnimate = {
+    opacity: active || (previousSection && previousSection.name === "About" && animating) ? 1 : 0,
+  }
+  
+  const subjectContainerTransition = {
+    delay: active ? 0.3 : 0,
+    duration: active ? 0.75 : 0.25,
+    when: "beforeChildren",
+    staggerChildren: 0.3
+  }
+  
+  const subjectAnimateLeft = {
+    opacity: active && !animating ? 1 : 0,
+    x: active && !animating ? 0 : "30px"
+  }
+  
+  const subjectAnimateRight = {
+    opacity: active && !animating ? 1 : 0,
+    x: active && !animating ? 0 : "-30px"
   }
   
   return (
@@ -44,12 +72,31 @@ export default function About(props: { viewHelpers?: boolean }) {
           <meshBasicMaterial color="blue" visible={viewHelpers}/>
         </mesh>
         <Html className={styles.htmlDiv} center>
-          <motion.div className={styles.container} animate={imageAnimate} transition={basicTransition}>About Me Image
+          <motion.div
+            className={styles.container}
+          >
+            <motion.div
+              // className={styles.}
+              animate={bioImageAnimate}
+              transition={basicTransition}
+            >
+              About Me Image
+            </motion.div>
+            <motion.div
+              animate={bioSummaryAnimate}
+              transition={basicTransition}
+            >
+              About Me Summary
+            </motion.div>
           </motion.div>
-          <motion.div className={styles.container} animate={summaryAnimate}
-                      transition={{...basicTransition, delay: active ? 0.45 : 0.2}}>About Me
-            Summary
-          </motion.div>
+          <motion.ul
+            className={styles.container}
+          >
+            <motion.li animate={subjectAnimateLeft}>NFT</motion.li>
+            <motion.li animate={subjectAnimateRight}>Music</motion.li>
+            <motion.li animate={subjectAnimateLeft}>Soccer</motion.li>
+            <motion.li animate={subjectAnimateRight}>Anime</motion.li>
+          </motion.ul>
         </Html>
       </Motion.group>
     </group>

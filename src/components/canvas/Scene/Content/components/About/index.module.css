@@ -2,6 +2,10 @@
   width: 40%;
   height: 100%;
   border: 2px red dashed;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
 .htmlDiv {
