@@ -174,7 +174,6 @@ export default function Model(props: JSX.IntrinsicElements['group']) {
   const group = useRef<THREE.Group>(null);
   const {nodes, materials, animations} = useGLTF(FILE_URL) as unknown as GLTFResult;
   const {actions} = useAnimations<AnimationClip>(animations, group);
-  const setCurrentSection = useStore(state => state.setCurrentSection);
   
   useEffect(() => {
     
@@ -183,11 +182,8 @@ export default function Model(props: JSX.IntrinsicElements['group']) {
       
       if (!action) continue;
       action.setEffectiveTimeScale(2).play();
-      // action.play();
       
     }
-    
-    // setCurrentSection( { name: "Home", poi: 0, delay: 1000 } );
     
   }, [actions]);
   
