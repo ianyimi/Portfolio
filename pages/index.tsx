@@ -2,6 +2,7 @@ import dynamic from 'next/dynamic'
 // Step 5 - delete Instructions components
 // import Shader from '@/components/canvas/Shader/Shader'
 import Loading from "@/components/dom/Overlay";
+import {isMobile} from "react-device-detect";
 
 // Dynamic import is used to prevent a payload when the website start that will include three.js r3f etc...
 // WARNING ! errors might get obfuscated by using dynamic import.
@@ -25,7 +26,7 @@ const Page = (props) => {
 Page.r3f = (props) => (
   <>
     {/* @ts-ignore */}
-    <Scene/>
+    {!isMobile && <Scene/>}
   </>
 )
 

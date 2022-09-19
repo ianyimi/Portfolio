@@ -1,10 +1,11 @@
-import LoadingScreen from "./components/LoadingScreen";
 import {Loader} from "@react-three/drei";
+import {isMobile} from "react-device-detect"
 
 export default function Overlay() {
   return (
-    <div>
-      {/*<LoadingScreen/>*/}
+    isMobile ? <div>
+      Mobile under Development! Reconnect on desktop for the experience
+    </div> : <div>
       <Loader dataInterpolation={(p) => `Loading ${p.toFixed(2)}%`}/>
     </div>
   )
