@@ -76,9 +76,11 @@ export default function Interest(props: { data: Record<string, any>, index: numb
         </Motion.group>
         <group position={[htmlX, 0, 0]}>
           <Html center>
-            <motion.div animate={htmlAnimate} transition={basicTransition} className={styles.htmlDiv}>
-              <h3 className={styles.subjectLine}>{data.subject}</h3>
-              <p className={styles.info}>{data.info}</p>
+            <motion.div animate={htmlAnimate} transition={basicTransition} className={styles.htmlDivBorder}>
+              <div className={styles.htmlDiv}>
+                <h3 className={styles.subjectLine}>{data.subject}</h3>
+                <p className={styles.info}>{data.info}</p>
+              </div>
             </motion.div>
           </Html>
         </group>

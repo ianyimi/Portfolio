@@ -24,7 +24,7 @@ export default function Model(props: { color: string } & JSX.IntrinsicElements['
   const {nodes, materials} = useGLTF(FILE_URL) as GLTFResult
   return (
     <group ref={group} {...props} dispose={null}>
-      <group name="Scene" position-y={2} rotation-y={Math.random() * Math.PI}>
+      <group name="Scene" position-y={2}>
         <mesh
           name="Ethereum"
           geometry={nodes.Ethereum.geometry}
