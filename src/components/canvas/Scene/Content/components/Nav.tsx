@@ -18,8 +18,17 @@ export default function Nav(props: { viewHelpers?: boolean }) {
   const {viewHelpers = false} = props;
   
   const activePosition = useRef("Home");
-  const {currentSection, setCurrentSection, enter, storyControls, animating, setAnimationStatus} = useStore(state => ({
+  const {
+    currentSection,
+    previousSection,
+    setCurrentSection,
+    enter,
+    storyControls,
+    animating,
+    setAnimationStatus
+  } = useStore(state => ({
     currentSection: state.currentSection,
+    previousSection: state.previousSection,
     setCurrentSection: state.setCurrentSection,
     enter: state.enter,
     storyControls: state.storyControls,
@@ -30,7 +39,7 @@ export default function Nav(props: { viewHelpers?: boolean }) {
   const htmlPositions: Record<string, Vector3> = {
     Home: new Vector3(2.75, 0.35, -0.25),
     About: new Vector3(1, 1.85, 0),
-    Work: new Vector3(0.25, 1.35, 0),
+    Work: new Vector3(0.25, 1.35, 1.5),
     Contact: new Vector3(3.5, 0.1, 0.6)
   };
   
@@ -46,43 +55,59 @@ export default function Nav(props: { viewHelpers?: boolean }) {
   
   const navAnimate = {
     opacity: !animating ? 1 : 0,
-    y: !animating ? 0 : "-25px"
+    y: !animating ? 0 : "-25px",
+  };
+  
+  const colorAnimate = {
+    color: currentSection && (currentSection.name === "Work" || currentSection.name === "Contact") ? "white" : "black",
+  }
+  
+  const basicTransition = {
+    type: "spring",
+    stiffness: 400,
+    damping: 17
   };
   
   const navElements = [];
-  const navSections = [
+  const navSections = useMemo(() => [
     {name: "Home", poi: 0, delay: 1000},
-    {name: "About", poi: 1, delay: 0},
-    {name: "Work", poi: 2, delay: 0},
-    {name: "Contact", poi: 3, delay: 0},
-  ];
+    {
+      name: (!animating && currentSection && currentSection.name === "About") || (animating && previousSection && previousSection.name === "About") ? "Home" : "About",
+      poi: 1,
+      delay: 0
+    },
+    {
+      name: (!animating && currentSection && currentSection.name === "Work") || (animating && previousSection && previousSection.name === "Work") ? "Home" : "Work",
+      poi: 2,
+      delay: 0
+    },
+    {
+      name: (!animating && currentSection && currentSection.name === "Contact") || (animating && previousSection && previousSection.name === "Contact") ? "Home" : "Contact",
+      poi: 3,
+      delay: 0
+    },
+  ], [currentSection, animating, previousSection]);
+  
   
   useEffect(() => {
-    
     if (!animating) {
       
       for (let i = 1; i < navSections.length; i++) {
         
-        const h4: HTMLDivElement = document.getElementsByClassName(styles[`nav${i}`])[0] as HTMLDivElement;
+        const h4: HTMLDivElement = document.getElementsByClassName(styles.navElement)[i - 1] as HTMLDivElement;
         const section = navSections[i];
         
         if (!h4) return;
         
-        // if (currentSection && currentSection.name === "Home") {
-        //   h4.style.color = "black"
-        // } else if (currentSection) {
-        //   h4.style.color = "white"
+        // if (currentSection && currentSection.name === section.name) {
+        //
+        //   h4.innerHTML = "Home";
+        //
+        // } else if (h4.innerHTML === "Home") {
+        //
+        //   h4.innerHTML = section.name;
+        //
         // }
-        
-        if (currentSection && currentSection.name === section.name) {
-          
-          h4.innerHTML = "Home";
-          
-        } else if (h4.innerHTML === "Home") {
-          
-          h4.innerHTML = section.name;
-          
-        }
         
       }
       
@@ -94,21 +119,18 @@ export default function Nav(props: { viewHelpers?: boolean }) {
     
     const section = navSections[i],
       homeSection = navSections[0];
-    const thisButton = currentSection?.name === section.name;
+    const thisButton = section.name === "Home";
+    console.log(thisButton)
     navElements.push(
       <motion.h4
-        className={styles.navElement + " " + styles[`nav${i}`]}
+        className={`${styles.navElement}`}
         whileHover={navHover}
         whileTap={navTap}
         animate={{
           ...navAnimate,
           x: `${25 * (i - 1)}px`
         }}
-        transition={{
-          type: "spring",
-          stiffness: 400,
-          damping: 17
-        }}
+        transition={basicTransition}
         onClick={() => {
           
           setAnimationStatus(true);
@@ -124,7 +146,9 @@ export default function Nav(props: { viewHelpers?: boolean }) {
         }}
         key={i}
       >
-        {section.name}
+        <motion.p animate={colorAnimate} transition={{duration: 0.5, delay: 1}}>
+          {section.name}
+        </motion.p>
       </motion.h4>
     );
     
@@ -141,19 +165,18 @@ export default function Nav(props: { viewHelpers?: boolean }) {
     
   }, [activePosition.current]);
   
-  const inlineNav = (horizontal?: boolean) => ({
+  const inlineNav = useMemo(() => ({
     
     display: "flex",
-    flexDirection: horizontal ? "row" : "column",
+    flexDirection: activePosition.current !== "Home" ? "row" : "column",
     
-  });
+  }), [activePosition.current]);
   
-  const horizontalNav = activePosition.current !== "Home";
   return (
     <group>
       <Motion.group animate={navGroupAnimate}>
         <Html center>
-          <div style={inlineNav(horizontalNav) as Properties<string | number, string & Record<string, unknown>>}>
+          <div style={inlineNav as Properties<string | number, string & Record<string, unknown>>}>
             {navElements}
           </div>
         </Html>

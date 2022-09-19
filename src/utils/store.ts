@@ -67,7 +67,7 @@ export const useStore = create<StoreState>()((set: any, get: any) => {
     objectRendered: (id: string) => {
       
       if (get().loaded.includes(id) || id === "") return;
-      console.log("loaded: " + (get().loaded.length + 1) + "/" + get().loadTotal.length);
+      // console.log("loaded: " + (get().loaded.length + 1) + "/" + get().loadTotal.length);
       const newLoaded = get().loaded;
       newLoaded.push(id);
       set(
@@ -82,7 +82,7 @@ export const useStore = create<StoreState>()((set: any, get: any) => {
     objectQueued: (id: string) => {
       
       if (get().loadTotal.includes(id) || id === "") return;
-      console.log("queueing: " + (get().loadTotal.length + 1) + " items");
+      // console.log("queueing: " + (get().loadTotal.length + 1) + " items");
       const newLoadTotal = get().loadTotal;
       newLoadTotal.push(id);
       set(
