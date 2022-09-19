@@ -1,5 +1,5 @@
 import {GroupProps} from "@react-three/fiber";
-import {useTexture, Float} from "@react-three/drei";
+import {useTexture} from "@react-three/drei";
 import * as THREE from "three";
 
 export default function ProfileCard(props: GroupProps) {
@@ -8,8 +8,6 @@ export default function ProfileCard(props: GroupProps) {
   
   return (
     <group {...props}>
-      {/*@ts-ignore*/}
-      {/*<Float floatingRange={[0, 0.015]} floatIntensity={0.5}>*/}
       <mesh>
         <planeBufferGeometry args={[0.5, 0.25]}/>
         <meshStandardMaterial map={texture} side={THREE.DoubleSide}/>
@@ -18,7 +16,6 @@ export default function ProfileCard(props: GroupProps) {
         <boxBufferGeometry args={[0.5, 0.025, 0.25]}/>
         <meshStandardMaterial color="black"/>
       </mesh>
-      {/*</Float>*/}
     </group>
   )
   

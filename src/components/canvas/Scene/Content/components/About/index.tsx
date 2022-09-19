@@ -60,11 +60,7 @@ export default function About(props: { viewHelpers?: boolean }) {
           <Motion.group animate={profileAnimate} transition={basicTransition}>
             <ProfileCard/>
           </Motion.group>
-        </group>
-        <Html className={styles.htmlDiv} center>
-          <motion.div
-            className={styles.container}
-          >
+          <Html position-y={-0.35} center>
             <motion.div
               className={styles.cardBorder}
               animate={bioSummaryAnimate}
@@ -74,8 +70,9 @@ export default function About(props: { viewHelpers?: boolean }) {
                 About Me Summary
               </div>
             </motion.div>
-          </motion.div>
-        </Html>
+          </Html>
+        </group>
+      
       </Motion.group>
     </group>
   )

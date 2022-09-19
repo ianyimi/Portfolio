@@ -1,25 +1,6 @@
-.container {
-  width: 35%;
-  height: 100%;
-  border: 2px red dashed;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-  margin: 0 20px;
-}
-
-.htmlDiv {
-  width: 75vw;
-  height: 60vh;
-  border: 2px black dashed;
-  display: flex;
-  justify-content: flex-start;
-}
-
 .cardBorder {
-  width: 100%;
-  height: 40%;
+  width: 400px;
+  height: 200px;
   margin: 0 0 50px 0;
   background: none;
   display: flex;
