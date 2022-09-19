@@ -1,0 +1,28 @@
+.firstName {
+  font-size: 7em;
+  font-family: Bosch;
+  line-height: 0px;
+  margin-right: 325px;
+}
+
+.lastName {
+  font-size: 7em;
+  font-family: Bosch;
+  line-height: 0px;
+  margin-left: 325px;
+}
+
+.navElement {
+  font-size: 3em;
+  font-family: Nafta;
+  margin-top: 25px;
+  cursor: pointer;
+}
+
+.nav2 {
+  margin-left: 25px;
+}
+
+.nav3 {
+  margin-left: 50px;
+}

@@ -1,0 +1,10 @@
+.navElement {
+  font-size: 3em;
+  font-family: Nafta;
+  margin-top: 25px;
+  cursor: pointer;
+}
+
+.white {
+  color: white;
+}
