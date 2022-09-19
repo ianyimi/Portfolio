@@ -15,7 +15,7 @@ export const INTERESTS = [
     subject: "Music",
     model: `${s3Models}/headphones-1663535247/headphones.glb.gz`,
     scaleFactor: 0.0075,
-    info: "Music is something I could not live without. I mostly spe"
+    info: "Music is something I could not live without. Recently I have spent more of my free time building playlists, but I have also have a little production experience."
   },
   {
     id: 2,
@@ -31,6 +31,6 @@ export const INTERESTS = [
     subject: "Anime",
     model: `${s3Models}/meramera-1663535197/meramera.glb.gz`,
     scaleFactor: 0.1,
-    info: "i like anime"
+    info: "Anime is my favorite media to consume, of which my all time favorite is Eiichiro Oda's One Piece. Slowly but surely I am conquering everything on my watch list."
   }
 ];

@@ -7,9 +7,11 @@ title: headphones
 */
 
 import * as THREE from 'three'
-import React, {useRef} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {useGLTF} from '@react-three/drei'
 import {GLTF} from 'three/examples/jsm/loaders/GLTFLoader'
+import {useStore} from "utils/store";
+import {v4 as uuidv4} from "uuid";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -39,8 +41,24 @@ type GLTFResult = GLTF & {
 const FILE_URL = "https://dqeczc7c9n9n1.cloudfront.net/models/headphones-1663535247/headphones.glb.gz";
 
 export default function Model(props: JSX.IntrinsicElements['group']) {
+  
   const group = useRef<THREE.Group>()
+  const [uuid] = useState(uuidv4());
+  
+  const {objectQueued, objectRendered} = useStore(state => ({
+    objectQueued: state.objectQueued,
+    objectRendered: state.objectRendered
+  }))
+  objectQueued("headphones");
+  
   const {nodes, materials} = useGLTF(FILE_URL) as GLTFResult
+  
+  useEffect(() => {
+    
+    objectRendered("headphones")
+    
+  }, [nodes]);
+  
   return (
     <group ref={group} {...props} dispose={null}>
       <group name="Sketchfab_Scene">

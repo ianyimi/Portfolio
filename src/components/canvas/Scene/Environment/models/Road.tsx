@@ -8,6 +8,7 @@ import {useGLTF} from '@react-three/drei'
 import {GLTF} from 'three/examples/jsm/loaders/GLTFLoader'
 import {useFrame, useThree} from "@react-three/fiber";
 import {useLimiter} from "spacesvr";
+import {useStore} from "@/utils/store";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -38,7 +39,21 @@ export default function Model(props: { speed: number } & JSX.IntrinsicElements['
   const group = useRef<THREE.Group>();
   const streetWithBars = useRef<THREE.Group>();
   const streetWithoutBars = useRef<THREE.Group>();
-  const {nodes, materials} = useGLTF(FILE_URL) as GLTFResult
+  
+  const {objectQueued, objectRendered} = useStore(state => ({
+    objectQueued: state.objectQueued,
+    objectRendered: state.objectRendered
+  }))
+  objectQueued("road");
+  
+  const {nodes, materials} = useGLTF(FILE_URL) as GLTFResult;
+  
+  useEffect(() => {
+    
+    objectRendered("road")
+    
+  }, [nodes]);
+  
   const respawnWithBars = 240,
     respawnWithoutBars = 215,
     respawn = respawnWithBars / 2 + respawnWithoutBars / 2;

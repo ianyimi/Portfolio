@@ -1,6 +1,6 @@
 import {motion as Motion} from "framer-motion-3d";
-import {useStore} from "@/utils/store";
-import React, {useRef, useState} from "react";
+import {useStore} from "utils/store";
+import React, {useEffect, useRef, useState} from "react";
 import * as THREE from "three";
 import {useFrame} from "@react-three/fiber";
 import {useLimiter} from "spacesvr";
@@ -25,17 +25,28 @@ type GLTFResult = GLTF & {
 export default function Link(props: { index: number, social: any, viewHelpers?: boolean }) {
   
   const {index, social, viewHelpers = false} = props;
+  
+  const {currentSection, previousSection, animating, objectQueued, objectRendered} = useStore(state => ({
+    currentSection: state.currentSection,
+    previousSection: state.previousSection,
+    animating: state.animating,
+    objectQueued: state.objectQueued,
+    objectRendered: state.objectRendered
+  }));
+  objectQueued(social.modelMeshName);
+  const active = currentSection && currentSection.name === "Contact";
+  
   const {nodes, materials} = useGLTF(social.model) as GLTFResult
   const [hover, setHover] = useState(false);
   const click = useRef<HTMLDivElement>(null);
   const floatGroup = useRef<THREE.Group>();
-  const {currentSection, previousSection, animating} = useStore(state => ({
-    currentSection: state.currentSection,
-    previousSection: state.previousSection,
-    animating: state.animating,
-  }));
   
-  const active = currentSection && currentSection.name === "Contact";
+  
+  useEffect(() => {
+    
+    objectRendered(social.modelMeshName)
+    
+  }, [nodes]);
   
   const groupAnimate = {
     scale: active && !animating ? hover ? 1.25 : 1 : 0,

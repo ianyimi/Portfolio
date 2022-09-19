@@ -1,8 +1,5 @@
-import Tunnel3 from "../models/Tunnel";
-import Road from "../models/Newroad";
+import Road from "../models/Road";
 import {useRef} from "react";
-import {useLimiter} from "spacesvr";
-import {useFrame} from "@react-three/fiber";
 import * as THREE from "three";
 
 export default function EnvironmentHandler() {
