@@ -7,7 +7,7 @@ export const INTERESTS = [
     model: `${s3Models}/eth-1663535083/eth.glb.gz`,
     scaleFactor: 0.025,
     color: "#3c3c3d",
-    info: "I like nfts"
+    info: "The world of Web3 quickly became an obsession of mine when I first discovered it last year. I love keeping up with new tech in the space and look forward to seeing how it evolves."
   },
   {
     id: 1,
@@ -15,7 +15,7 @@ export const INTERESTS = [
     subject: "Music",
     model: `${s3Models}/headphones-1663535247/headphones.glb.gz`,
     scaleFactor: 0.0075,
-    info: "i like music"
+    info: "Music is something I could not live without. I mostly spe"
   },
   {
     id: 2,
@@ -23,7 +23,7 @@ export const INTERESTS = [
     subject: "Soccer",
     model: `${s3Models}/brazuca-1663535171/brazuca.glb.gz`,
     scaleFactor: 0.015,
-    info: "i like soccer"
+    info: "I grew up playing a lot of sports, of which my favorite is Soccer. Every so often I'll participate in a pick up game around the area. "
   },
   {
     id: 3,
