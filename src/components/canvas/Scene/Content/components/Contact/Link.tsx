@@ -1,6 +1,6 @@
 import {motion as Motion} from "framer-motion-3d";
 import {useStore} from "@/utils/store";
-import {useRef, useState} from "react";
+import React, {useRef, useState} from "react";
 import * as THREE from "three";
 import {useFrame} from "@react-three/fiber";
 import {useLimiter} from "spacesvr";
@@ -17,7 +17,9 @@ type GLTFResult = GLTF & {
     Instagram001?: THREE.Mesh,
     Twitter?: THREE.Mesh
   }
-  materials: {}
+  materials: {
+    Gradient: THREE.MeshStandardMaterial
+  }
 }
 
 export default function Link(props: { index: number, social: any, viewHelpers?: boolean }) {
@@ -26,7 +28,6 @@ export default function Link(props: { index: number, social: any, viewHelpers?: 
   const {nodes, materials} = useGLTF(social.model) as GLTFResult
   const [hover, setHover] = useState(false);
   const click = useRef<HTMLDivElement>(null);
-  const mesh = useRef<THREE.Mesh>();
   const floatGroup = useRef<THREE.Group>();
   const {currentSection, previousSection, animating} = useStore(state => ({
     currentSection: state.currentSection,
@@ -48,6 +49,7 @@ export default function Link(props: { index: number, social: any, viewHelpers?: 
     window.open(social.href, "_blank");
   }
   
+  // Float Link - sourced from Drei Float component
   const speed = 2;
   const rotationIntensity = 1;
   const floatIntensity = 1;
@@ -56,9 +58,8 @@ export default function Link(props: { index: number, social: any, viewHelpers?: 
   const limiter = useLimiter(45);
   useFrame(({clock}) => {
     
-    if (!limiter.isReady(clock) || !floatGroup.current || !mesh.current) return;
+    if (!limiter.isReady(clock) || !floatGroup.current) return;
     
-    // Float Link - sourced from Drei Float component
     const t = offset.current + clock.getElapsedTime();
     floatGroup.current.rotation.x = (Math.cos((t / 4) * speed) / 8) * rotationIntensity;
     floatGroup.current.rotation.y = (Math.sin((t / 4) * speed) / 8) * rotationIntensity;
@@ -87,7 +88,6 @@ export default function Link(props: { index: number, social: any, viewHelpers?: 
         <Motion.group
           animate={meshAnimate}
           transition={{delay: active ? 0.5 : 0}}
-          ref={mesh}
           onPointerOver={() => setHover(true)}
           onPointerOut={() => setHover(false)}
         >
@@ -102,14 +102,12 @@ export default function Link(props: { index: number, social: any, viewHelpers?: 
             </mesh>
             {social.modelMeshName === "Instagram" &&
               <mesh
-                geometry={nodes[`${social.modelMeshName}001`].geometry}
-                position={[0, -0.95, 0]}
-                scale={[1, 1.6295, 1]}
-                castShadow
-                receiveShadow
-              >
-                <meshStandardMaterial color={social.baseColor} side={THREE.DoubleSide}/>
-              </mesh>}
+                name="Instagram001"
+                geometry={nodes.Instagram001.geometry}
+                material={materials.Gradient}
+                scale={1}
+              />
+            }
           </group>
           <Html center>
             <div

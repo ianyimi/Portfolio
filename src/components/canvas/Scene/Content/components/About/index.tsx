@@ -3,6 +3,8 @@ import {Html} from "@react-three/drei";
 import {motion} from "framer-motion";
 import {useStore} from "@/utils/store";
 import styles from "./index.module.css";
+import {INTERESTS} from "./constants";
+import Interest from "./Interest";
 
 export default function About(props: { viewHelpers?: boolean }) {
   
@@ -14,6 +16,7 @@ export default function About(props: { viewHelpers?: boolean }) {
     animating: state.animating,
   }));
   const active = currentSection && currentSection.name === "About";
+  const interests = [];
   
   const aboutGroupAnimate = {
     x: 1,
@@ -30,7 +33,7 @@ export default function About(props: { viewHelpers?: boolean }) {
     delay: active ? 0.3 : 0,
     duration: active ? 0.75 : 0.25,
     when: "beforeChildren",
-    staggerChildren: 0.3
+    staggerChildren: 0.5
   }
   
   const bioImageAnimate = {
@@ -64,13 +67,20 @@ export default function About(props: { viewHelpers?: boolean }) {
     x: active && !animating ? 0 : "-30px"
   }
   
+  for (let i = 0; i < INTERESTS.length; i++) {
+    interests.push(
+      <Interest data={INTERESTS[i]} index={i} key={i}/>
+    )
+  }
+  
   return (
     <group>
       <Motion.group animate={aboutGroupAnimate}>
-        <mesh>
-          <boxBufferGeometry args={[0.1, 0.1, 0.1]}/>
-          <meshBasicMaterial color="blue" visible={viewHelpers}/>
-        </mesh>
+        {/*<mesh>*/}
+        {/*  <boxBufferGeometry args={[0.1, 0.1, 0.1]}/>*/}
+        {/*  <meshBasicMaterial color="blue" visible={viewHelpers}/>*/}
+        {/*</mesh>*/}
+        {interests}
         <Html className={styles.htmlDiv} center>
           <motion.div
             className={styles.container}
@@ -89,14 +99,7 @@ export default function About(props: { viewHelpers?: boolean }) {
               About Me Summary
             </motion.div>
           </motion.div>
-          <motion.ul
-            className={styles.container}
-          >
-            <motion.li animate={subjectAnimateLeft}>NFT</motion.li>
-            <motion.li animate={subjectAnimateRight}>Music</motion.li>
-            <motion.li animate={subjectAnimateLeft}>Soccer</motion.li>
-            <motion.li animate={subjectAnimateRight}>Anime</motion.li>
-          </motion.ul>
+          <motion.ul className={styles.container}/>
         </Html>
       </Motion.group>
     </group>
