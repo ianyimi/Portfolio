@@ -2,7 +2,7 @@ import {GroupProps} from "@react-three/fiber";
 import EnvironmentHandler from "./components/EnvironmentHandler";
 import CustomFog from "./components/CustomFog";
 import SL190 from "./models/SL190";
-import SL1909v1 from "./models/SL1909v1";
+// import Sl1909v1 from "./models/Sl1909v1";
 import {Suspense} from "react";
 import {Stars, Sky} from "@react-three/drei";
 
