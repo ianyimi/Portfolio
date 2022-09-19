@@ -5,6 +5,7 @@ import {useStore} from "@/utils/store";
 import styles from "./index.module.css";
 import {INTERESTS} from "./constants";
 import Interest from "./Interest";
+import ProfileCard from "./ProfileCard";
 
 export default function About(props: { viewHelpers?: boolean }) {
   
@@ -16,24 +17,22 @@ export default function About(props: { viewHelpers?: boolean }) {
     animating: state.animating,
   }));
   const active = currentSection && currentSection.name === "About";
-  const interests = [];
   
-  const aboutGroupAnimate = {
+  const interests = [];
+  for (let i = 0; i < INTERESTS.length; i++) {
+    interests.push(
+      <Interest data={INTERESTS[i]} index={i} key={i}/>
+    )
+  }
+  
+  const groupAnimate = {
     x: 1,
     y: active || (previousSection && previousSection.name === "About" && animating) ? 1.2 : 3,
     z: -0.25
   };
   
-  const summaryAnimate = {
-    x: active && !animating ? 0 : "30px",
-    opacity: active && !animating ? 1 : 0
-  }
-  
-  const basicTransition = {
-    delay: active ? 0.3 : 0,
-    duration: active ? 0.75 : 0.25,
-    when: "beforeChildren",
-    staggerChildren: 0.5
+  const profileAnimate = {
+    scale: active && !animating ? 1 : 0
   }
   
   const bioImageAnimate = {
@@ -46,60 +45,36 @@ export default function About(props: { viewHelpers?: boolean }) {
     opacity: active && !animating ? 1 : 0
   }
   
-  const subjectContainerAnimate = {
-    opacity: active || (previousSection && previousSection.name === "About" && animating) ? 1 : 0,
-  }
-  
-  const subjectContainerTransition = {
+  const basicTransition = {
     delay: active ? 0.3 : 0,
     duration: active ? 0.75 : 0.25,
     when: "beforeChildren",
-    staggerChildren: 0.3
-  }
-  
-  const subjectAnimateLeft = {
-    opacity: active && !animating ? 1 : 0,
-    x: active && !animating ? 0 : "30px"
-  }
-  
-  const subjectAnimateRight = {
-    opacity: active && !animating ? 1 : 0,
-    x: active && !animating ? 0 : "-30px"
-  }
-  
-  for (let i = 0; i < INTERESTS.length; i++) {
-    interests.push(
-      <Interest data={INTERESTS[i]} index={i} key={i}/>
-    )
+    staggerChildren: 0.5
   }
   
   return (
     <group>
-      <Motion.group animate={aboutGroupAnimate}>
-        {/*<mesh>*/}
-        {/*  <boxBufferGeometry args={[0.1, 0.1, 0.1]}/>*/}
-        {/*  <meshBasicMaterial color="blue" visible={viewHelpers}/>*/}
-        {/*</mesh>*/}
+      <Motion.group animate={groupAnimate}>
         {interests}
+        <group position={[0.375, 0.2, -0.1]}>
+          <Motion.group animate={profileAnimate} transition={basicTransition}>
+            <ProfileCard/>
+          </Motion.group>
+        </group>
         <Html className={styles.htmlDiv} center>
           <motion.div
             className={styles.container}
           >
             <motion.div
-              // className={styles.}
-              animate={bioImageAnimate}
-              transition={basicTransition}
-            >
-              About Me Image
-            </motion.div>
-            <motion.div
+              className={styles.cardBorder}
               animate={bioSummaryAnimate}
               transition={basicTransition}
             >
-              About Me Summary
+              <div className={styles.cardContent}>
+                About Me Summary
+              </div>
             </motion.div>
           </motion.div>
-          <motion.ul className={styles.container}/>
         </Html>
       </Motion.group>
     </group>

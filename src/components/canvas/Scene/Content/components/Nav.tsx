@@ -29,7 +29,7 @@ export default function Nav(props: { viewHelpers?: boolean }) {
   
   const htmlPositions: Record<string, Vector3> = {
     Home: new Vector3(2.75, 0.35, -0.25),
-    About: new Vector3(1, 1.8, 0),
+    About: new Vector3(1, 1.85, 0),
     Work: new Vector3(0.25, 1.35, 0),
     Contact: new Vector3(3.5, 0.1, 0.6)
   };

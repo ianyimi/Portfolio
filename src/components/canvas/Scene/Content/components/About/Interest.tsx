@@ -55,7 +55,6 @@ export default function Interest(props: { data: Record<string, any>, index: numb
     
     const t = offset.current + clock.getElapsedTime();
     floatGroup.current.rotation.x = (Math.cos((t / 4) * speed) / 8) * rotationIntensity;
-    // floatGroup.current.rotation.y = (Math.sin((t / 4) * speed) / 8) * rotationIntensity;
     floatGroup.current.rotation.z = (Math.sin((t / 4) * speed) / 20) * rotationIntensity;
     let yPosition = (Math.sin((t / 4) * speed) / 10);
     yPosition = THREE.MathUtils.mapLinear(yPosition, -0.1, 0.1, floatingRange?.[0] ?? -0.1, floatingRange?.[1] ?? 0.1) - 0.075;
