@@ -5,9 +5,9 @@ import Contact from "./components/Contact";
 import About from "./components/About";
 
 export default function Content() {
-
-  const viewHelpers = true;
-
+  
+  const viewHelpers = false;
+  
   return (
     <group>
       <Nav viewHelpers={viewHelpers}/>
@@ -17,5 +17,5 @@ export default function Content() {
       <Contact viewHelpers={viewHelpers}/>
     </group>
   );
-
+  
 }
