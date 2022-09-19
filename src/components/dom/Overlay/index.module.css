@@ -8,6 +8,7 @@
   height: 100vh;
   font-size: 1.5em;
   font-family: Bosch;
+  padding: 50px;
   display: flex;
   flex-direction: column;
   justify-content: center;
