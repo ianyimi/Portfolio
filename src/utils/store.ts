@@ -7,6 +7,8 @@ export type StoreState = {
   os: string | undefined,
   enter: boolean,
   toggleEnter: () => void,
+  mainSkyColor: Vector3,
+  accentSkyColor: Vector3,
   storyControls: any,
   setControls: (controls: any) => void,
   currentSection: { name: string, poi: number, delay: number } | null,
@@ -47,6 +49,8 @@ export const useStore = create<StoreState>()((set: any, get: any) => {
     os: os,
     enter: false,
     toggleEnter: () => set(() => ({enter: true})),
+    mainSkyColor: new Vector3(0.2, 0.4, 0.6),
+    accentSkyColor: new Vector3(0.4, 0.7, 1.0),
     storyControls: undefined,
     setControls: (controls: any) => {
       
