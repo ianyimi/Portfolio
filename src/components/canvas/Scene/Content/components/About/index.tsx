@@ -67,8 +67,8 @@ export default function About(props: { viewHelpers?: boolean }) {
               transition={basicTransition}
             >
               <div className={styles.cardContent}>
-                I am Isaiah Anyimi. Not just any react developer, here are some other things I often partake in while
-                not building something new.
+                I am Isaiah Anyimi, not only a react developer. Here are some other things I often partake in
+                while not building something new.
               </div>
             </motion.div>
           </Html>
