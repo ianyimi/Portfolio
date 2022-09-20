@@ -7,10 +7,10 @@ import {useStore} from "@/utils/store";
 import shallow from "zustand/shallow";
 
 const COUNT = 500;
-const X_RANGE = 10;
-const Z_RANGE = 16;
+const X_RANGE = 50;
+const Z_RANGE = 50;
 const XZ_POW = 1.2;
-const Y_RANGE = 7;
+const Y_RANGE = 25;
 const Y_POW = 2;
 const SCALE = 30;
 

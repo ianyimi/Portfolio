@@ -10,7 +10,8 @@ export const useParticleMaterial = (
   shaderParams?: Partial<ShaderMaterialParameters>
 ) => {
   
-  const {hexToVec3} = useStore((state) => ({
+  const {fog, hexToVec3} = useStore((state) => ({
+    fog: state.fog,
     hexToVec3: state.hexToVec3,
   }), shallow);
   
@@ -19,8 +20,10 @@ export const useParticleMaterial = (
       new ShaderMaterial({
         uniforms: {
           time: new Uniform(0),
-          color: new Uniform(hexToVec3("#000000")),
-          fogColor: new Uniform(hexToVec3("#aaaaff")),
+          color: new Uniform(hexToVec3(fog.accent)),
+          fogColor: new Uniform(hexToVec3(fog.color)),
+          fogNear: new Uniform(fog.near),
+          fogFar: new Uniform(fog.far),
         },
         vertexShader: vert,
         fragmentShader: frag,

@@ -11,9 +11,9 @@ export const useCloudySkyMaterial = (
   shaderParams?: Partial<ShaderMaterialParameters>
 ) => {
   
-  const {mainSkyColor, accentSkyColor, hexToVec3} = useStore((state) => ({
-    mainSkyColor: state.mainSkyColor,
-    accentSkyColor: state.accentSkyColor,
+  const {skyColor, fog, hexToVec3} = useStore((state) => ({
+    skyColor: state.skyColor,
+    fog: state.fog,
     hexToVec3: state.hexToVec3,
   }), shallow);
   
@@ -23,8 +23,10 @@ export const useCloudySkyMaterial = (
         uniforms: {
           time: new Uniform(0),
           resolution: new Uniform(new THREE.Vector2(window.innerWidth, window.innerHeight)),
-          color: new Uniform(mainSkyColor),
-          fogColor: new Uniform(accentSkyColor),
+          color: new Uniform(hexToVec3(skyColor)),
+          fogColor: new Uniform(hexToVec3(fog.color)),
+          fogNear: new Uniform(fog.near),
+          fogFar: new Uniform(fog.far),
         },
         vertexShader: vert,
         fragmentShader: frag,

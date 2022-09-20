@@ -5,6 +5,10 @@ precision highp int;
 
 uniform float time;
 uniform vec3 color;
+uniform vec3 fogColor;
+uniform float fogNear;
+uniform float fogFar;
+uniform vec2 resolution;
 
 varying vec2 vUv;
 
@@ -63,35 +67,38 @@ float clouds (vec2 uv)
 void main()
 {
   vec2 fragCoord = vUv;
-  vec2 iResolution = vec2(1.0, 1.0);
-  vec2 uv = fragCoord.xy / iResolution.xy;
+  vec2 uv = vUv;
   vec2 ouv = uv;
   uv -= vec2(0.5);
-  uv.y /= iResolution.x / iResolution.y;
+  uv.y /= resolution.x / resolution.y;
   vec2 _uv = uv * 0.007;
 
   // clouds
   float x = clouds(_uv);
   // sky colors
-  vec4 top = vec4(0.1, 0.45, 0.9, 0.0) * .6;
-  vec4 bottom = vec4(0., 0.45, .7, 0.0) * 1.2;
-  vec4 fragColor = mix(bottom, top, smoothstep(0., .7, ouv.y));
+  //  vec4 top = vec4(0.1, 0.45, 0.9, 0.0) * .6;
+  //  vec4 bottom = vec4(0., 0.45, .7, 0.0) * 1.2;
+  vec4 fragColor = vec4(color, 1.0);
 
   // clouds color
   fragColor += x;
   fragColor = mix(vec4(x), fragColor, 1. - x);
 
   // some fake lighting
-  vec2 ld = .005 * normalize(vec2(1.0, 1.)) * fwidth(uv);
-  float f = .0;
-  const int steps = 4;
-  for (int i = 1; i <= steps; ++i)
-  {
-    float c = clouds(_uv - float(i * i) * ld) * pow(0.55, float(i));
-    f += max(c, 0.0);
-  }
-  f = clamp(f, 0.0, 1.0);
-  f = 1.0 - f;
+  //  vec2 ld = .005 * normalize(vec2(1.0, 1.)) * fwidth(uv);
+  //  float f = .0;
+  //  const int steps = 4;
+  //  for (int i = 1; i <= steps; ++i)
+  //  {
+  //    float c = clouds(_uv - float(i * i) * ld) * pow(0.55, float(i));
+  //    f += max(c, 0.0);
+  //  }
+  //  f = clamp(f, 0.0, 1.0);
+  //  f = 1.0 - f;
 
-  gl_FragColor = vec4(vec3((f) * x * 1.5), 1.0)+vec4(color, 1.0);//mix(vec4(f) * x * .5,vec4(color,1.0), .5);
+  gl_FragColor = fragColor;//mix(vec4(f) * x * .5,vec4(color,1.0), .5);
+
+  // account for fog
+  float h = 0.5;// adjust position of middleColor
+  gl_FragColor = mix(mix(vec4(fogColor, 1.0), gl_FragColor, vUv.x/h - 1.), mix(gl_FragColor, vec4(fogColor, 1.0), (vUv.x - h)/(2.0 - h)), step(h, vUv.x));
 }

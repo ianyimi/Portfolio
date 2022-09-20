@@ -1,20 +1,26 @@
 import Road from "../models/Road";
 import {useRef} from "react";
 import * as THREE from "three";
+import AmbientParticles from "./AmbientParticles";
+import FogClouds from "./FogClouds";
+import {useFrame} from "@react-three/fiber";
+import {useLimiter} from "spacesvr";
 
 export default function EnvironmentHandler() {
   
-  const tunnelOne = useRef<THREE.Group>();
-  const tunnelTwo = useRef<THREE.Group>();
+  const speed = 0.2;
   
-  const speed = 0.35;
-  
+  const limiter = useLimiter(45);
+  useFrame(({clock}) => {
+    if (!limiter.isReady(clock)) return;
+    
+  })
   
   return (
     
     <group>
-      {/*<Tunnel3 ref={bridgeOne} />*/}
-      {/*<Tunnel3 position-x={tunnelRespawn} ref={bridgeTwo} />*/}
+      <AmbientParticles position-y={1.25}/>
+      {/*<FogClouds position={[0, 1, 0]}/>*/}
       <Road speed={speed}/>
     </group>
   

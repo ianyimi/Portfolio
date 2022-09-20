@@ -1,10 +1,9 @@
 precision highp float;
 
-#define fogNear 1.
-#define fogFar 2.5
-
 uniform vec3 color;
 uniform vec3 fogColor;
+uniform float fogNear;
+uniform float fogFar;
 
 
 void main() {

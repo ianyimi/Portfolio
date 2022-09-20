@@ -23,6 +23,9 @@ export default function CloudySky(props: GroupProps) {
       <mesh rotation-x={-Math.PI / 2} material={skyMat}>
         <planeBufferGeometry args={[300, 300]}/>
       </mesh>
+      {/*<mesh>*/}
+      
+      {/*</mesh>*/}
     </group>
   )
   

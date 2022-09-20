@@ -85,7 +85,7 @@ export default function Model(props: JSX.IntrinsicElements['group']) {
       
       if (!action) continue;
       // @ts-ignore
-      action.setEffectiveTimeScale(1.75).play();
+      action.setEffectiveTimeScale(1.25).play();
       
     }
     
