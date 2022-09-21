@@ -51,7 +51,7 @@ export const useStore = create<StoreState>()((set: any, get: any) => {
     toggleEnter: () => set(() => ({enter: true})),
     skyColor: "#B0BAB8",
     fog: {
-      near: 3,
+      near: 10,
       far: 20,
       // color: "#BCC8C6",
       color: "#C2C8C7",

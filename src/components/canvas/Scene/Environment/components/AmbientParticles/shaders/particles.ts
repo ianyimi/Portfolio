@@ -20,7 +20,7 @@ export const useParticleMaterial = (
       new ShaderMaterial({
         uniforms: {
           time: new Uniform(0),
-          color: new Uniform(hexToVec3(fog.color)),
+          color: new Uniform(hexToVec3(fog.accent)),
           fogColor: new Uniform(hexToVec3(fog.color)),
           fogNear: new Uniform(fog.near),
           fogFar: new Uniform(fog.far),

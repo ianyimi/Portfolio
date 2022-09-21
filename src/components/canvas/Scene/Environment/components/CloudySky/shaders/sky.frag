@@ -1,155 +1,107 @@
 //#extension GL_OES_standard_derivatives : enable
 
-uniform highp float radius;
-uniform highp float time;
-uniform int num_colors;
-uniform highp float colors[100];
-varying vec3 absPosition;
+precision highp float;
+precision highp int;
 
-//
-// Description : Array and textureless GLSL 2D/3D/4D simplex
-//               noise functions.
-//      Author : Ian McEwan, Ashima Arts.
-//  Maintainer : ijm
-//     Lastmod : 20110822 (ijm)
-//     License : Copyright (C) 2011 Ashima Arts. All rights reserved.
-//               Distributed under the MIT License. See LICENSE file.
-//               https://github.com/ashima/webgl-noise
-//
+uniform float time;
+uniform vec3 color;
+uniform vec3 fogColor;
+uniform float fogNear;
+uniform float fogFar;
+uniform vec2 resolution;
 
-vec3 mod289(vec3 x) {
-  return x - floor(x * (1.0 / 289.0)) * 289.0;
-}
+varying vec2 vUv;
 
-vec4 mod289(vec4 x) {
-  return x - floor(x * (1.0 / 289.0)) * 289.0;
-}
-
-vec4 permute(vec4 x) {
-  return mod289(((x*34.0)+1.0)*x);
-}
-
-vec4 taylorInvSqrt(vec4 r)
+float cloudyNoise(vec2 uv)
 {
-  return 1.79284291400159 - 0.85373472095314 * r;
+  float sx = cos(500. * uv.x);
+  float sy = sin(500. * uv.y);
+  sx = mix(sx, cos(uv.y * 1000.), .5);
+  sy = mix(sy, sin(uv.x * 1000.), .5);
+
+  vec2 b = (vec2(sx, sy));
+  vec2 bn = normalize(b);
+
+  vec2 _b = b;
+  b.x = _b.x * bn.x - _b.y * bn.y;
+  b.y = _b.x * bn.y + _b.y * bn.x;
+  vec2 l = uv - vec2(sin(b.x), cos(b.y));
+  return length(l - b) - 0.5;
 }
 
-float snoise(vec3 v)
+float cloudyFbm(vec2 uv)
 {
-  const vec2  C = vec2(1.0/6.0, 1.0/3.0);
-  const vec4  D = vec4(0.0, 0.5, 1.0, 2.0);
+  float f = 0.0;
+  vec2 _uv = uv;
+  vec2 rotator = (vec2(.91, 1.5));
 
-  // First corner
-  vec3 i  = floor(v + dot(v, C.yyy));
-  vec3 x0 =   v - i + dot(i, C.xxx);
-
-  // Other corners
-  vec3 g = step(x0.yzx, x0.xyz);
-  vec3 l = 1.0 - g;
-  vec3 i1 = min(g.xyz, l.zxy);
-  vec3 i2 = max(g.xyz, l.zxy);
-
-  //   x0 = x0 - 0.0 + 0.0 * C.xxx;
-  //   x1 = x0 - i1  + 1.0 * C.xxx;
-  //   x2 = x0 - i2  + 2.0 * C.xxx;
-  //   x3 = x0 - 1.0 + 3.0 * C.xxx;
-  vec3 x1 = x0 - i1 + C.xxx;
-  vec3 x2 = x0 - i2 + C.yyy;// 2.0*C.x = 1/3 = C.y
-  vec3 x3 = x0 - D.yyy;// -1.0+3.0*C.x = -0.5 = -D.y
-
-  // Permutations
-  i = mod289(i);
-  vec4 p = permute(permute(permute(
-  i.z + vec4(0.0, i1.z, i2.z, 1.0))
-  + i.y + vec4(0.0, i1.y, i2.y, 1.0))
-  + i.x + vec4(0.0, i1.x, i2.x, 1.0));
-
-  // Gradients: 7x7 points over a square, mapped onto an octahedron.
-  // The ring size 17*17 = 289 is close to a multiple of 49 (49*6 = 294)
-  float n_ = 0.142857142857;// 1.0/7.0
-  vec3  ns = n_ * D.wyz - D.xzx;
-
-  vec4 j = p - 49.0 * floor(p * ns.z * ns.z);//  mod(p,7*7)
-
-  vec4 x_ = floor(j * ns.z);
-  vec4 y_ = floor(j - 7.0 * x_);// mod(j,N)
-
-  vec4 x = x_ *ns.x + ns.yyyy;
-  vec4 y = y_ *ns.x + ns.yyyy;
-  vec4 h = 1.0 - abs(x) - abs(y);
-
-  vec4 b0 = vec4(x.xy, y.xy);
-  vec4 b1 = vec4(x.zw, y.zw);
-
-  //vec4 s0 = vec4(lessThan(b0,0.0))*2.0 - 1.0;
-  //vec4 s1 = vec4(lessThan(b1,0.0))*2.0 - 1.0;
-  vec4 s0 = floor(b0)*2.0 + 1.0;
-  vec4 s1 = floor(b1)*2.0 + 1.0;
-  vec4 sh = -step(h, vec4(0.0));
-
-  vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy;
-  vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww;
-
-  vec3 p0 = vec3(a0.xy, h.x);
-  vec3 p1 = vec3(a0.zw, h.y);
-  vec3 p2 = vec3(a1.xy, h.z);
-  vec3 p3 = vec3(a1.zw, h.w);
-
-  //Normalise gradients
-  vec4 norm = taylorInvSqrt(vec4(dot(p0, p0), dot(p1, p1), dot(p2, p2), dot(p3, p3)));
-  p0 *= norm.x;
-  p1 *= norm.y;
-  p2 *= norm.z;
-  p3 *= norm.w;
-
-  // Mix final noise value
-  vec4 m = max(0.6 - vec4(dot(x0, x0), dot(x1, x1), dot(x2, x2), dot(x3, x3)), 0.0);
-  m = m * m;
-  return 42.0 * dot(m*m, vec4(dot(p0, x0), dot(p1, x1),
-  dot(p2, x2), dot(p3, x3)));
+  for (int i = 0; i < 5; ++i)
+  {
+    vec2 tmp = uv;
+    uv.x = tmp.x * rotator.x - tmp.y * rotator.y;
+    uv.y = tmp.x * rotator.y + tmp.y * rotator.x;
+    f += .5 * cloudyNoise(uv) * pow(0.5, float(i + 1));
+  }
+  return f;
 }
 
-float get_mix(int index, float noise) {
-  highp float lastPerc = float(index*3 - 1) / float(num_colors);
-  highp float thisPerc = float(index*3) / float(num_colors);
-  highp float height = ((absPosition.y + radius) / 2.) / (radius);
-  return smoothstep(lastPerc, thisPerc, height + noise * 0.1);
+float clouds (vec2 uv)
+{
+  float T = time * .0005;
+
+  float x = 0.0;
+  x += cloudyFbm(0.5 * uv + vec2(.1, -.01) * T) * 0.5;
+  x += cloudyFbm(1.0 * uv + vec2(.12, .03) * T) * 0.5 * 0.5;
+  x += cloudyFbm(2.0 * uv + vec2(.15, -.02) * T) * 0.5 * 0.5 * 0.5;
+  x += cloudyFbm(4.0 * uv + vec2(.2, .01) * T) * 0.5 * 0.5 * 0.5 * 0.5;
+  x += cloudyFbm(8.0 * uv + vec2(.15, -.01) * T) * 0.5 * 0.5 * 0.5 * 0.5 * 0.5;
+
+  x = smoothstep(0.0, .6, x);
+  float f = 0.05;
+  x = (x - f) / (1.0 - f);
+  float _x = x;
+  x = smoothstep(0.4, 0.55, x);
+  return x * _x;
 }
 
-void main() {
-  highp float yCoord = (gl_FragCoord.y / gl_FragCoord.w);
-  highp float height = ((absPosition.y + radius) / 2.) / (radius);
+void main()
+{
+  vec2 fragCoord = vUv;
+  vec2 uv = vUv;
+  vec2 ouv = uv;
+  uv -= vec2(0.5);
+  uv.y /= resolution.x / resolution.y;
+  vec2 _uv = uv * 0.007;
 
-  highp float noise_smooth = snoise((absPosition * 0.01)+ time*0.1);
-  highp float noise_rough = snoise((absPosition * 0.1)+ time*0.45);
+  // clouds
+  float x = clouds(_uv);
+  // sky colors
+  //  vec4 top = vec4(0.1, 0.45, 0.9, 0.0) * .6;
+  //  vec4 bottom = vec4(0., 0.45, .7, 0.0) * 1.2;
+  vec4 fragColor = vec4(color, 1.0);
 
+  // clouds color
+  fragColor += x;
+  fragColor = mix(vec4(x), fragColor, 1. - x);
 
-  // color 0
-  vec3 color = vec3(colors[0], colors[1], colors[2]);
+  // some fake lighting
+  //  vec2 ld = .005 * normalize(vec2(1.0, 1.)) * fwidth(uv);
+  //  float f = .0;
+  //  const int steps = 4;
+  //  for (int i = 1; i <= steps; ++i)
+  //  {
+  //    float c = clouds(_uv - float(i * i) * ld) * pow(0.55, float(i));
+  //    f += max(c, 0.0);
+  //  }
+  //  f = clamp(f, 0.0, 1.0);
+  //  f = 1.0 - f;
 
-  // color 1
-  highp float noise1 = noise_smooth * 2. + noise_rough * 0.2;
-  color = mix(color, vec3(colors[3], colors[4], colors[5]), get_mix(1, noise1));
+  gl_FragColor = fragColor;//mix(vec4(f) * x * .5,vec4(color,1.0), .5);
 
-  // color 2
-  highp float noise2 = noise_smooth * 4. + noise_rough * 0.2;
-  color = mix(color, vec3(colors[6], colors[7], colors[8]), get_mix(2, noise2));
+  // account for fog
+  float h = 0.5;
+  gl_FragColor = h > vUv.x
+  ? mix(vec4(fogColor, 1.0), gl_FragColor, vUv.x/h)
+  : mix(gl_FragColor, vec4(fogColor, 1.0), (vUv.x - h)/(1.0 - h));
 
-  // color 3
-  highp float noise3 = noise_smooth * 1.5 + noise_rough * 0.8;
-  color = mix(color, vec3(colors[9], colors[10], colors[11]), get_mix(3, noise3));
-
-  gl_FragColor = vec4(color, 1.0);
 }
-
-// account for fog
-//  float l = 0.4;
-//  float h = 0.7;
-//  float y = smoothstep(0, 1, vUv.x/h);
-
-//  gl_FragColor = l > vUv.x
-//  ? vec4(fogColor, 1.0)
-//  : h > vUv.x
-//  ? mix(vec4(fogColor, 1.0), gl_FragColor, vUv.x/(h+l))
-//  : mix(gl_FragColor, vec4(fogColor, 1.0), (vUv.x - h)/(1.0 - h));
-

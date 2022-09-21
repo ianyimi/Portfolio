@@ -17,8 +17,8 @@ export default function Environment(props: GroupProps) {
   
   return (
     <group {...props}>
-      <ambientLight intensity={0.5}/>
-      <CustomFog color={fog.color} near={3} far={20}/>
+      <ambientLight intensity={1}/>
+      <CustomFog color={fog.color} near={fog.near} far={fog.far}/>
       {/*<Sky sunPosition={0.5} distance={500}/>*/}
       
       <CloudySky color={skyColor}/>
