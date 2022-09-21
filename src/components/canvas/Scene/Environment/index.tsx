@@ -6,18 +6,22 @@ import {Suspense} from "react";
 import {Stars, Sky} from "@react-three/drei";
 import CloudySky from "./components/CloudySky";
 import {useStore} from "utils/store";
+import shallow from "zustand/shallow";
 
 export default function Environment(props: GroupProps) {
   
-  const fog = useStore(state => state.fog);
+  const {skyColor, fog} = useStore(state => ({
+    skyColor: state.skyColor,
+    fog: state.fog
+  }), shallow);
   
   return (
     <group {...props}>
-      <ambientLight intensity={0.5}/>
-      <CustomFog color={fog.color} near={3} far={20}/>
+      <ambientLight intensity={1}/>
+      <CustomFog color={fog.color} near={fog.near} far={fog.far}/>
       {/*<Sky sunPosition={0.5} distance={500}/>*/}
       
-      <CloudySky/>
+      <CloudySky color={skyColor}/>
       <Suspense fallback={null}>
         <SL190/>
         <EnvironmentHandler/>

@@ -1,6 +1,7 @@
 precision highp float;
 
 uniform float time;
+uniform float speed;
 
 attribute float seed;
 
@@ -146,4 +147,6 @@ void main() {
   //  pos.z += 0.025 * fsnoise(time_pos, time_pos, time_pos);
 
   gl_Position = projectionMatrix * modelViewMatrix * instanceMatrix * vec4(transformed, 1.);
+
+  gl_Position.x -= speed;
 }

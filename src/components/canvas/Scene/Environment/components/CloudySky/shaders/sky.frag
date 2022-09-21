@@ -99,6 +99,9 @@ void main()
   gl_FragColor = fragColor;//mix(vec4(f) * x * .5,vec4(color,1.0), .5);
 
   // account for fog
-  float h = 0.5;// adjust position of middleColor
-  gl_FragColor = mix(mix(vec4(fogColor, 1.0), gl_FragColor, vUv.x/h - 1.), mix(gl_FragColor, vec4(fogColor, 1.0), (vUv.x - h)/(2.0 - h)), step(h, vUv.x));
+  float h = 0.5;
+  gl_FragColor = h > vUv.x
+  ? mix(vec4(fogColor, 1.0), gl_FragColor, vUv.x/h)
+  : mix(gl_FragColor, vec4(fogColor, 1.0), (vUv.x - h)/(1.0 - h));
+
 }
