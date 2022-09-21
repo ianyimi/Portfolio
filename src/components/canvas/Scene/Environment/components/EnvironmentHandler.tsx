@@ -1,5 +1,5 @@
 import Road from "../models/Road";
-import {useRef} from "react";
+import React, {useRef} from "react";
 import * as THREE from "three";
 import AmbientParticles from "./AmbientParticles";
 import FogClouds from "./FogClouds";
@@ -19,7 +19,7 @@ export default function EnvironmentHandler() {
   return (
     
     <group>
-      <AmbientParticles position-y={1.25}/>
+      <AmbientParticles speed={speed}/>
       {/*<FogClouds position={[0, 1, 0]}/>*/}
       <Road speed={speed}/>
     </group>
