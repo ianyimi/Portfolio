@@ -16,12 +16,14 @@ export default function Landing(props: { viewHelpers?: boolean }) {
   const {viewHelpers = false} = props;
   const firstName = useRef(null);
   const lastName = useRef(null);
-  const {currentSection, previousSection, animating} = useStore(state => ({
+  const {currentSection, previousSection, progress, animating} = useStore(state => ({
     currentSection: state.currentSection,
     previousSection: state.previousSection,
+    progress: state.progress,
     animating: state.animating,
   }));
-  const active = currentSection && currentSection.name === "Home";
+  const sceneLoaded = progress === 100;
+  const active = sceneLoaded && currentSection && currentSection.name === "Home";
 
   const basicTransition = {
     duration: active ? 1 : 0.5,
