@@ -4,19 +4,13 @@ import styles from "./Nav.module.css";
 import {Html} from "@react-three/drei";
 import {Vector3} from "three";
 import {useStore} from "@/utils/store";
-import {useEffect, useMemo, useRef} from "react";
+import {useMemo, useRef} from "react";
 import {Properties} from "csstype";
 
-type Section = {
-  name: string,
-  poi: number,
-  delay: number
-}
-
 export default function Nav(props: { viewHelpers?: boolean }) {
-
+  
   const {viewHelpers = false} = props;
-
+  
   const activePosition = useRef("Home");
   const {
     currentSection,
@@ -37,39 +31,39 @@ export default function Nav(props: { viewHelpers?: boolean }) {
     setAnimationStatus: state.setAnimationStatus,
   }));
   const sceneLoaded = progress === 100;
-
+  
   const htmlPositions: Record<string, Vector3> = {
     Home: new Vector3(2.75, 0.35, -0.25),
     About: new Vector3(1, 1.85, 0),
     Work: new Vector3(0.25, 1.35, 1.5),
     Contact: new Vector3(3.5, 0.1, 0.6)
   };
-
-
+  
+  
   const navHover = {
     scale: 1.2,
     color: "rgba(255, 0, 0, 1)"
   };
-
+  
   const navTap = {
     scale: 0.9
   };
-
+  
   const navAnimate = {
     opacity: sceneLoaded && !animating ? 1 : 0,
     y: sceneLoaded && !animating ? 0 : "-25px",
   };
-
+  
   const colorAnimate = {
     color: currentSection && (currentSection.name === "Work" || currentSection.name === "Contact") ? "white" : "black",
   }
-
+  
   const basicTransition = {
     type: "spring",
     stiffness: 400,
     damping: 17
   };
-
+  
   const navElements = [];
   const navSections = useMemo(() => [
     {name: "Home", poi: 0, delay: 1000},
@@ -89,40 +83,12 @@ export default function Nav(props: { viewHelpers?: boolean }) {
       delay: 0
     },
   ], [currentSection, animating, previousSection]);
-
-
-  useEffect(() => {
-    if (!animating) {
-
-      for (let i = 1; i < navSections.length; i++) {
-
-        const h4: HTMLDivElement = document.getElementsByClassName(styles.navElement)[i - 1] as HTMLDivElement;
-        const section = navSections[i];
-
-        if (!h4) return;
-
-        // if (currentSection && currentSection.name === section.name) {
-        //
-        //   h4.innerHTML = "Home";
-        //
-        // } else if (h4.innerHTML === "Home") {
-        //
-        //   h4.innerHTML = section.name;
-        //
-        // }
-
-      }
-
-    }
-
-  }, [animating]);
-
+  
   for (let i = 1; i < navSections.length; i++) {
-
+    
     const section = navSections[i],
       homeSection = navSections[0];
     const thisButton = section.name === "Home";
-    console.log(thisButton)
     navElements.push(
       <motion.h4
         className={`${styles.navElement}`}
@@ -134,17 +100,17 @@ export default function Nav(props: { viewHelpers?: boolean }) {
         }}
         transition={basicTransition}
         onClick={() => {
-
+          
           setAnimationStatus(true);
           setCurrentSection(thisButton ? homeSection : section);
-
+          
           setTimeout(() => {
-
+            
             storyControls.goToPOI(thisButton ? 0 : section.poi);
             activePosition.current = thisButton ? "Home" : section.name;
-
+            
           }, Math.max(currentSection?.delay || 0, 500));
-
+          
         }}
         key={i}
       >
@@ -153,27 +119,27 @@ export default function Nav(props: { viewHelpers?: boolean }) {
         </motion.p>
       </motion.h4>
     );
-
+    
   }
-
+  
   const navGroupAnimate = useMemo(() => {
-
+    
     const position = htmlPositions[activePosition.current];
     return {
       x: position.x,
       y: position.y,
       z: position.z
     };
-
+    
   }, [activePosition.current]);
-
+  
   const inlineNav = useMemo(() => ({
-
+    
     display: "flex",
     flexDirection: activePosition.current !== "Home" ? "row" : "column",
-
+    
   }), [activePosition.current]);
-
+  
   return (
     <group>
       <Motion.group animate={navGroupAnimate}>
@@ -188,7 +154,7 @@ export default function Nav(props: { viewHelpers?: boolean }) {
         </mesh>
       </Motion.group>
     </group>
-
+  
   );
-
+  
 }
