@@ -30,7 +30,7 @@ export default function Nav(props: { viewHelpers?: boolean }) {
     animating: state.animating,
     setAnimationStatus: state.setAnimationStatus,
   }));
-  const sceneLoaded = progress === 100;
+  const sceneLoaded = progress.get() === 100;
   
   const htmlPositions: Record<string, Vector3> = {
     Home: new Vector3(2.75, 0.35, -0.25),

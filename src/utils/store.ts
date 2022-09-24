@@ -1,10 +1,10 @@
 import {Vector3} from "three";
 import create from "zustand";
+import {MotionValue, useMotionValue, useSpring} from "framer-motion";
 import produce from "immer";
 import {addEffect} from "@react-three/fiber";
 
 export type StoreState = {
-  os: string | undefined,
   enter: boolean,
   toggleEnter: () => void,
   skyColor: string,
@@ -17,36 +17,16 @@ export type StoreState = {
   animating: boolean,
   setAnimationStatus: (status: boolean) => void,
   loaded: string[],
-  progress: number,
+  progress: MotionValue,
   objectRendered: (id: string) => void,
   loadTotal: string[],
   objectQueued: (id: string) => void,
   hexToVec3: (color: string) => Vector3,
 }
 
-let os: string | undefined = undefined;
-
 export const useStore = create<StoreState>()((set: any, get: any) => {
   
-  if (os === undefined && navigator.appVersion.indexOf("Win") !== -1) {
-    
-    os = "Win";
-    
-  } else if (os === undefined && navigator.appVersion.indexOf("Mac") !== -1) {
-    
-    os = "Mac";
-    
-  }
-  
-  const handlePos = [
-    new Vector3(1, 0, -1),
-    new Vector3(1, 0, 1),
-    new Vector3(-1, 0, 1),
-    new Vector3(-1, 0, -1)
-  ];
-  
   return {
-    os: os,
     enter: false,
     toggleEnter: () => set(() => ({enter: true})),
     skyColor: "#B0BAB8",
@@ -74,17 +54,17 @@ export const useStore = create<StoreState>()((set: any, get: any) => {
     animating: false,
     setAnimationStatus: (status: boolean) => set(() => ({animating: status})),
     loaded: [],
-    progress: 0,
+    progress: useSpring(useMotionValue(0)),
     objectRendered: (id: string) => {
       
       if (get().loaded.includes(id) || id === "") return;
       // console.log("loaded: " + (get().loaded.length + 1) + "/" + get().loadTotal.length);
       const newLoaded = get().loaded;
       newLoaded.push(id);
+      get().progress.set(get().loaded.length >= get().loadTotal ? 100 : (get().loaded.length / get().loadTotal.length).toFixed(2));
       set(
         () => ({
           loaded: newLoaded,
-          progress: get().loaded.length >= get().loadTotal ? 100 : Math.floor(100 * get().loaded.length / get().loadTotal.length),
         })
       );
       
