@@ -7,6 +7,7 @@ import React, {useEffect, useMemo, useRef, useState} from 'react'
 import {useGLTF, useAnimations} from '@react-three/drei'
 import {GLTF} from 'three/examples/jsm/loaders/GLTFLoader'
 import {useStore} from "utils/store";
+import {motion as Motion} from "framer-motion-3d";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -69,11 +70,13 @@ export default function Model(props: JSX.IntrinsicElements['group']) {
   
   const group = useRef<THREE.Group>();
   
-  const {objectQueued, objectRendered} = useStore(state => ({
+  const {progress, objectQueued, objectRendered} = useStore(state => ({
+    progress: state.progress,
     objectQueued: state.objectQueued,
     objectRendered: state.objectRendered
   }))
   objectQueued("sl190");
+  const loaded = progress === 100;
   
   const {nodes, materials, animations} = useGLTF(FILE_URL) as GLTFResult
   const {actions} = useAnimations<GLTFActions>(animations, group)
@@ -91,58 +94,65 @@ export default function Model(props: JSX.IntrinsicElements['group']) {
     
   }, [actions]);
   
+  const basicTransition = {
+    duration: 2,
+  }
+  
   return (
     <group ref={group} {...props} dispose={null}>
-      <group name="Scene" rotation-y={Math.PI / 2}>
-        <group name="FR_WHEEL" position={[-1.4123, 0.2493, 1.315]} rotation={[0, 0.0076, 0]} scale={0.01}>
-          <mesh name="Mesh009" geometry={nodes.Mesh009.geometry} material={nodes.Mesh009.material}/>
-          <mesh name="Mesh009_1" geometry={nodes.Mesh009_1.geometry} material={nodes.Mesh009_1.material}/>
+      <Motion.group initial={{x: -7.5}} animate={{x: 0}} transition={basicTransition}>
+        <group name="Scene" rotation-y={Math.PI / 2}>
+          <group name="FR_WHEEL" position={[-1.4123, 0.2493, 1.315]} rotation={[0, 0.0076, 0]} scale={0.01}>
+            <mesh name="Mesh009" geometry={nodes.Mesh009.geometry} material={nodes.Mesh009.material}/>
+            <mesh name="Mesh009_1" geometry={nodes.Mesh009_1.geometry} material={nodes.Mesh009_1.material}/>
+          </group>
+          <group name="FR_WHEELPLATE" position={[-1.4123, 0.2493, 1.315]} rotation={[2, -0.0032, -0.0069]} scale={0.01}>
+            <mesh name="Mesh001" geometry={nodes.Mesh001.geometry} material={nodes.Mesh001.material}/>
+            <mesh name="Mesh001_1" geometry={nodes.Mesh001_1.geometry} material={nodes.Mesh001_1.material}/>
+          </group>
+          <group name="FL_WHEEL" position={[0.2819, 0.2493, 1.315]} rotation={[0, -0.0076, 3.1414]} scale={0.01}>
+            <mesh name="Mesh021" geometry={nodes.Mesh021.geometry} material={nodes.Mesh021.material}/>
+            <mesh name="Mesh021_1" geometry={nodes.Mesh021_1.geometry} material={nodes.Mesh021_1.material}/>
+          </group>
+          <group name="FL_WHEELPLATE" position={[0.2819, 0.2493, 1.315]} rotation={[2, 0.003, -3.1346]} scale={0.01}>
+            <mesh name="Mesh002" geometry={nodes.Mesh002.geometry} material={nodes.Mesh002.material}/>
+            <mesh name="Mesh002_1" geometry={nodes.Mesh002_1.geometry} material={nodes.Mesh002_1.material}/>
+          </group>
+          <group name="BR_WHEEL" position={[-1.4123, 0.2493, -1.0457]} rotation={[0, 0.0076, 0]} scale={0.01}>
+            <mesh name="Mesh015" geometry={nodes.Mesh015.geometry} material={nodes.Mesh015.material}/>
+            <mesh name="Mesh015_1" geometry={nodes.Mesh015_1.geometry} material={nodes.Mesh015_1.material}/>
+          </group>
+          <group name="BR_WHEELPLATE" position={[-1.4123, 0.2493, -1.0457]} rotation={[2, -0.0032, -0.0069]}
+                 scale={0.01}>
+            <mesh name="Mesh003" geometry={nodes.Mesh003.geometry} material={nodes.Mesh003.material}/>
+            <mesh name="Mesh003_1" geometry={nodes.Mesh003_1.geometry} material={nodes.Mesh003_1.material}/>
+          </group>
+          <group name="BL_WHEEL" position={[0.2819, 0.2493, -1.0457]} rotation={[0, -0.0076, 3.1414]} scale={0.01}>
+            <mesh name="Mesh020" geometry={nodes.Mesh020.geometry} material={nodes.Mesh020.material}/>
+            <mesh name="Mesh020_1" geometry={nodes.Mesh020_1.geometry} material={nodes.Mesh020_1.material}/>
+          </group>
+          <group name="BL_WHEELPLATE" position={[0.2819, 0.2493, -1.0457]} rotation={[2, 0.003, -3.1346]} scale={0.01}>
+            <mesh name="Mesh004" geometry={nodes.Mesh004.geometry} material={nodes.Mesh004.material}/>
+            <mesh name="Mesh004_1" geometry={nodes.Mesh004_1.geometry} material={nodes.Mesh004_1.material}/>
+          </group>
+          <group name="Body" position={[-0.5954, 0.7179, 0.0186]} scale={0.01}>
+            <mesh name="Mesh034" geometry={nodes.Mesh034.geometry} material={materials.RedBody}/>
+            <mesh name="Mesh034_1" geometry={nodes.Mesh034_1.geometry} material={nodes.Mesh034_1.material}/>
+            <mesh name="Mesh034_2" geometry={nodes.Mesh034_2.geometry} material={nodes.Mesh034_2.material}/>
+            <mesh name="Mesh034_3" geometry={nodes.Mesh034_3.geometry} material={materials.Becker}/>
+            <mesh name="Mesh034_4" geometry={nodes.Mesh034_4.geometry} material={materials.BackLights}/>
+            <mesh name="Mesh034_5" geometry={nodes.Mesh034_5.geometry} material={materials['Brown Leather']}/>
+            <mesh name="Mesh034_6" geometry={nodes.Mesh034_6.geometry} material={materials.DarkMetal}/>
+            <mesh name="Mesh034_7" geometry={nodes.Mesh034_7.geometry} material={materials.FrontLights}/>
+            <mesh name="Mesh034_8" geometry={nodes.Mesh034_8.geometry} material={materials.BenzLogo}/>
+            <mesh name="Mesh034_9" geometry={nodes.Mesh034_9.geometry} material={materials.Keychain}/>
+            <mesh name="Mesh034_10" geometry={nodes.Mesh034_10.geometry} material={materials['License Plate']}/>
+            <mesh name="Mesh034_11" geometry={nodes.Mesh034_11.geometry} material={materials.Floor}/>
+            <mesh name="Mesh034_12" geometry={nodes.Mesh034_12.geometry} material={materials['Material.001']}/>
+            <mesh name="Mesh034_13" geometry={nodes.Mesh034_13.geometry} material={materials['Material.004']}/>
+          </group>
         </group>
-        <group name="FR_WHEELPLATE" position={[-1.4123, 0.2493, 1.315]} rotation={[2, -0.0032, -0.0069]} scale={0.01}>
-          <mesh name="Mesh001" geometry={nodes.Mesh001.geometry} material={nodes.Mesh001.material}/>
-          <mesh name="Mesh001_1" geometry={nodes.Mesh001_1.geometry} material={nodes.Mesh001_1.material}/>
-        </group>
-        <group name="FL_WHEEL" position={[0.2819, 0.2493, 1.315]} rotation={[0, -0.0076, 3.1414]} scale={0.01}>
-          <mesh name="Mesh021" geometry={nodes.Mesh021.geometry} material={nodes.Mesh021.material}/>
-          <mesh name="Mesh021_1" geometry={nodes.Mesh021_1.geometry} material={nodes.Mesh021_1.material}/>
-        </group>
-        <group name="FL_WHEELPLATE" position={[0.2819, 0.2493, 1.315]} rotation={[2, 0.003, -3.1346]} scale={0.01}>
-          <mesh name="Mesh002" geometry={nodes.Mesh002.geometry} material={nodes.Mesh002.material}/>
-          <mesh name="Mesh002_1" geometry={nodes.Mesh002_1.geometry} material={nodes.Mesh002_1.material}/>
-        </group>
-        <group name="BR_WHEEL" position={[-1.4123, 0.2493, -1.0457]} rotation={[0, 0.0076, 0]} scale={0.01}>
-          <mesh name="Mesh015" geometry={nodes.Mesh015.geometry} material={nodes.Mesh015.material}/>
-          <mesh name="Mesh015_1" geometry={nodes.Mesh015_1.geometry} material={nodes.Mesh015_1.material}/>
-        </group>
-        <group name="BR_WHEELPLATE" position={[-1.4123, 0.2493, -1.0457]} rotation={[2, -0.0032, -0.0069]} scale={0.01}>
-          <mesh name="Mesh003" geometry={nodes.Mesh003.geometry} material={nodes.Mesh003.material}/>
-          <mesh name="Mesh003_1" geometry={nodes.Mesh003_1.geometry} material={nodes.Mesh003_1.material}/>
-        </group>
-        <group name="BL_WHEEL" position={[0.2819, 0.2493, -1.0457]} rotation={[0, -0.0076, 3.1414]} scale={0.01}>
-          <mesh name="Mesh020" geometry={nodes.Mesh020.geometry} material={nodes.Mesh020.material}/>
-          <mesh name="Mesh020_1" geometry={nodes.Mesh020_1.geometry} material={nodes.Mesh020_1.material}/>
-        </group>
-        <group name="BL_WHEELPLATE" position={[0.2819, 0.2493, -1.0457]} rotation={[2, 0.003, -3.1346]} scale={0.01}>
-          <mesh name="Mesh004" geometry={nodes.Mesh004.geometry} material={nodes.Mesh004.material}/>
-          <mesh name="Mesh004_1" geometry={nodes.Mesh004_1.geometry} material={nodes.Mesh004_1.material}/>
-        </group>
-        <group name="Body" position={[-0.5954, 0.7179, 0.0186]} scale={0.01}>
-          <mesh name="Mesh034" geometry={nodes.Mesh034.geometry} material={materials.RedBody}/>
-          <mesh name="Mesh034_1" geometry={nodes.Mesh034_1.geometry} material={nodes.Mesh034_1.material}/>
-          <mesh name="Mesh034_2" geometry={nodes.Mesh034_2.geometry} material={nodes.Mesh034_2.material}/>
-          <mesh name="Mesh034_3" geometry={nodes.Mesh034_3.geometry} material={materials.Becker}/>
-          <mesh name="Mesh034_4" geometry={nodes.Mesh034_4.geometry} material={materials.BackLights}/>
-          <mesh name="Mesh034_5" geometry={nodes.Mesh034_5.geometry} material={materials['Brown Leather']}/>
-          <mesh name="Mesh034_6" geometry={nodes.Mesh034_6.geometry} material={materials.DarkMetal}/>
-          <mesh name="Mesh034_7" geometry={nodes.Mesh034_7.geometry} material={materials.FrontLights}/>
-          <mesh name="Mesh034_8" geometry={nodes.Mesh034_8.geometry} material={materials.BenzLogo}/>
-          <mesh name="Mesh034_9" geometry={nodes.Mesh034_9.geometry} material={materials.Keychain}/>
-          <mesh name="Mesh034_10" geometry={nodes.Mesh034_10.geometry} material={materials['License Plate']}/>
-          <mesh name="Mesh034_11" geometry={nodes.Mesh034_11.geometry} material={materials.Floor}/>
-          <mesh name="Mesh034_12" geometry={nodes.Mesh034_12.geometry} material={materials['Material.001']}/>
-          <mesh name="Mesh034_13" geometry={nodes.Mesh034_13.geometry} material={materials['Material.004']}/>
-        </group>
-      </group>
+      </Motion.group>
     </group>
   )
 }
