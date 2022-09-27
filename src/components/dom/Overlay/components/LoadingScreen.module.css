@@ -1,7 +1,11 @@
 .container {
+  backgroundColor: #aa55dd;
+  display: flex;
+  justifyContent: center;
+  alignItems: center;
   width: 100vw;
   height: 100vh;
-  background-color: white;
+  font-family: Bosch;
 }
 
 .loadingBar {

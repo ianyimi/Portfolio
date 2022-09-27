@@ -1,11 +1,11 @@
-import styles from "./LoadingScreen.module.css";
-import {motion} from "framer-motion";
 import * as React from "react";
-import {useProgress} from "@react-three/drei";
+import {useStore} from "utils/store";
+import {motion} from "framer-motion";
+import {useEffect} from "react";
 
-export default function LoadingScreen() {
+export default function AnimatedLogo() {
   
-  const progress = useProgress(state => state.progress);
+  const progress = useStore(state => state.progress);
   const sceneLoaded = progress === 100;
   
   const draw = {
@@ -29,8 +29,23 @@ export default function LoadingScreen() {
     }
   }
   
-  return (!sceneLoaded &&
-    <div className={styles.container}>
+  // const white = document.getElementById("path0");
+  // useEffect(() => {
+  //   console.log(white)
+  //   white && white.animate({
+  //     fill: "white"
+  //   })
+  // }, [white, sceneLoaded])
+  
+  return (sceneLoaded &&
+    <div style={{
+      backgroundColor: "#aa55dd",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      width: "100vw",
+      height: "100vh"
+    }}>
       <motion.svg
         id="svg"
         xmlns="http://www.w3.org/2000/svg"
@@ -64,7 +79,9 @@ export default function LoadingScreen() {
           />
         </g>
       </motion.svg>
-      {progress.toFixed(2)}%
     </div>
   )
+  
 }
+
+;
