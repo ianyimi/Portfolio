@@ -2,6 +2,7 @@
   font-size: 7em;
   font-family: Bosch;
   line-height: 30px;
+  color: white;
 }
 
 .navElement {
@@ -9,6 +10,7 @@
   font-family: Nafta;
   margin-top: 25px;
   cursor: pointer;
+  color: white;
 }
 
 .nav2 {
