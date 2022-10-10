@@ -9,7 +9,7 @@ export default function Scene(props: GroupProps) {
   return (
     <group {...props}>
       <Camera renderOrder={0}/>
-      <Loader renderOrder={1}/>
+      {/*<Loader renderOrder={1}/>*/}
       <Environment renderOrder={2}/>
       <Content renderOrder={3}/>
     </group>

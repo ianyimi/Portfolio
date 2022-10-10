@@ -21,7 +21,7 @@ export default function EnvironmentHandler() {
     <group>
       {/*<AmbientParticles speed={speed}/>*/}
       {/*<FogClouds position={[0, 1, 0]}/>*/}
-      <Road speed={speed}/>
+      {/*<Road speed={speed}/>*/}
     </group>
   
   );

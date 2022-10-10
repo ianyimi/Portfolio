@@ -8,7 +8,7 @@ export default function Overlay() {
     isMobile ? <div className={styles.mobile}>
       Mobile under Development! Please reconnect on a desktop or tablet.
     </div> : <div>
-      {/*<Loader dataInterpolation={(p) => `Loading ${p.toFixed(2)}%`} />*/}
+      {/*<Loader dataInterpolation={(p) => `Loading ${p.toFixed(2)}%`}/>*/}
       <LoadingScreen/>
     </div>
   )

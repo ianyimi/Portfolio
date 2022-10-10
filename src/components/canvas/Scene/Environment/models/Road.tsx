@@ -30,7 +30,7 @@ type GLTFResult = GLTF & {
   }
 }
 
-const FILE_URL = "https://dqeczc7c9n9n1.cloudfront.net/models/newroad-1663385484/newroad.glb.gz";
+const FILE_URL = "https://dqeczc7c9n9n1.cloudfront.net/models/newroad-1665376569/newroad.glb.gz";
 
 // eslint-disable-next-line react/display-name
 export default function Model(props: { speed: number } & JSX.IntrinsicElements['group']) {
