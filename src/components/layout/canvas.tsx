@@ -42,6 +42,7 @@ const LCanvas = ({children}) => {
       near: 0.01,
       far: 200,
       fov: 75,
+      // makeDefault: true,
       // position: position,
       // quaternion: quaternion,
     },

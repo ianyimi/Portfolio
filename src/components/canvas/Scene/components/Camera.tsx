@@ -56,14 +56,14 @@ export default function Camera(props: GroupProps) {
     setAnimationStatus: state.setAnimationStatus,
   }), shallow);
   
-  const animate = () => setAnimationStatus(true);
+  const startAnimation = () => setAnimationStatus(true);
   const stopAnimation = () => setAnimationStatus(false);
   
   useEffect(() => {
     
     const cameraRig = new CameraRig(camera, scene);
     const newStoryControls = new StoryPointsControls(cameraRig, CAMERA_ANGLES, {cycle: true});
-    newStoryControls.onCameraStart = animate;
+    newStoryControls.onCameraStart = startAnimation;
     newStoryControls.onCameraEnd = stopAnimation;
     newStoryControls.enable();
     newStoryControls.goToPOI(0);
@@ -150,6 +150,6 @@ function Rig() {
 
 function floorArray(array: number[]) {
   
-  return array.map(num => Math.floor(num * 1000) / 1000);
+  return array.map(num => num.toFixed(3));
   
 }
