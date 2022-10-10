@@ -10,37 +10,41 @@ import {useLimiter} from "spacesvr";
 
 const CAMERA_ANGLES = [
   {
-    position: new Vector3(2.504, 1.0920, 2.2795),
-    quaternion: new Quaternion(-0.08214, 0.21672, 0.01830, 0.9725)
-  },
-  {
-    position: new Vector3(1.02, 1.408, -1.069),
-    quaternion: new Quaternion(0, 0.996, 0.08, -0.001)
-  },
-  {
-    position: new Vector3(-0.862, 1.794, 1.698),
-    quaternion: new Quaternion(-0.324, -0.451, -0.18, 0.812)
+    position: new Vector3(1.522, 0.492, 2.426),
+    quaternion: new Quaternion(0.007, 0.107, -0.001, 0.994)
   },
   // {
-  // 	position: new Vector3( - 0.023, 1.374, - 0.252 ),
-  // 	quaternion: new Quaternion( - 0.076, - 0.767, - 0.092, 0.631 )
+  //   position: new Vector3(-2.015, 3.951, 1.063),
+  //   quaternion: new Quaternion(-0.384, -0.46, -0.23, 0.767)
   // },
   {
-    position: new Vector3(5.302, 0.715, 0.724),
-    quaternion: new Quaternion(0.007, 0.692, -0.008, 0.721)
+    position: new Vector3(6.26, -14.8, -7.917),
+    quaternion: new Quaternion(0.13, 0.856, -0.264, 0.424)
+  },
+  {
+    position: new Vector3(2.115, 11.895, -2.442),
+    quaternion: new Quaternion(-0.44, -0.556, -0.447, 0.546)
+  },
+  {
+    position: new Vector3(6.95, -1.145, -1.847),
+    quaternion: new Quaternion(0.043, 0.656, -0.039, 0.752)
   }
   // {
-  // 	position: new Vector3( 5.733, 1.222, 1.387 ),
-  // 	quaternion: new Quaternion( - 0.056, 0.748, 0.063, 0.657 )
+  //   position: new Vector3(2.504, 1.0920, 2.2795),
+  //   quaternion: new Quaternion(-0.08214, 0.21672, 0.01830, 0.9725)
   // },
   // {
-  // 	position: new Vector3( 1.86, 1.076, - 2.618 ),
-  // 	quaternion: new Quaternion( - 0.001, 0.999, 0.006, 0.026 )
+  //   position: new Vector3(1.02, 1.408, -1.069),
+  //   quaternion: new Quaternion(0, 0.996, 0.08, -0.001)
   // },
   // {
-  // 	position: new Vector3( - 1.44, 1.07, - 0.209 ),
-  // 	quaternion: new Quaternion( - 0.018, - 0.759, - 0.021, 0.65 )
+  //   position: new Vector3(-0.862, 1.794, 1.698),
+  //   quaternion: new Quaternion(-0.324, -0.451, -0.18, 0.812)
   // },
+  // {
+  //   position: new Vector3(5.302, 0.715, 0.724),
+  //   quaternion: new Quaternion(0.007, 0.692, -0.008, 0.721)
+  // }
 ];
 
 export default function Camera(props: GroupProps) {

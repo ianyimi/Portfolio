@@ -10,31 +10,31 @@ import "swiper/css";
 import "swiper/css/pagination";
 
 export default function Projects(props: { viewHelpers?: boolean }) {
-
+  
   const {viewHelpers = false} = props;
   const projects = [];
-
+  
   const swiper1Ref = useRef<any>();
   const swiper2Ref = useRef<any>();
-
+  
   useEffect(() => {
     if (!swiper1Ref.current || !swiper2Ref.current) return;
     swiper1Ref.current.controller.control = swiper2Ref.current;
     swiper2Ref.current.controller.control = swiper1Ref.current;
   }, [swiper1Ref.current, swiper2Ref.current]);
-
+  
   for (let i = 0; i < ProjectData.length; i++) {
-
+    
     projects.push(
       <SwiperSlide>
         <Project index={i} key={i}/>
       </SwiperSlide>
     )
-
+    
   }
-
+  
   return (
-    <group position={[0.05, 0.5, 1.05]}>
+    <group position={[6.25, 0.5, -2.5]}>
       <Html center className={styles.htmlDiv}>
         <Swiper
           className={styles.labels}
@@ -42,9 +42,9 @@ export default function Projects(props: { viewHelpers?: boolean }) {
           onSwiper={(swiper) => {
             swiper1Ref.current = swiper;
           }}
-          pagination={{
-            clickable: true,
-          }}
+          // pagination={{
+          //   clickable: true,
+          // }}
           autoplay={{
             delay: 7000,
             pauseOnMouseEnter: true
@@ -73,5 +73,5 @@ export default function Projects(props: { viewHelpers?: boolean }) {
       </mesh>
     </group>
   );
-
+  
 }

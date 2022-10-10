@@ -22,9 +22,9 @@ export default function Contact(props: { viewHelpers?: boolean }) {
   }
   
   const contactGroupAnimate = {
-    x: 0,
-    y: 0,
-    z: 0,
+    x: 1.5,
+    y: -1.75,
+    z: -2.75,
   }
   
   return (
