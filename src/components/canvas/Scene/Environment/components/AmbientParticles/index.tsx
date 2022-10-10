@@ -26,7 +26,7 @@ export default function AmbientParticles(props: GroupProps) {
   const particleMaterial = useParticleMaterial();
   
   const dummy = useMemo(() => new Object3D(), []);
-  const generate = true;
+  const generate = false;
   
   useEffect(() => {
     
