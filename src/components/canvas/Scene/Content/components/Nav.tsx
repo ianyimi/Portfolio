@@ -39,7 +39,6 @@ export default function Nav(props: { viewHelpers?: boolean }) {
     Contact: new Vector3(3.5, 0.1, 0.6)
   };
   
-  
   const navHover = {
     scale: 1.2,
     color: "rgba(255, 0, 0, 1)"
@@ -52,11 +51,10 @@ export default function Nav(props: { viewHelpers?: boolean }) {
   const navAnimate = {
     opacity: sceneLoaded && !animating ? 1 : 0,
     y: sceneLoaded && !animating ? 0 : "-25px",
+    color: currentSection && (currentSection.name === "Work" || currentSection.name === "Contact") ? "rgba(255, 255, 255, 1)" : "rgba(255, 255, 255, 1)",
   };
   
-  const colorAnimate = {
-    color: currentSection && (currentSection.name === "Work" || currentSection.name === "Contact") ? "white" : "black",
-  }
+  const colorAnimate = {}
   
   const basicTransition = {
     type: "spring",
@@ -114,7 +112,7 @@ export default function Nav(props: { viewHelpers?: boolean }) {
         }}
         key={i}
       >
-        <motion.p animate={colorAnimate} transition={{duration: 0.5, delay: 1}}>
+        <motion.p transition={{duration: 0.5, delay: 1}}>
           {section.name}
         </motion.p>
       </motion.h4>

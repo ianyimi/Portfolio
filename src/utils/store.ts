@@ -54,8 +54,9 @@ export const useStore = create<StoreState>()((set: any, get: any) => {
       near: 10,
       far: 20,
       // color: "#BCC8C6",
-      color: "#C2C8C7",
+      // color: "#C2C8C7",
       // color: "#f03030",
+      color: "#000000",
       accent: "#B0BAB8"
     },
     storyControls: undefined,
