@@ -7,7 +7,7 @@ import {GroupProps} from "@react-three/fiber";
 
 export default function Content(props: GroupProps) {
   
-  const viewHelpers = true;
+  const viewHelpers = false;
   
   return (
     <group {...props}>

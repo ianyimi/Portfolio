@@ -26,8 +26,8 @@ export default function About(props: { viewHelpers?: boolean }) {
   }
   
   const groupAnimate = {
-    x: -10,
-    y: active || (previousSection && previousSection.name === "About" && animating) ? -7 : -20,
+    x: 3,
+    y: active || (previousSection && previousSection.name === "About" && animating) ? -10 : -20,
     z: -5
   };
   
@@ -56,11 +56,11 @@ export default function About(props: { viewHelpers?: boolean }) {
     <group>
       <Motion.group animate={groupAnimate}>
         {interests}
-        <group position={[15, -1, 0]}>
+        <group position={[1.5, -1, 0.5]}>
           <Motion.group animate={profileAnimate} transition={basicTransition}>
-            <ProfileCard position={[0, -4, 0]} rotation={[-0.625, -Math.PI / 5, -0.515]}/>
+            <ProfileCard position={[0.825, -2, -1]} rotation={[-0.625, -Math.PI / 5, -0.515]}/>
           </Motion.group>
-          <Html position={[-0.25, -5.5, 0]} center>
+          <Html position={[0, -2.75, 0]} center>
             <motion.div
               className={styles.cardBorder}
               animate={bioSummaryAnimate}
@@ -74,7 +74,7 @@ export default function About(props: { viewHelpers?: boolean }) {
           </Html>
         </group>
         <mesh>
-          <boxBufferGeometry args={[1, 1, 1]}/>
+          <boxBufferGeometry args={[0.1, 0.1, 0.1]}/>
           <meshBasicMaterial color="blue" visible={viewHelpers}/>
         </mesh>
       </Motion.group>

@@ -22,8 +22,7 @@ export default function Interest(props: { data: Record<string, any>, index: numb
     animating: state.animating,
   }));
   const active = currentSection && currentSection.name === "About";
-  const right = index % 2 === 0;
-  const htmlX = right ? 0.3 : -0.3;
+  const up = index <= 1;
   
   const groupAnimate = {
     scale: active && !animating ? 1 : 0
@@ -39,6 +38,7 @@ export default function Interest(props: { data: Record<string, any>, index: numb
   }
   
   const htmlAnimate = {
+    y: up ? -1 : 1,
     opacity: active && !animating ? 1 : 0,
   }
   
@@ -54,7 +54,7 @@ export default function Interest(props: { data: Record<string, any>, index: numb
     if (!limiter.isReady(clock) || !floatGroup.current) return;
     
     const t = offset.current + clock.getElapsedTime();
-    floatGroup.current.rotation.x = (Math.cos((t / 4) * speed) / 8) * rotationIntensity;
+    // floatGroup.current.rotation.x = (Math.cos((t / 4) * speed) / 8) * rotationIntensity;
     floatGroup.current.rotation.z = (Math.sin((t / 4) * speed) / 20) * rotationIntensity;
     let yPosition = (Math.sin((t / 4) * speed) / 10);
     yPosition = THREE.MathUtils.mapLinear(yPosition, -0.1, 0.1, floatingRange?.[0] ?? -0.1, floatingRange?.[1] ?? 0.1) - 0.075;
@@ -67,13 +67,18 @@ export default function Interest(props: { data: Record<string, any>, index: numb
     <group position={data.pos}>
       <Motion.group animate={groupAnimate} transition={basicTransition}>
         {/* @ts-ignore*/}
-        <Motion.group animate={groupSpinAnimate} transition={basicTransition} ref={floatGroup}>
+        <Motion.group
+          ref={floatGroup}
+          animate={groupSpinAnimate}
+          transition={basicTransition}
+          rotation={[-Math.PI / 12, 0, 0]}
+        >
           {data.id === 0 && <Eth color={data.color} scale={data.scaleFactor}/>}
           {data.id === 1 && <Headphones scale={data.scaleFactor}/>}
           {data.id === 2 && <Brazuca scale={data.scaleFactor}/>}
           {data.id === 3 && <Meramera scale={data.scaleFactor}/>}
         </Motion.group>
-        <group position={[htmlX, 0, 0]}>
+        <group position={data.cardOffset}>
           <Html center>
             <motion.div animate={htmlAnimate} transition={basicTransition} className={styles.htmlDivBorder}>
               <div className={styles.htmlDiv}>

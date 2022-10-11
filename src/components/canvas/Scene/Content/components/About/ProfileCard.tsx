@@ -8,7 +8,7 @@ export default function ProfileCard(props: GroupProps) {
   const {camera} = useThree();
   const group = useRef<THREE.Group>(null);
   const texture = useTexture("https://dqeczc7c9n9n1.cloudfront.net/images/profile.JPG");
-  const lw = [2, 1],
+  const lw = [1.5, 0.75],
     bezelWidth = 0.1;
   
   // useEffect(() => {
