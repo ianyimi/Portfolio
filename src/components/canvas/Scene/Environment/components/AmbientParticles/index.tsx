@@ -13,7 +13,7 @@ const Z_RANGE = 150;
 const XZ_POW = 1.2;
 const Y_RANGE = 100;
 const Y_POW = 2;
-const SCALE = 30;
+const SCALE = 100;
 
 export default function AmbientParticles(props: GroupProps) {
   
