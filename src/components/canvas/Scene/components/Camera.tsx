@@ -10,13 +10,9 @@ import {useLimiter} from "spacesvr";
 
 const CAMERA_ANGLES = [
   {
-    position: new Vector3(1.522, 0.492, 2.426),
+    position: new Vector3(1.752, 0.492, 2.426),
     quaternion: new Quaternion(0.007, 0.107, -0.001, 0.994)
   },
-  // {
-  //   position: new Vector3(-2.015, 3.951, 1.063),
-  //   quaternion: new Quaternion(-0.384, -0.46, -0.23, 0.767)
-  // },
   {
     position: new Vector3(6.26, -14.8, -7.917),
     quaternion: new Quaternion(0.13, 0.856, -0.264, 0.424)
