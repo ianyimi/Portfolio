@@ -40,7 +40,7 @@ const LCanvas = ({children}) => {
     },
     camera: {
       near: 0.01,
-      far: 200,
+      far: 2000,
       fov: 75,
       // makeDefault: true,
       // position: position,

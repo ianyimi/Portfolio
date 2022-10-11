@@ -56,6 +56,9 @@ export default function Model(props: JSX.IntrinsicElements['group']) {
   useEffect(() => {
     
     objectRendered("headphones")
+    // if (materials) {
+    //   materials["plastic"].color = "white";
+    // }
     
   }, [nodes]);
   

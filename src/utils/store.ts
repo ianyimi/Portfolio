@@ -52,7 +52,7 @@ export const useStore = create<StoreState>()((set: any, get: any) => {
     skyColor: "#B0BAB8",
     fog: {
       near: 10,
-      far: 20,
+      far: 100,
       // color: "#BCC8C6",
       // color: "#C2C8C7",
       // color: "#f03030",
