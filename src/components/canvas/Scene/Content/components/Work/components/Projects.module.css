@@ -1,7 +1,7 @@
 .htmlDiv {
   display: flex;
   justify-content: space-around;
-  width: 125vh;
+  width: 120vh;
   height: 70vh;
   /*border: 2px dashed black;*/
   overflow: hidden;

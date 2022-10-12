@@ -2,7 +2,7 @@
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
   /*border: 2px dashed purple;*/
 }
