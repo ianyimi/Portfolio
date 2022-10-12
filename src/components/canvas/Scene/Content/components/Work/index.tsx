@@ -7,7 +7,6 @@ export default function Work(props: { viewHelpers?: boolean }) {
   
   const {viewHelpers = false} = props;
   const group = useRef(null);
-  const isMounted = useRef(false);
   
   const {currentSection, previousSection, animating} = useStore(state => ({
     currentSection: state.currentSection,
