@@ -4,6 +4,7 @@ import * as THREE from "three";
 import AmbientParticles from "./AmbientParticles";
 import MoltenPlanet from "../models/MoltenPlanet";
 import StarDestroyer from "../models/StarDestroyer";
+import Galaxy from "./Galaxy";
 import FogClouds from "./FogClouds";
 import {useFrame} from "@react-three/fiber";
 import {useLimiter} from "spacesvr";
@@ -50,12 +51,14 @@ export default function EnvironmentHandler() {
     mg2 = useRef<THREE.Group>(),
     bg = useRef<THREE.Group>(),
     bg2 = useRef<THREE.Group>(),
-    groundRefs = [[fg, fg2]];
+    // groundRefs = [[fg, fg2]];
+    groundRefs = [];
   
   const [currentBackground, setBackground] = useState<number>(0);
   const backgrounds = [
     <MoltenPlanet key={0}/>,
-    <StarDestroyer key={1}/>
+    <StarDestroyer key={1}/>,
+    <Galaxy key={2}/>
   ]
   // const upcomingBackgrounds = [];
   
@@ -97,7 +100,7 @@ export default function EnvironmentHandler() {
       </group>
       <group name="background">
         <group ref={bg} className="background">
-          {/*{backgrounds[currentBackground]}*/}
+          {backgrounds[currentBackground + 2]}
         </group>
         <group ref={bg2} className="background">
           {/*{backgrounds[currentBackground + 1]}*/}

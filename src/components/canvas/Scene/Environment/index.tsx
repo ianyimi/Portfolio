@@ -8,6 +8,7 @@ import {Suspense} from "react";
 import {Stars, Sky} from "@react-three/drei";
 import CloudySky from "./components/CloudySky";
 import {useStore} from "utils/store";
+import Galaxy from "./components/Galaxy";
 import shallow from "zustand/shallow";
 
 export default function Environment(props: GroupProps) {
@@ -24,8 +25,8 @@ export default function Environment(props: GroupProps) {
       <CustomFog color={fog.color} near={fog.near} far={fog.far}/>
       {/*<CloudySky color={skyColor}/>*/}
       <Suspense fallback={null}>
-        {/*<Audi/>*/}
         <Spaceship/>
+        <Galaxy/>
         {/*<SL190/>*/}
         <EnvironmentHandler/>
       </Suspense>
