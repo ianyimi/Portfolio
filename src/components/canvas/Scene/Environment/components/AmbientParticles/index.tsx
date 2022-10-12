@@ -8,12 +8,12 @@ import shallow from "zustand/shallow";
 import {useLimiter} from "spacesvr";
 
 const COUNT = 500;
-const X_RANGE = 150;
-const Z_RANGE = 150;
+const X_RANGE = 250;
+const Z_RANGE = 250;
 const XZ_POW = 1.2;
 const Y_RANGE = 100;
 const Y_POW = 2;
-const SCALE = 100;
+const SCALE = 200;
 
 export default function AmbientParticles(props: GroupProps) {
   
