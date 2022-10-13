@@ -50,7 +50,7 @@ export default function EnvironmentHandler() {
     mg2 = useRef<THREE.Group>(),
     bg = useRef<THREE.Group>(),
     bg2 = useRef<THREE.Group>(),
-    groundRefs = [[fg, fg2]];
+    groundRefs = [[fg, fg2], [bg, bg2]];
   
   const [currentBackground, setBackground] = useState<number>(0);
   const backgrounds = [
@@ -77,11 +77,9 @@ export default function EnvironmentHandler() {
         }
       }
     }
-    
   })
   
   return (
-    
     <group>
       <group name="foreground">
         <group ref={fg} className="foreground">
@@ -97,7 +95,7 @@ export default function EnvironmentHandler() {
       </group>
       <group name="background">
         <group ref={bg} className="background">
-          {/*{backgrounds[currentBackground]}*/}
+          {backgrounds[currentBackground]}
         </group>
         <group ref={bg2} className="background">
           {/*{backgrounds[currentBackground + 1]}*/}
