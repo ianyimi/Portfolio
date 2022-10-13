@@ -4,6 +4,7 @@ import useStore from '@/helpers/store'
 import {useEffect, useRef} from 'react'
 import {Props as ContainerProps} from "@react-three/fiber/dist/declarations/src/web/Canvas";
 import {Quaternion, Vector3} from "three";
+import {Physics} from "@react-three/cannon";
 
 const LControl = () => {
   const dom = useStore((state) => state.dom)

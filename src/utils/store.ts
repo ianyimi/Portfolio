@@ -1,5 +1,7 @@
-import {Vector3} from "three";
+import {AudioAnalyser, Vector3} from "three";
 import create from "zustand";
+import {Playlist, playlists} from "../components/canvas/Scenes/Vaporwave/utils/constants";
+
 import produce from "immer";
 import {addEffect} from "@react-three/fiber";
 
@@ -22,6 +24,20 @@ export type StoreState = {
   loadTotal: string[],
   objectQueued: (id: string) => void,
   hexToVec3: (color: string) => Vector3,
+  // Music Page Specifics
+  playlist: Playlist,
+  setPlaylist: (playlist: Playlist) => void,
+  setPalette: (palette: string[]) => void,
+  display: number | null,
+  setDisplay: (value: number | null) => void,
+  audioSrc: string,
+  setAudioSrc: (src: string) => void,
+  paused: boolean,
+  setPaused: (paused: boolean) => void,
+  aa: AudioAnalyser | undefined,
+  setAa: (aa: AnalyserNode) => void,
+  getSpeed: () => number,
+  getVolume: () => number,
 }
 
 let os: string | undefined = undefined;
@@ -113,7 +129,82 @@ export const useStore = create<StoreState>()((set: any, get: any) => {
         Math.floor(parseInt(result[3], 16) / 255 * 1000) / 1000
       ) : new Vector3(0., 0., 0.);
       
+    },
+    
+    // Music Page Specifics
+    playlist: startPlaylist(),
+    setPlaylist: (playlist: Playlist) => set(
+      () => ({playlist: playlist})
+    ),
+    setPalette: (palette: string[]) => set(
+      produce((state: StoreState) => {
+        
+        state.playlist.palette = palette;
+        
+      })
+    ),
+    display: null,
+    setDisplay: (id: number | null) => set(
+      () => ({display: id})
+    ),
+    audioSrc: "",
+    setAudioSrc: (src: string) => set(
+      () => ({audioSrc: src})
+    ),
+    paused: false,
+    setPaused: (paused: boolean) => set(
+      () => ({paused: paused})
+    ),
+    aa: undefined,
+    setAa: (aa: AnalyserNode | AudioAnalyser) => set(
+      () => ({aa: aa})
+    ),
+    getSpeed: () => {
+      
+      if (!get().aa) return 1.5;
+      const data = get().aa.getFrequencyData();
+      const volume = get().getVolume();
+      const variable = get().playlist.id === "beenTurnt" ? data ? data[0] / 255 : 0 : volume;
+      
+      return variable > 0.6 ?
+        0.5 - 0.15 * variable : variable > 0.3 ?
+          1 : 1.5;
+      
+    },
+    getVolume: () => {
+      
+      if (!get().aa) return 0;
+      // const data = new Uint8Array( get().aa.frequencyBinCount );
+      // get().aa.getByteFrequencyData( data );
+      const data = get().aa.getFrequencyData();
+      let sum = 0;
+      for (const num of data) {
+        
+        sum += num;
+        
+      }
+      
+      return sum / 100000;
+      
     }
+    
   };
   
 });
+
+function startPlaylist() {
+  
+  const randomItem = (arr: any[]): any => {
+    
+    return arr[Math.floor(Math.random() * arr.length)];
+    
+  };
+  
+  const zeroPlaylist = playlists[2];
+  const firstPlaylist = {
+    ...zeroPlaylist,
+    palette: randomItem(zeroPlaylist.palettes)
+  };
+  return firstPlaylist;
+  
+}

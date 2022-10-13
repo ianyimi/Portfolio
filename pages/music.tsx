@@ -8,7 +8,10 @@ import {isMobile} from "react-device-detect";
 // WARNING ! errors might get obfuscated by using dynamic import.
 // If something goes wrong go back to a static import to show the error.
 // https://github.com/pmndrs/react-three-next/issues/49
-const Scene = dynamic(() => import('@/components/canvas/Scenes/OuterSpace'), {
+const Scene = dynamic(() => import('@/components/canvas/Scenes/Vaporwave'), {
+  ssr: false,
+});
+const Overlay = dynamic(() => import('@/components/canvas/Scenes/Vaporwave/components/Overlay'), {
   ssr: false,
 })
 
@@ -16,7 +19,8 @@ const Scene = dynamic(() => import('@/components/canvas/Scenes/OuterSpace'), {
 const Page = (props) => {
   return (
     <>
-      <Loading/>
+      {/* @ts-ignore */}
+      <Overlay/>
     </>
   )
 }
@@ -36,6 +40,7 @@ export async function getStaticProps() {
   return {
     props: {
       title: 'Isaiah Anyimi - Portfolio',
+      physics: true
     },
   }
 }
