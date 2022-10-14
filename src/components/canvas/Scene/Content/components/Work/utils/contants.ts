@@ -9,6 +9,13 @@ export type Project = {
 
 export const ProjectData: Project[] = [
   {
+    name: "Personal Music Player",
+    time: "2022 - Jul",
+    live: "https://portfolio-dk21c4iy6-ianyimi.vercel.app/",
+    img: "https://dqeczc7c9n9n1.cloudfront.net/images/musicP.png",
+    summary: ""
+  },
+  {
     name: "The Station",
     time: "2022 - Apr",
     live: "https://etherrealms.org/station",
