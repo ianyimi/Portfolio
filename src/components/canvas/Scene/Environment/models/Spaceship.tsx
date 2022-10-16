@@ -59,7 +59,6 @@ export default function Model(props: JSX.IntrinsicElements['group']) {
   
   useEffect(() => {
     if (!actions) return;
-    console.log(actions)
     for (const action of Object.values(actions)) {
       // @ts-ignore
       action.setEffectiveTimeScale(0.75).play();
