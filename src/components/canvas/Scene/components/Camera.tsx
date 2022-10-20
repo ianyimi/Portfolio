@@ -62,7 +62,7 @@ export default function Camera(props: GroupProps) {
   useEffect(() => {
     
     const cameraRig = new CameraRig(camera, scene);
-    const newStoryControls = new StoryPointsControls(cameraRig, CAMERA_ANGLES, {cycle: true});
+    const newStoryControls = new StoryPointsControls(cameraRig, CAMERA_ANGLES, {cycle: true, useKeyboard: false});
     newStoryControls.onCameraStart = startAnimation;
     newStoryControls.onCameraEnd = stopAnimation;
     newStoryControls.enable();
