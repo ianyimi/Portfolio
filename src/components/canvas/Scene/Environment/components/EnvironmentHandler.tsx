@@ -54,7 +54,8 @@ export default function EnvironmentHandler() {
   
   const [currentBackground, setBackground] = useState<number>(0);
   const backgrounds = [
-    <Planet position={[-20, 0, -30]} planet="Molten" key={0}/>,
+    <Planet position={[10, 0, -10]} planet="Stormy" key={0}/>,
+    // <Planet position={[-20, 0, -30]} planet="Molten" key={0}/>,
     <StarDestroyer key={1}/>
   ]
   // const upcomingBackgrounds = [];
