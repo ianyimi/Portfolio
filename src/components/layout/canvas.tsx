@@ -4,6 +4,7 @@ import useStore from '@/helpers/store'
 import {useEffect, useRef} from 'react'
 import {Props as ContainerProps} from "@react-three/fiber/dist/declarations/src/web/Canvas";
 import {Quaternion, Vector3} from "three";
+import {isMobile} from "react-device-detect";
 
 const LControl = () => {
   const dom = useStore((state) => state.dom)
@@ -42,6 +43,7 @@ const LCanvas = ({children}) => {
       near: 0.01,
       far: 2000,
       fov: 75,
+      zoom: isMobile ? 0.75 : 1
       // makeDefault: true,
       // position: position,
       // quaternion: quaternion,

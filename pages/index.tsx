@@ -26,7 +26,7 @@ const Page = (props) => {
 Page.r3f = (props) => (
   <>
     {/* @ts-ignore */}
-    {!isMobile && <Scene/>}
+    <Scene/>
   </>
 )
 
