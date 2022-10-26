@@ -43,7 +43,7 @@ const LCanvas = ({children}) => {
       near: 0.01,
       far: 2000,
       fov: 75,
-      zoom: isMobile ? 0.75 : 1
+      // zoom: isMobile ? 0.75 : 1
       // makeDefault: true,
       // position: position,
       // quaternion: quaternion,

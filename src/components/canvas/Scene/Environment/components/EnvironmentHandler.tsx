@@ -96,7 +96,7 @@ export default function EnvironmentHandler() {
       </group>
       <group name="background">
         <group ref={bg} className="background">
-          {backgrounds[currentBackground]}
+          {/*{backgrounds[currentBackground]}*/}
         </group>
         <group ref={bg2} className="background">
           {/*{backgrounds[currentBackground + 1]}*/}

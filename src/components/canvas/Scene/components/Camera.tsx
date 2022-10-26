@@ -48,7 +48,7 @@ export default function Camera(props: GroupProps) {
   const position = new Vector3();
   const quaternion = new Quaternion();
   
-  const {camera, scene} = useThree();
+  const {camera, scene, setDpr, setSize} = useThree();
   const {setControls, previousSection, animating, setAnimationStatus} = useStore(state => ({
     setControls: state.setControls,
     previousSection: state.previousSection,
@@ -61,6 +61,8 @@ export default function Camera(props: GroupProps) {
   
   useEffect(() => {
     
+    setDpr(window.devicePixelRatio);
+    setSize(window.innerWidth, window.innerHeight, true, 0, 0);
     const cameraRig = new CameraRig(camera, scene);
     const newStoryControls = new StoryPointsControls(cameraRig, CAMERA_ANGLES, {cycle: true});
     newStoryControls.onCameraStart = startAnimation;
