@@ -16,7 +16,7 @@ function App({Component, pageProps = {title: 'index'}}) {
   const router = useRouter()
   
   useEffect(() => {
-    if (isMobile) window.open("https://ianyimi.carrd.co");
+    if (isMobile) window.location.replace("https://ianyimi.carrd.co");
     setState({router})
   }, [router])
   

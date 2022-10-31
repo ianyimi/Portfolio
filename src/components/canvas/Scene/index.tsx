@@ -8,9 +8,9 @@ import {isMobile} from "react-device-detect";
 
 export default function Scene(props: GroupProps) {
   
-  useEffect(() => {
-    if (isMobile) window.location.replace("https://ianyimi.carrd.co")
-  }, [])
+  // useEffect(() => {
+  //   if (isMobile) window.location.replace("https://ianyimi.carrd.co")
+  // }, [])
   
   return (
     <group {...props}>
