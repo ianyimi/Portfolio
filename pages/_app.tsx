@@ -5,6 +5,7 @@ import Header from '@/config'
 import Dom from '@/components/layout/dom'
 import '@/styles/index.css'
 import dynamic from 'next/dynamic'
+import {isMobile} from "react-device-detect";
 import {Loader} from "@react-three/drei"
 
 const LCanvas = dynamic(() => import('@/components/layout/canvas'), {
@@ -15,6 +16,7 @@ function App({Component, pageProps = {title: 'index'}}) {
   const router = useRouter()
   
   useEffect(() => {
+    if (isMobile) window.open("https://ianyimi.carrd.co");
     setState({router})
   }, [router])
   
