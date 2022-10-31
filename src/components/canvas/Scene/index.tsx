@@ -1,6 +1,5 @@
 import {GroupProps} from "@react-three/fiber";
 import Camera from "./components/Camera";
-import Loader from "./components/Loader";
 import Content from "./Content";
 import Environment from "./Environment";
 

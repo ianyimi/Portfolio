@@ -2,9 +2,11 @@ import {Vector3} from "three";
 import create from "zustand";
 import produce from "immer";
 import {addEffect} from "@react-three/fiber";
+import {isMobile} from "react-device-detect";
 
 export type StoreState = {
   os: string | undefined,
+  device: "mobile" | "desktop",
   enter: boolean,
   toggleEnter: () => void,
   skyColor: string,
@@ -47,6 +49,7 @@ export const useStore = create<StoreState>()((set: any, get: any) => {
   
   return {
     os: os,
+    device: isMobile ? "mobile" : "desktop",
     enter: false,
     toggleEnter: () => set(() => ({enter: true})),
     skyColor: "#B0BAB8",

@@ -2,7 +2,7 @@ import Road from "../models/Road";
 import React, {useRef, useState} from "react";
 import * as THREE from "three";
 import AmbientParticles from "./AmbientParticles";
-import MoltenPlanet from "../models/MoltenPlanet";
+import Planet from "./Planet";
 import StarDestroyer from "../models/StarDestroyer";
 import FogClouds from "./FogClouds";
 import {useFrame} from "@react-three/fiber";
@@ -50,11 +50,12 @@ export default function EnvironmentHandler() {
     mg2 = useRef<THREE.Group>(),
     bg = useRef<THREE.Group>(),
     bg2 = useRef<THREE.Group>(),
-    groundRefs = [[fg, fg2]];
+    groundRefs = [[fg, fg2], [bg, bg2]];
   
   const [currentBackground, setBackground] = useState<number>(0);
   const backgrounds = [
-    <MoltenPlanet key={0}/>,
+    <Planet position={[10, 0, -10]} planet="Stormy" key={0}/>,
+    // <Planet position={[-20, 0, -30]} planet="Molten" key={0}/>,
     <StarDestroyer key={1}/>
   ]
   // const upcomingBackgrounds = [];
@@ -77,11 +78,9 @@ export default function EnvironmentHandler() {
         }
       }
     }
-    
   })
   
   return (
-    
     <group>
       <group name="foreground">
         <group ref={fg} className="foreground">
@@ -108,4 +107,3 @@ export default function EnvironmentHandler() {
   );
   
 }
-

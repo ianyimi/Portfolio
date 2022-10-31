@@ -25,22 +25,6 @@ const CAMERA_ANGLES = [
     position: new Vector3(6.95, -1.145, -1.847),
     quaternion: new Quaternion(0.043, 0.656, -0.039, 0.752)
   }
-  // {
-  //   position: new Vector3(2.504, 1.0920, 2.2795),
-  //   quaternion: new Quaternion(-0.08214, 0.21672, 0.01830, 0.9725)
-  // },
-  // {
-  //   position: new Vector3(1.02, 1.408, -1.069),
-  //   quaternion: new Quaternion(0, 0.996, 0.08, -0.001)
-  // },
-  // {
-  //   position: new Vector3(-0.862, 1.794, 1.698),
-  //   quaternion: new Quaternion(-0.324, -0.451, -0.18, 0.812)
-  // },
-  // {
-  //   position: new Vector3(5.302, 0.715, 0.724),
-  //   quaternion: new Quaternion(0.007, 0.692, -0.008, 0.721)
-  // }
 ];
 
 export default function Camera(props: GroupProps) {
@@ -48,11 +32,9 @@ export default function Camera(props: GroupProps) {
   const position = new Vector3();
   const quaternion = new Quaternion();
   
-  const {camera, scene} = useThree();
-  const {setControls, previousSection, animating, setAnimationStatus} = useStore(state => ({
+  const {camera, scene, setDpr, setSize} = useThree();
+  const {setControls, setAnimationStatus} = useStore(state => ({
     setControls: state.setControls,
-    previousSection: state.previousSection,
-    animating: state.animating,
     setAnimationStatus: state.setAnimationStatus,
   }), shallow);
   
@@ -61,6 +43,8 @@ export default function Camera(props: GroupProps) {
   
   useEffect(() => {
     
+    setDpr(window.devicePixelRatio);
+    setSize(window.innerWidth, window.innerHeight, true, 0, 0);
     const cameraRig = new CameraRig(camera, scene);
     const newStoryControls = new StoryPointsControls(cameraRig, CAMERA_ANGLES, {cycle: true, useKeyboard: false});
     newStoryControls.onCameraStart = startAnimation;
@@ -110,8 +94,6 @@ function Rig() {
     const dummyObj = new Object3D();
     scene.add(dummyObj);
     
-    // const initRot = useRef(camera.quaternion.clone());
-    
     function handleMouseMove(event: MouseEvent) {
       
       // @ts-ignore
@@ -125,12 +107,8 @@ function Rig() {
       dummyObj.position.set(quatPosVec)
       dummyObj.lookAt(0, 0, 0);
       dummyObj.getWorldQuaternion(newQuaternion);
-      // console.log(quatPosVec)
-      // console.log(mouse.x)
+      
       camera.position.lerp(posVec.set(mouse.x / 7, mouse.y / 7, 0), 0.05);
-      // camera.quaternion.slerp(newQuaternion, 0.05);
-      // camera.rotation.x = -mouse.y / 10;
-      // camera.rotation.y = mouse.x / 10;
       
     }
     
