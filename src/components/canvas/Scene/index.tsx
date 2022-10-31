@@ -9,7 +9,7 @@ import {isMobile} from "react-device-detect";
 export default function Scene(props: GroupProps) {
   
   useEffect(() => {
-    if (isMobile) window.open("https://ianyimi.carrd.co", "_self")
+    if (isMobile) window.location.replace("https://ianyimi.carrd.co")
   }, [])
   
   return (
