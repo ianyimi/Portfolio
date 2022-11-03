@@ -6,6 +6,7 @@ import Dom from '@/components/layout/dom'
 import '@/styles/index.css'
 import dynamic from 'next/dynamic'
 import {isMobile} from "react-device-detect";
+import {Analytics} from '@vercel/analytics/react';
 import {Loader} from "@react-three/drei"
 
 const LCanvas = dynamic(() => import('@/components/layout/canvas'), {
@@ -25,6 +26,7 @@ function App({Component, pageProps = {title: 'index'}}) {
       <Header title={pageProps.title}/>
       <Dom>
         <Component {...pageProps} />
+        <Analytics/>
       </Dom>
       {Component?.r3f && (
         <div>
