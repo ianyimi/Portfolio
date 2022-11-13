@@ -44,9 +44,3 @@ export default function Label(props: { project: Project }) {
   );
   
 }
-
-export async function getStaticProps(context) {
-  return {
-    restProps: {}
-  }
-}

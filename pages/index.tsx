@@ -33,9 +33,14 @@ Page.r3f = (props) => (
 export default Page
 
 export async function getStaticProps() {
+  
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/Interests`);
+  const posts = await res.json();
+  
   return {
     props: {
       title: 'Isaiah Anyimi - Portfolio',
+      posts,
     },
   }
 }
